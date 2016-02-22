@@ -60,3 +60,12 @@ target/
 
 #Ipython Notebook
 .ipynb_checkpoints
+
+#Custom excludes:
+
+/manage.py
+/.settings/
+/.project
+/.pydevproject
+*.sqlite3
+djPsych/secrets.py
