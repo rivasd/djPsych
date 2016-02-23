@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block content %}
+{% if error %}
+<h1> {% trans "Payment Refused" %} </h1>
+<p> {{ error }} </p>
+<a href="{% url 'homepage' %}"> {% trans "Back to homepage" %}</a>
+{% else %}
+<h1> {% trans "Successful payment, thank you!" %} </h1>
+<p> {% trans "Yay! payment successfully sent to: "%} {{payment.receiver}}</p>
+<a href="{% url 'homepage' %}"> {% trans "Back to homepage" %}</a>
+{% endif %}
+{% endblock %}

@@ -12,3 +12,6 @@ class NoAppropriateModel(Exception):
 
 class PayoutException(Exception):
     pass
+
+class BackendConfigException(Exception):
+    pass

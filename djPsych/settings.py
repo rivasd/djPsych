@@ -41,6 +41,11 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'djmanager',
     'djexperiments',
+    'djuser',
+    'djpay',
+    'djcollect',
+    'djreceive',
+    'djsend',
     'allauth',
     'modeltranslation',
     'allauth.account',
@@ -48,6 +53,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.paypal',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE_CLASSES = [

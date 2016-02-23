@@ -41,3 +41,7 @@ class BaseSubject(models.Model):
     
     def __str__(self):
         return self.user.username
+    
+class Subject(BaseSubject):
+    pass
+

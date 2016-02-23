@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+<script src="{% static 'cat_experiment/ajax_setup.js'%}"></script>
+<script src="{% static 'cat_experiment/jspsych.js'%}"></script>
+<script src="{% static 'cat_experiment/jsPsych-plugins/jspsych-categorize.js'%}"></script>
+<script src="{% static 'cat_experiment/jsPsych-plugins/jspsych-text.js'%}"></script>
+<script src="{% static 'cat_experiment/jsPsych-plugins/jspsych-similarity.js'%}"></script>
+<script src="{% static 'cat_experiment/jsPsych-plugins/jspsych-html.js'%}"></script>
+<script src="{% static 'cat_experiment/stimEngine.js'%}"></script>
+<script src="{% static 'cat_experiment/expLauncher.js'%}"></script>
+<script src="{% static 'cat_experiment/global.js' %}"></script>
+{% endblock %}
+
+
+{% block content %}
+<div id="instructionsUp">
+<h3><?php echo get_lang("Information et Consentement", "Informed Consent Form");?></h3>
+	    <div class="entry">
+            <h4 class="entryTitle"><span class="expand">[-] </span>Research Team Identification</h4>
+            <p class="entryBody">
+                Research Lead
+                <br/>
+                - Stevan Harnad, PhD.
+                <br/><br/>
+                Department, centre, or institute:
+                <br/>
+                Laboratoire de Cognition et Communication de la chaire de recherche du Canada en Sciences cognitives, UQAM.
+                <br/><br/>
+                Research team
+                <br/>
+                - Fernanda Perez Gay Juarez, PhD Neuroscience, McGill University
+                <br/>
+                - Philippe Vincent-Lamarre, UOttawa
+                <br/>
+                - Daniel Rivas, BA&Sc Cognitive Science, McGill University
+            </p>
+        </div>
+        <div class="entry">
+            <h4 class="entryTitle"><span class="expand">[-] </span>Objectives and remuneration</h4>
+            <p class="entryBody">
+                The objective of the present study is to investigate the effects of corrective feedback on trial-and-error category learning
+                <br/>
+                <br/>
+                Participants will be remunerated proportionally to their performace up to a maximum of 20$. Payments through Paypal or in person at our lab (email us to schedule)
+            </p>
+        </div>
+        <div class="entry">
+            <h4 class="entryTitle"><span class="expand">[-] </span>Risks and Benefits</h4>
+            <p class="entryBody">
+            No risk, to your health or otherwise, has been linked to the participation in this study. It is carried out entirely in your browser and can be stopped at any time simply by closing the current tab.
+            </p>
+        </div>
+        <div class="entry">
+            <h4 class="entryTitle"><span class="expand">[-] </span>Confidentiality and Anonymity</h4>
+            <p class="entryBody">
+                It is understood that all data collected (key presses, reaction times) is confidential. Only the members of the research team and interns will have access to the data. To protect your identity, you will be identified by a participant number known only to us. <br>The only personal information collected is your email address, that will also be kept confidential and never sold, transmitted, or used for spam.
+                <br> All data will be kept only for the duration of the research project and will be subsequently destroyed. <br>No data pertaining to your IP adress or location is collected, and a cookie is given to your browser to enable you to login automatically and save your language preferences. All JavaScript source code is easily viewable in the browser.
+            </p>
+        </div>
+        <div class="entry">
+            <h4 class="entryTitle"><span class="expand">[-] </span>Voluntary Consent and Righ to Retire</h4>
+            <p class="entryBody">
+            Your participation in this experiment is completely voluntary. This means that you accept to take part in it under no constraint or external pressure.
+            <br>
+            You are free to retire from the experiment at any time.
+            <br>
+            Your informed consent also implies that you accept that the research team may use all collected data in service of the present project, including activities such as articles, student theses or paper, conferences, and scientific communications,
+            this at the condition that no information that could identify you will be divulgated without your explicit consent.
+            </p>
+        </div>
+        <div class="entry">
+            <h4 class="entryTitle"><span class="expand">[-] </span>Responsibility clause</h4>
+            <p class="entryBody">
+            "By accepting to participate, you do not renounce any of your rights, nor do you relieve the researchers, sponsors, or participating institutions of their obligations, legal or professional.
+            </p>
+        </div>
+        <div class="entry">
+            <h4 class="entryTitle"><span class="expand">[-] </span>Questions about the project or your rights?</h4>
+            <p class="entryBody">
+            If you have any additional questions about the project, your rights as a participant, or to request your data be permanently deleted, you can communicate with:<br>
+            - Daniel Rivas, research assistant and webmaster<br><a href='mailto:cognitionlabmtl@gmail.com'>cognitionlabmtl@gmail.com </a><br>
+            <br>The Institutional Committee On Human Research Ethics of UQAM has approved the research project in which you are about to take part. For information about the 
+            responsibilities of the research team regarding human research ethics or to file a complaint, you can contact the presidency of the Committee through its secretarial department at
+            the number (514) 987-3000 #7753 or by email at: CIEREH@UQAM.CA
+            </p>
+        </div>
+        <div class="entry">
+            <h4 class="entryTitle"><span class="expand">[-]</span>Acknowledgements & results</h4>
+            <p class="entryBody">
+            Your collaboration to our research project is fundemantally valuable. The research team would like to thank you for agreeing to lend us your time.
+            If you are curious and wish to obtain a summary of the research findings, be sure to contact the research team at the email address given above!
+            </p>
+        </div>
+        <form name="consent" id="consent">
+            <fieldset>
+            <legend>Consent</legend>
+                <p>I Hereby: </p>
+                <ul>
+                    <li>
+                    Recognize having read the present information and consent document;</li>
+                    <li>
+                    Voluntarily consent to participate in this experiment;
+                    </li>
+                    <li>
+                    Understand the objectives of the project and what my participation entails;
+                    </li>
+                    <li>
+                    Certify having been given a sufficient amount of time to decide of my participation;
+                    </li>
+                    <li>
+                    Certify that the project coordinator (or his/her delegate) has answered my questions to my satisfaction; and
+                    </li>
+                    <li>
+                    I understand that my participation to this study is completely voluntary and that I can retire from the experiment at any time, without any form of penalty or justification to provide.
+                    </li>
+                </ul>
+                <div id="checkbox"><input type="checkbox" name="accept" id="accept" value="yes">Accept</input></div>
+            </fieldset>
+        </form>
+    </div>
+<div id="retroaction"></div>
+<div id="jsPsychTarget">
+	<div id="progressBar"></div>
+	<canvas id="stimCanvas"></canvas>
+</div>
+<div id="instructionsDown">
+	<a href="#top" class="button" id="start">Start</a>
+</div>
+{% endblock %}

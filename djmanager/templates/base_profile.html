@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block content %}
+<h1>{% trans "Your profile" %}</h1>
+<p>Hi! Welcome to this demo page of what a user profile would be on our site!</p>
+<h2>{% trans "Completed experiments:" %}</h2>
+<ul>
+{% for participation in participations %}
+	<li> {{participation.experiment.label}} </li>
+{% empty %}
+	<li> {% trans "You have not completed any experiments! Get started:  "%}<a href="{% url "homepage" %}">{% trans "here" %}</a> </li>
+{% endfor %}
+</ul>
+<h2>{% trans "Unclaimed payments: " %}</h2>
+<ul>
+{% for pay in payments %}
+	<li><a href="{% url "claim" pay.pk%}"> {% trans "payment for "%}{{ pay.participation.experiment.label }}</a></li>
+{% empty %}
+	<li>{% trans "None... for now!" %}</li>
+{% endfor %}
+</ul>
+{% if is_researcher %}
+<h2>{% trans "You are also a researcher!" %}</h2>
+	{% for exp in researchs %}
+	<a href="{% url "download:all" exp.label%}"> {% trans "Get full data for the experiment: "%}{{ exp.label }}</a>
+	{% endfor %}	
+{% endif %}
+
+{% endblock %}

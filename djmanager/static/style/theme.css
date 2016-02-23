@@ -1,0 +1,491 @@
+/*  
+
+CSS file for the web experiment on Categorization and Categorical Perception
+
+author: Daniel Rivas
+23-08-2014
+*/
+
+@font-face{
+    font-family: "Titillium-Web";
+    src: url('Titillium_Web/TitilliumWeb-Regular.ttf'),
+        url('Titillium_Web/AdventPro-Regular.eot');
+}
+
+@font-face{
+    font-family: "Jura";
+    src: url('Jura/Jura-DemiBold.ttf');
+}
+
+*{
+	margin:0px;
+	line-height: 1.2em;
+    font-family: "Titillium-Web", "sans-serif";
+	color: black;
+	}
+
+body {
+	background-image: url("tweed.png");
+	background-color: #cccccc;
+    padding: 1px;
+	}
+	
+header {
+	background-image: url('txture.png');
+	border-radius: 8px 8px 0px 0px;
+	color:#e2e2e2;
+	font-family: "Titillium-Web", "Lucida Grande", sans-serif;
+	padding: 6px;
+	min-height:140px;
+	}
+
+header fieldset{
+    border: none;
+    padding: 1px;
+}
+
+#subtitle{
+    margin-top: 0px;
+    margin-left: 20px;
+    position: relative;
+    top: -5px;
+	color: inherit;
+}
+
+#banner{
+    height: 70px;
+    width: 600px;
+}
+
+#top{
+    height: 0px;
+    width: 0px;
+}
+	
+#page {
+	margin-top:0px;
+	margin-bottom:30px;
+	width: 1280px;
+	border-radius:8px;
+	margin-left: auto;
+	margin-right: auto;
+	box-shadow: -10px 10px 10px #252525;
+	}
+	
+header h1, h3 {
+	margin: 6px;
+    margin-top: 0px;
+	}
+	
+#content{
+	background-color:#EAEAEA;
+	vertical-align:top;
+	padding: 35px 25px 25px 25px;
+    min-height: 500px;
+	}
+	
+footer	{
+	background-image: url('txture.png');
+	border-radius: 0px 0px 8px 8px;
+	color:#e2e2e2;
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	padding: 6px;
+	min-height:30px;
+	vertical-align:bottom;
+	}
+		
+p, a, h3	{
+	font-family: "Titillium-Web", "Lucida Grande", sans-serif;
+	font-size: 11pt;
+	margin-top:15px;
+	margin-bottom:15px;
+	}
+	
+li	{
+	margin-top:5px;
+	margin-bottom: 5px;
+	font-family: "Titillium-Web", "Lucida Grande", sans-serif;
+	font-size: 12pt;
+	color: inherit;
+	}
+	
+button {
+	
+	display:inline-block;
+	margin-left: auto;
+	margin-right:auto;
+	position:relative;
+	background:#283947;
+	color:#BBBEC1;
+	text-decoration:none;/style/
+	margin:10px;
+	padding:10px;
+	border-radius:6px;
+	text-shadow: 1px 1px 1px rgba(255,255,255, .22);
+	box-shadow: 2px 2px 2px #252525;
+	min-width: 85px;
+	
+	background: -webkit-linear-gradient(#283947, #243B4F); /* For Safari 5.1 to 6.0 */
+	background: -o-linear-gradient(#283947, #243B4F); /* For Opera 11.1 to 12.0 */
+	background: -moz-linear-gradient(#283947, #243B4F); /* For Firefox 3.6 to 15 */
+	background: linear-gradient(#283947, #243B4F); /* Standard syntax */
+	}
+
+button a{
+    text-decoration: none;
+    color: #EAEAEA;
+}
+button:hover{
+	background:#384550;
+	}
+
+#jsPsychTarget{
+	text-align: left;
+	}
+	
+#jspsych_sim_stim{
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+    height: 310px;
+    width:  310px;
+	}
+
+#jspsych-categorize-stimulus{
+    margin-left: auto;
+	margin-right: auto;
+	display: block;
+    height: 310px;
+    width:  310px;
+    }
+	
+#fixationCross{
+    height: 200px;
+    width: 200px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+img.fix{
+    margin-top: 50px;
+    height: 100px;
+    width:  100px;
+    }
+
+img.loader{
+    width: 30px;
+    height: 30px;
+}
+button:active{
+	text-shadow: 0px 0px 0px rgba(255,255,255, .22);
+	box-shadow: 0px 0px 2px #252525;
+	}
+	
+#instructionsDown{
+	text-align:center;
+	}
+#stimGrid td{
+	margin: 15px;
+}
+#stimGrid img{
+	height:175px;
+	width:175px;
+	margin:8px;
+}	
+#instructionsUp{
+	min-height:200px;
+	}
+#tableHolder{
+	text-align: center;
+	}
+#stimGrid{
+	display: inline-block;
+	margin-left:auto;
+	margin-right:auto;
+	}
+
+#slider{
+	display:block;
+	background-image: url('sliderBackground.png');
+	background-size:630px 56px;
+	background-position: -10px -11px;
+	width: 600px;
+	height:26px;
+	margin-top:25px;
+    margin-left: auto;
+    margin-right: auto;
+	}	
+	
+#slider span.ui-slider-handle{
+	background-image: url('zd_slider_widget_knob.gif');
+	height:34px;
+	width:17px;
+	background-size:17px 34px;
+	border: none;
+	top:-4px;
+	}
+
+.ui-slider .ui-slider-handle:focus{
+	border:none;
+	}	
+	
+#jsPsychTarget #sliderlabels{
+	margin-left:auto !important;
+	margin-right:auto !important;
+	width:600px !important;
+	}
+
+#sliderlabels li{
+	position: relative;	
+	}
+
+ul.langNav{
+    float:none;
+    list-style: none;
+    color: #EAEAEA;
+    width: 1280px;
+    margin: auto;
+    padding: 0px;
+}
+
+li a{
+    color: inherit;
+    font-size: 14pt;
+    text-decoration: none;
+	color: inherit;
+}
+
+/* 
+a:visited {
+	color: inherit;
+}
+*/
+
+textarea {
+    display: block;
+    height: 50px;
+    width: 400px;
+    margin: auto;
+}
+
+canvas{
+	visibility: visible;
+}
+
+#jsPsychTarget table{
+	margin: auto;
+}
+
+input.darkbox{
+    width: 150px;
+    background-color: #fcebc4;
+    color: #505e5e;
+    border: none;
+    margin-bottom: 5px;
+    display: inline-block;
+    border-radius: 4px;
+    font-family: "Jura", sans-serif;
+    border: 2px solid #f99b41;
+    min-height: 20px;
+    padding: 4px;
+    transition: background-color 0.2s ease;
+    box-shadow: inset 2px 2px 10px -2px #78705c;
+    padding-left: 24px;
+    min-width: 200px;
+}
+
+.darkbox:focus{
+    outline: none;
+    background-color: #fcf5e6;
+}
+
+header form{
+    float: right;
+}
+
+header button{
+    height: 24px;
+    width: 60px;
+    margin-left: auto;
+    margin-right: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-size: x-small;
+    padding: 1px;
+}
+
+form.login{
+    text-align: right;
+}
+
+form.login button{
+    display: inline;
+    float: right;
+    font-size: small;
+    min-width: 85px;
+}
+form.login a{
+    color: #e2e2e2;
+    text-decoration: none;
+    float: left;
+    margin: 0;
+    font-size: small;
+}
+#registration{
+    margin-left: auto;
+    margin-right: auto;
+    min-width: 550px;
+    display: inline-block;
+    text-align: left;
+    margin: 15px;
+    padding: 15px;
+}
+
+#regInstructions{
+    max-width: 400px;
+    text-align: left;
+}
+
+#registrationWrapper{
+    text-align: center;
+    background-image: url('brushed_alu.png');
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+div.pseudoTableRow label{
+    text-align: left;
+    display: block;
+    padding-left: 10px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+div.pseudoTableRow input{
+}
+
+div.pseudoTableRow{
+    clear: both;
+    height: auto;
+    margin-top: 5px;
+}
+
+input.passwd{
+    background-image: url('locked59.png');
+}
+
+input.usr{
+    background-image: url('user168.png');
+}
+
+input.email{
+    background-image: url('mail59.png');
+}
+
+input{
+    background-repeat: no-repeat;
+    background-size: 15px;
+    background-position: 5px 7px;
+}
+
+p.tip{
+    font-size: 0.65em;
+    font-style: italic;
+    margin-left: 20px;
+    margin-top: 0px;
+    margin-bottom: 1px;
+    font-family: "Titilium-Web", sans-serif;
+}
+/*
+button[type=submit]{
+    background-color: #f99b41;
+    color: #283947;
+    border-radius: 500px;
+    box-shadow: 1px 1px 1px 1px;
+    margin-top: 20px;
+    min-width: 100px;
+}
+*/
+button[type=submit]:focus{
+    outline: none;
+}
+button[type=submit]:active{
+    box-shadow: none;
+    position: relative;
+    top: 1px;
+    left: 1px;
+}
+
+form label.error {
+    font-size: small;
+    color: #d42000;
+    display: inline-block;
+    max-width: 200px;
+}
+form#login p{
+    color: #EAEAEA;
+}
+
+.entryTitle{
+    cursor: pointer;
+}
+
+.entryBody{
+	margin-left: 20px;
+}
+
+#consent{
+    margin-top: 25px;
+}
+div.entry{
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+#retroaction{
+    display: block;
+    margin-right: 0px;
+    font-size: 10pt;
+    line-height: 0.5em;
+    margin-left: auto;
+    width: 200px;
+}
+#retroaction p{
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+.feedback{
+    font: 14pt;
+    font-weight: 600;
+    display: block;
+    text-align: center;
+    margin: auto;
+}
+.incorrect{
+    color: #b00000;
+}
+.correct{
+    color: #268600;
+}
+#expForm div.pseudoTableRow label {
+    display: inline-block;
+    padding-left: 0px;
+    margin-right: 10px;
+}
+
+#advice {
+  float: left;
+  width: 200px;
+  position: relative;
+  margin: 0px;
+  background-color: rgb(250, 255, 189);
+  top: 8px;
+  padding: 7px;
+  border-radius: 6px;
+  box-shadow: -1px 2px 5px 2px black;
+}
+
+#accept{
+    margin: 0 auto;
+}

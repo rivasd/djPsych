@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+<h1>{% trans "Welcome to the Cognition and Communication lab at UQAM" %}</h1>
+<p>
+
+{% trans "super-awesome web platform for psych experiments" as exp_link %}
+{% url "webexp:home" as exp_href%}
+{% blocktrans %}
+We are currently building this site, but it will be ready anytime soon! Especially our <a href="{{ exp_href }}">{{ exp_link }} </a>
+{% endblocktrans %}
+</p>
+
+{% endblock %}

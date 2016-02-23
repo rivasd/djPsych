@@ -1,0 +1,59 @@
+{% comment %}
+This is the base html template to use with the site.
+note that it is not namespaced (it's not place inside an expManager directory within 'templates') so that 
+we can refer to it with less typing.
+
+Here is a list of the expandable block names:
+
+title	the title of the page
+head	additional things to add to the head like more css files and linked javascript modules
+content	Well, the content of the page
+
+@author Daniel Rivas
+{% endcomment %}
+
+{% load static from staticfiles %}
+{% load i18n %}
+{% get_current_language as lang %}
+<!doctype html>
+<html lang="{{ lang }}">
+<head>
+	
+    <link rel="icon" type="image/ico" href="{% static 'style/labologofullnostrokepale.png' %}" />
+	<meta charset="utf-8"/>
+	<title>{% block title%} Laboratoire Cognition communication UQAM {% endblock %}</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
+    <link href="https://code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css"></link>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.js"></script>
+    <script src="{% static 'homePageUtilities.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'style/theme.css' %}">
+    {% block head %}{% endblock %}
+    
+</head>
+<body>
+	<div id="page">
+		<header>
+			<img src="{% static 'style/Banner.png'%}" alt="Cognition - Communication" id="banner"/>
+			<form class="login" name="login" id="login" data-logged="">
+				{% if user.is_authenticated %}
+				<button id="logout-button">logout</button>
+				{% else %}
+				<ul id='auth-options'>
+					<li></li>
+					<li></li>
+				</ul>
+				{% endif %}
+			</form>
+			<a id='top'></a>
+			<p id="subtitle">Canada Research Chair in Cognitive Science</p>
+		</header>
+		<div id='content'>
+			{% block content %}
+			<p>Bonjour!</p>
+			{% endblock %}
+		</div>
+		<footer id='footer'>
+		</footer>
+	</div>
+</body>

@@ -1,5 +1,7 @@
 from django.db import models
 from djPsych.exceptions import SettingException
+from djuser.models import Subject
+from jsonfield import JSONField
 # Create your models here.
 
 class BaseExperiment(models.Model):
@@ -47,7 +49,12 @@ class BaseExperiment(models.Model):
         else:
             raise SettingException(_("cannot subtract funds from an unfunded experiment"))
         
+    
+        
 class Experiment(BaseExperiment):
-    participations = models.ManyToManyField(Subject, through='Participation')
+    participations = models.ManyToManyField(Subject, through='djcollect.Participation')
     pass
         
+
+    
+    
