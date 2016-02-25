@@ -29,7 +29,7 @@ manips	an array of arrays, each top level array representing an experiment as se
 <ul id="available-exp">
 	{% for manip in manips %}
 	<li>
-		<a href="{% url 'webexp:'|add:manip.label|add:':lobby' %}"> {{ manip.verbose_name }} </a>	
+		<a href="{% url 'webexp:lobby' manip.label%}"> {{ manip.verbose_name }} </a>	
 	</li>
 	{% endfor %}
 </ul>

@@ -15,10 +15,11 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from djmanager.views import index
+from djmanager.views import index, home
+from djmanager.urls import webexp_patterns
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^webexp/', include('djmanager.urls', namespace='webexp')),
+    url(r'^webexp/', include(webexp_patterns, namespace='webexp')),
     url(r'^$', index, name='index'),
 ]

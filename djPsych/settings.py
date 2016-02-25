@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'djcollect',
     'djreceive',
     'djsend',
+    'djadmin',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',

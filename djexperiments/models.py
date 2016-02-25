@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.translation import ugettext_lazy as l_
 from djPsych.exceptions import SettingException
 from djuser.models import Subject
 from jsonfield import JSONField
@@ -18,6 +19,7 @@ class BaseExperiment(models.Model):
     description = models.TextField(blank=True, null=True)
     estimated_length = models.CharField(max_length=16, blank=True, null=True)
     allow_repeats = models.BooleanField(help_text="Should participants be able to repeat this experiment? Does not mean they'll get payed twice, but this might create redundant data?")
+    max_repeats = models.SmallIntegerField(help_text = l_("If repeats are permitted, you can set a limit of repeats here."))
     compensated = models.BooleanField(help_text="True if some kind of monetary compensation is currently available for subjects who complete the experiment", default=False)
     max_payouts = models.IntegerField(help_text="How many times can a subject get payed (each payout needs a new participation)", blank=True, null=True)
     allow_do_overs = models.BooleanField(help_text="Should we allow subjects to erase non-claimed payments and create a better one by redoing an exp. ?", blank=True, default=False)
@@ -49,10 +51,22 @@ class BaseExperiment(models.Model):
         else:
             raise SettingException(_("cannot subtract funds from an unfunded experiment"))
         
-    
+    def get_participations(self, user):
+        """
+        Given a django.contrib.auth.models.User, return the next Participation to operate on.
+        
+        If there is an incomplete Participation, return that one. If there are none, create a new one and return it. If the user has reached the limit of repeats, return False
+        """
+        participations = self.participation_model.objects.filter(subject__user=user, experiment=self)
+        previous = len(participations) # force evaluation of queryset
+        
+        if previous >= self.max_repeats:
+            return False
         
 class Experiment(BaseExperiment):
     participations = models.ManyToManyField(Subject, through='djcollect.Participation')
+    
+    
     pass
         
 

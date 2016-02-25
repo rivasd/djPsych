@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -11,7 +12,7 @@ class BaseSubject(models.Model):
     'User' already has basic contact info and date joined info, so put here fields that are "experimental subject" things like demographics and other
     """
     
-    user = models.OneToOneField(settings.AUTH_USER_MODEL)
+    user = models.OneToOneField(User)
     
     class Meta:
         abstract = True
