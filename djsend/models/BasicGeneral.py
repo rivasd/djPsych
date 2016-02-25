@@ -8,12 +8,15 @@ from djPsych.exceptions import SettingException
 from jsonfield import JSONField
 # Create your models here.
 
-class GlobalSetting(models.Model):
+class BaseGlobalSetting(models.Model):
     """
     Experimental settings that aplly to a whole experimental run, including stimuli creation settings
     
     Use its add_to_timeline method to push other setting objects containing settings related to particular blocks
     """
+    
+    class Meta:
+        abstract=True
     
     name = models.CharField(max_length=16, unique=True, help_text="An identifier for this set of settings, for example 'production' or 'test settings' ")
     max_consecutive_timeouts = models.IntegerField(help_text="The experiment will automatically abort if this number if the subject does not respond fast enough to this many consecutive trials")
@@ -38,3 +41,6 @@ class GlobalSetting(models.Model):
     
     def __str__(self):
         return self.name
+    
+class GenericGlobalSetting(BaseGlobalSetting):
+    pass

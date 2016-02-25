@@ -1,5 +1,9 @@
 from django.contrib import admin
-from .models import GlobalSetting
 # Register your models here.
 
-admin.site.register(GlobalSetting)
+from django.apps import apps
+
+app = apps.get_app_config('djsend')
+
+for model_name, model in app.models.items():
+    admin.site.register(model)

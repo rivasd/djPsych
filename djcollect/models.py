@@ -32,4 +32,4 @@ class Researcher(models.Model):
     
     user = models.OneToOneField(settings.AUTH_USER_MODEL)
     institution = models.CharField(max_length=32, blank=True, null=True)
-    researchs = models.ManyToManyField(Experiment, blank=True, null=True)
+    researchs = models.ManyToManyField(Experiment, blank=True)

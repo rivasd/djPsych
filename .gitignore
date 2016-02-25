@@ -63,7 +63,7 @@ target/
 
 #Custom excludes:
 
-/manage.py
+
 /.settings/
 /.project
 /.pydevproject
