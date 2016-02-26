@@ -1,8 +1,10 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as l_
-from djPsych.exceptions import SettingException
+from django.utils.translation import ugettext as _
+from djPsych.exceptions import SettingException, ParticipationRefused
 from djuser.models import Subject
 from jsonfield import JSONField
+from django.contrib.contenttypes.models import ContentType
 # Create your models here.
 
 class BaseExperiment(models.Model):
@@ -13,18 +15,24 @@ class BaseExperiment(models.Model):
     class Meta:
         abstract = True
     
-    app_name = models.CharField(max_length=64)
     label = models.CharField(max_length=32, unique=True)
     verbose_name = models.CharField(max_length=128, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     estimated_length = models.CharField(max_length=16, blank=True, null=True)
     allow_repeats = models.BooleanField(help_text="Should participants be able to repeat this experiment? Does not mean they'll get payed twice, but this might create redundant data?")
-    max_repeats = models.SmallIntegerField(help_text = l_("If repeats are permitted, you can set a limit of repeats here."))
+    max_repeats = models.SmallIntegerField(null=True, blank=True, help_text = l_("If repeats are permitted, you can set a limit of repeats here."))
+    enforce_finish = models.BooleanField(help_text=l_("Check this to prevent subjects from starting new participations when they already have incomplete ones pending."))
+    max_pending = models.PositiveSmallIntegerField(blank=True, null=True, help_text=l_("If subjects are allowed to have many unfinished participations, you can set the maximum here"))
     compensated = models.BooleanField(help_text="True if some kind of monetary compensation is currently available for subjects who complete the experiment", default=False)
     max_payouts = models.IntegerField(help_text="How many times can a subject get payed (each payout needs a new participation)", blank=True, null=True)
     allow_do_overs = models.BooleanField(help_text="Should we allow subjects to erase non-claimed payments and create a better one by redoing an exp. ?", blank=True, default=False)
     funds_remaining = models.FloatField(blank=True, null=True, help_text="How much money is still available to pay subjects. This is a live setting so better to change this programmatically, ask the administrator.")
     is_active = models.BooleanField(help_text="Uncheck to remove this experiment from being displayed and served on the site.")
+    
+    settings_model = models.ForeignKey(ContentType)
+    block_models = models.ManyToManyField(ContentType, related_name="experiments")
+    
+    ParticipationRefused = ParticipationRefused
     
     def __str__(self):
         return self.verbose_name
@@ -51,18 +59,20 @@ class BaseExperiment(models.Model):
         else:
             raise SettingException(_("cannot subtract funds from an unfunded experiment"))
         
-    def get_participations(self, user):
+    def get_global_settings(self, version, waiting=None, requested=None):
         """
-        Given a django.contrib.auth.models.User, return the next Participation to operate on.
+        Function hook to customize the djsend.models.BaseGlobalSetting subclass to you want returned depending on the request
+        Default implementation is to simply fetch the globalsetting object that has name=version. 
         
-        If there is an incomplete Participation, return that one. If there are none, create a new one and return it. If the user has reached the limit of repeats, return False
+        version: the name of the requested GlobalSetting object
+        waiting: either none or a queryset containing all the currently incomplete Participations
+        requested: if there was a particular Participation that was requested to be completed, this is its primary key
         """
-        participations = self.participation_model.objects.filter(subject__user=user, experiment=self)
-        previous = len(participations) # force evaluation of queryset
         
-        if previous >= self.max_repeats:
-            return False
+        return self.settings_model.get_object_for_this_type(name=version, experiment=self)
         
+        
+                
 class Experiment(BaseExperiment):
     participations = models.ManyToManyField(Subject, through='djcollect.Participation')
     

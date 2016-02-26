@@ -22,7 +22,7 @@ class Participation(models.Model):
     # browser = models.CharField(max_length=64)
       
     #this is where the magic happens: store options in json format here so that experimental settings stay the same across sessions
-    parameters = JSONField()
+    parameters = JSONField(null=True)
 
 class Researcher(models.Model):
     """

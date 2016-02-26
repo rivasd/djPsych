@@ -15,3 +15,6 @@ class PayoutException(Exception):
 
 class BackendConfigException(Exception):
     pass
+
+class ParticipationRefused(Exception):
+    pass
