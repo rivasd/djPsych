@@ -9,7 +9,7 @@ from .views import home
 
 
 
-webexp_patterns = [
+urlpatterns = [
     url(r'^$', home, name="home"),
     url(r'(?P<exp_label>\w+)/', include('djexperiments.urls')),
 ]

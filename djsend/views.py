@@ -9,21 +9,22 @@ from djPsych.exceptions import ParticipationRefused
 
 # Create your views here.
 
-def sendSettings(request):
+def sendSettings(request, *args, **kwargs):
     
     if not request.is_ajax():
-        return HttpResponseBadRequest()
+        # return HttpResponseBadRequest() #Uncomment for production
+        pass
     
     if not request.user.is_authenticated():
         return JsonResponse({'error': _("You must be authenticated to request an experiment.")})
     
     try:
-        exp_label = request.GET['experiment']
         exp_version = request.GET['version']
     except:
         return JsonResponse({'error': _('Missing obligatory URL GET parameters, see the documentation.')})
     
     try:
+        exp_label = kwargs['exp_label']
         exp = Experiment.objects.get(label=exp_label)
     except Experiment.DoesNotExist:
         return JsonResponse({'error': _("There is no experiment by the name: "+exp_label)})
@@ -54,7 +55,8 @@ def sendSettings(request):
         return JsonResponse({'error': str(e)})
     
     global_settings_obj = exp.get_global_settings(exp_version, waiting=on_the_ice, requested=to_be_continued)
-    global_settings_obj.build_timeline()
+    global_settings_obj.build_timeline(global_settings_obj.get_all_blocks(), request)
+    return JsonResponse(global_settings_obj.toDict())
     
     
     pass

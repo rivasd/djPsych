@@ -54,7 +54,7 @@ class BaseGlobalSetting(models.Model):
                 blocks.append(inst)
         return blocks
     
-    def build_timeline(self, blocks):
+    def build_timeline(self, blocks=None, request=None):
         """
         Builds an array of dict instances from the given blocks (instances of a subclass of djsend.BasicBlock.BaseSettingBlock).
         Assigns that array to this object's 'timeline' attribute
