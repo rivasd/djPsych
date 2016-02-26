@@ -10,11 +10,11 @@ from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelatio
 from jsonfield import JSONField
 from .Instructions import Instruction
 
-
 class BaseSettingBlock(models.Model):
     
     class Meta:
         abstract = True
+        index_together = ['global_settings_type', 'global_settings_id'] # indexed because block settings will be frequently fetched by these fields, and rarely created.
     
     global_settings_type = models.ForeignKey(ContentType)
     global_settings_id = models.PositiveIntegerField(help_text=l_("Which global settings configuration is this block-level configuration part of?"))
@@ -23,15 +23,20 @@ class BaseSettingBlock(models.Model):
     position_in_timeline = models.PositiveSmallIntegerField(null=True, blank=True, help_text=l_("This number is used by the global setting this object is part of to build its timeline. It represents the ordinal position in which this block should come."))
     reprise = models.PositiveSmallIntegerField(null=True, blank=True, help_text=l_("If set, indicates that this block is a reprise of the n'th block, where n is the value of the field"))
     length= models.PositiveIntegerField(null=True, blank=True, help_text=l_("How many individual trials of this type should there be. You can leave blank if you don't need it"))
-    for_type = models.CharField(max_length=26)
+    type = models.CharField(max_length=26)
     is_practice = models.BooleanField()
     instructions = GenericRelation(Instruction, )
     # magic field for dynamically added settings
     extra_params = JSONField(null=True, blank=True)
     
     def toDict(self):
+        if self.reprise is not None:
+            return {'reprise': self.reprise}
         dictionary = dict(self.__dict__)
         del dictionary['_state']
+        del dictionary['global_settings_id']
+        del dictionary['global_settings_type_id']
+        del dictionary['id']
         dictionary['instructions'] = self.sort_instructions()
         return dictionary
     

@@ -5,7 +5,7 @@ Created on Feb 22, 2016
 '''
 from django.conf.urls import url
 from djexperiments.views import lobby, launch, summary
-from djcollect.views import sendSettings
+from djsend.views import sendSettings
 from djreceive.views import save
 
 

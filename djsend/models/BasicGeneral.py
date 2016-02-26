@@ -9,6 +9,7 @@ from djexperiments.models import Experiment
 from jsonfield import JSONField
 from .BasicBlock import BaseSettingBlock
 from django.contrib.contenttypes.fields import GenericRelation
+from django.contrib.contenttypes.models import ContentType
 # Create your models here.
 
 class BaseGlobalSetting(models.Model):
@@ -33,6 +34,7 @@ class BaseGlobalSetting(models.Model):
     def toDict(self):
         dictionary = dict(self.__dict__)
         del dictionary['_state']
+        del dictionary['_experiment_cache']
         return dictionary
     
     def __str__(self):
@@ -49,8 +51,9 @@ class BaseGlobalSetting(models.Model):
         blocks = []
         for block_type in self.experiment.block_models.all():
             model = block_type.model_class()
-            instances = model.objects.filter(part_of=self)
-            for inst in instances:
+            ct = ContentType.objects.get_for_model(self) # yes it's one more database hit, but apparently it's cached, but for how long? gotta read more on caching in django
+            instances = model.objects.filter(global_settings_id=self.pk, global_settings_type=ct) # searching by classname was clever and fast, but since my whole design rests on dynamic subclassing and casting, 
+            for inst in instances:                                                                # the classname is not guaranteed to stay the same. Therefore i should either switch to composition over inheritance 
                 blocks.append(inst)
         return blocks
     

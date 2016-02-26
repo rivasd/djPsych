@@ -9,7 +9,7 @@ from djPsych.exceptions import ParticipationRefused
 
 # Create your views here.
 
-def sendSettings(request, *args, **kwargs):
+def sendSettings(request, exp_label):
     
     if not request.is_ajax():
         # return HttpResponseBadRequest() #Uncomment for production
@@ -24,15 +24,14 @@ def sendSettings(request, *args, **kwargs):
         return JsonResponse({'error': _('Missing obligatory URL GET parameters, see the documentation.')})
     
     try:
-        exp_label = kwargs['exp_label']
         exp = Experiment.objects.get(label=exp_label)
     except Experiment.DoesNotExist:
         return JsonResponse({'error': _("There is no experiment by the name: "+exp_label)})
     
     participations = exp.participation_model.objects.filter(subject__user=request.user, experiment=exp)
-    len(participations.filter) # force evaluation of queryset
-    previous = participations.filter(completed=True)
-    on_the_ice = participations.filter(completed=False)
+    len(participations) # force evaluation of queryset
+    previous = participations.filter(complete=True)
+    on_the_ice = participations.filter(complete=False)
     
     try:
         if not hasattr(request.session, 'continue'):
@@ -40,14 +39,14 @@ def sendSettings(request, *args, **kwargs):
             # special checks for brand new participations
             if on_the_ice.count() > 0 and exp.enforce_finish:
                 raise ParticipationRefused(_("This experiment does not allow you to start a new participation while you have an unifinished one."))
-            if on_the_ice.count() >= exp.max_pending:
+            if exp.max_pending is not None and on_the_ice.count() >= exp.max_pending:
                 raise ParticipationRefused(_("You have reached the maximum number of unfinished participations for this experiment. Go finish one instead."))
         else:
             to_be_continued = on_the_ice.get(pk=request.session.get('continue'))
-            if on_the_ice.count() > exp.max_pending:
+            if exp.max_pending is not None and on_the_ice.count() > exp.max_pending:
                 raise ParticipationRefused(_("You have reached the maximum number of unfinished participations for this experiment. Go finish one instead."))
         
-        if previous.count() >= exp.max_repeats: # the completion of this participation would lead to too many participations
+        if exp.max_repeats is not None and previous.count() >= exp.max_repeats: # the completion of this participation would lead to too many participations
             raise ParticipationRefused(_("You have reached the maximum number of participations to this experiment."))
         if previous.count() > 0 and exp.allow_repeats:
             raise ParticipationRefused(_("Sorry! You can only do this experiment once."))

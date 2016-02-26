@@ -13,3 +13,22 @@ class SimCatGlobalSetting(BaseGlobalSetting):
     levels = models.IntegerField(help_text="Starting from the easiest difficulty (all microcomponents are invariants), how many difficulty levels should be allowed? (the final difficulty will be chosen at random among the allowed levels)")
     # Stimuli creation settings
     density = models.IntegerField(help_text="how many micro components should fit along the height and width of the finished stimulus, controls how dense is the stimulus")
+    
+    def toDict(self):
+        super_dict = super(SimCatGlobalSetting, self).toDict()
+        # we should add the categories and microcomponent pairs for our experiment
+        microcomponents = {}
+        prefix = '/static/djexperiment/'+self.experiment.label+'/attributes/'
+        for pair in self.microcomponentpair_set.all():
+            microcomponents[pair.index] = {
+                '0': prefix+pair.first,
+                '1': prefix+pair.second
+            }
+        super_dict['microcomponents'] = microcomponents
+        
+        categories = {}
+        for cat in self.category_set.all():
+            categories[cat.name] = cat.keycode
+        
+        super_dict['categories'] = categories
+        return super_dict
