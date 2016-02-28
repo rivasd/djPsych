@@ -11,6 +11,8 @@ from django.utils.translation import ugettext as _
 from djPsych.exceptions import BackendConfigException
 from djexperiments.models import Experiment
 from djcollect.models import Participation
+from djreceive.models import Run
+from djpay.models import Payment
 from djsend.models import GenericGlobalSetting
 from importlib import import_module
 from django.contrib.contenttypes.models import ContentType
@@ -40,6 +42,18 @@ def loadCustomModels(sender, instance, **kwargs):
     else:
         gen_set_mod = GenericGlobalSetting
     setattr(instance, 'global_settings_model', gen_set_mod)
+    
+    if hasattr(custom_models, 'RUN_MODEL'):
+        run_mod = custom_models.RUN_MODEL
+    else:
+        run_mod = Run
+    setattr(instance, 'run_model', run_mod)
+    
+    if hasattr(custom_models, 'PAYMENT_MODEL'):
+        pay_mod = custom_models.PAYMENT_MODEL
+    else:
+        pay_mod = Payment
+    setattr(instance, 'payment_model', pay_mod)
     
     if hasattr(custom_models, 'EXPERIMENT_PROXY'):
         instance.__class__ = custom_models.EXPERIMENT_PROXY # yes this is sacrilegious, but dammit, I get results

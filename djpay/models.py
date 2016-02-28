@@ -32,6 +32,8 @@ class Payment(models.Model):
     receiver = models.EmailField(null=True)
     status = models.CharField(max_length=16, blank=True)
     
+    
+    
     @classmethod
     def createPayment(cls, participation, amount, receiver=None, curr='CAD', greedy=None):
         """

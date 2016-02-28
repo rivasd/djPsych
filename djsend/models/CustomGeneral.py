@@ -5,6 +5,7 @@ Created on Feb 23, 2016
 '''
 from django.db import models
 from .BasicGeneral import BaseGlobalSetting
+from django.utils.translation import ugettext_lazy as l_
 
 
 class SimCatGlobalSetting(BaseGlobalSetting):
@@ -13,12 +14,13 @@ class SimCatGlobalSetting(BaseGlobalSetting):
     levels = models.IntegerField(help_text="Starting from the easiest difficulty (all microcomponents are invariants), how many difficulty levels should be allowed? (the final difficulty will be chosen at random among the allowed levels)")
     # Stimuli creation settings
     density = models.IntegerField(help_text="how many micro components should fit along the height and width of the finished stimulus, controls how dense is the stimulus")
+    size = models.PositiveIntegerField(help_text=l_("The size of the square stimuli in pixels (length of its sides)"))
     
     def toDict(self):
         super_dict = super(SimCatGlobalSetting, self).toDict()
         # we should add the categories and microcomponent pairs for our experiment
         microcomponents = {}
-        prefix = '/static/djexperiment/'+self.experiment.label+'/attributes/'
+        prefix = '/static/djexperiments/'+self.experiment.label+'/attributes/'
         for pair in self.microcomponentpair_set.all():
             microcomponents[pair.index] = {
                 '0': prefix+pair.first,

@@ -157,7 +157,12 @@ button:hover{
 	display: block;
     height: 310px;
     width:  310px;
-    }
+}
+
+#jspsych-sim-stim{
+	height: 310px;
+    width:  310px;
+}
 	
 #fixationCross{
     height: 200px;
@@ -270,6 +275,7 @@ textarea {
 
 canvas{
 	visibility: visible;
+	display:none;
 }
 
 #jsPsychTarget table{

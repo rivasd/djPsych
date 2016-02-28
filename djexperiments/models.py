@@ -85,7 +85,12 @@ class BaseExperiment(models.Model):
             new_group.permissions.add(exp_perm)
         super(BaseExperiment, self).save()
         
-                
+    def create_participation(self, subject, started, complete=False):
+        
+        part = self.participation_model(subejct=subject, experiment=self, started=started, complete=complete)
+        part.save()
+        return part
+        
 class Experiment(BaseExperiment):
     participations = models.ManyToManyField(Subject, through='djcollect.Participation')
     

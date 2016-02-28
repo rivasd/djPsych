@@ -35,8 +35,8 @@ var djPsych = (function djPsych($){
 	 * @param {String} expLabel		When you created your Experiment object on djPsych, this is the label field. your experiment lives at this URL
 	 * @param {String} staticRoot	corresponds to the STATIC_URL setting in the settings.py of the server. tells us where to fetch static content.
 	 */
-	core.init = function init(expLabel, staticRoot){
-		expLabel = expLabel;
+	core.init = function init(name, staticRoot){
+		expLabel = name;
 		staticUrl = staticRoot;
 		prefix = staticUrl+'djexperiments/'+expLabel+'/';
 	}
@@ -66,12 +66,12 @@ var djPsych = (function djPsych($){
 			method: 'GET',
 			success: function(resp){
 				if(resp.error != undefined){
-					$("<p>ERROR</p><p>"+resp.error+"</p>").dialog({
+					$("<div><p>ERROR</p><p>"+resp.error+"</p></div>").dialog({
 						modal:true
 					});
 				}
 				else{
-					meta = resp.meta;
+					meta = resp;
 					callback(resp)
 				}
 			},
@@ -84,12 +84,13 @@ var djPsych = (function djPsych($){
 	 * Displays a jquery-ui dialog box to indicate the result of the operation with a link towards the profile page.
 	 * @param	{jsPsych-data}	data		An array of objects as returned by a call to jsPsych.data.getData() or like the sole argument to the on_finish callback that can be passed to jsPsych.init()
 	 * @param	{function=}		lastChance	Optional function that can be called on the full payload (e.g. containing both data and meta) just before sending it away. Must do changes in-place, return value will be ignored
+	 * @param	{*=}			local		the lastChance function will be called with this as second parameter if given
 	 */
-	core.save = function save(data, lastChance){
+	core.save = function save(data, lastChance, local){
 		if(meta == "" || meta==undefined){
 			alert("metadata was not set by a previous call to djPsych.request");
 		}
-		var $dialog = $('<p>Sending data...</p><img src="'+staticUrl+'style/ajax-loader.gif"/>');
+		var $dialog = $('<div><p>Sending data...</p><img src="'+staticUrl+'style/ajax-loader.gif" height="10px" width="10px"/></div>');
 		$dialog.dialog({
 			modal:true,
 			closeOnEscape: false,
@@ -107,7 +108,7 @@ var djPsych = (function djPsych($){
 		metadata.previous = meta.previous;
 		payload.meta = metadata;
 		if(typeof lastChance != undefined){
-			lastChance(payload);
+			lastChance(payload, local);
 		}
 		$.ajax({
 			url: '/webexp/'+expLabel+'/save',
@@ -119,12 +120,11 @@ var djPsych = (function djPsych($){
 			},
 			dataType: 'json',
 			error: function(jqHXR, status, thrown){
-				$dialog.html("server could not be reached at: /webexp/"+expLabel+'/save\n\nError: '+status+' thrown');
+				$dialog.html("server could not be reached at: /webexp/"+expLabel+'/save\n\nError: '+status+' '+thrown);
 			},
 			success: function(resp){
-				$dialog.html("<p>"+resp.success+'</p><p><a href="/webexp">"'+"Back to homepage"+'</a>');
+				$dialog.html("<p>"+resp.success+'</p><p><a href="/webexp">'+"Back to homepage"+'</a>');
 			}
-			
 		});
 	}
 	

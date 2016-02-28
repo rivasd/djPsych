@@ -326,7 +326,7 @@ function ExpLauncher(opts, canvas){
 					//draw the stimuli!
 					module.replaceVectorsWithImage(vectorTimeline, atEach);
 					block.timeline = vectorTimeline;
-					if(opts.reuseStim && block.master){
+					if(opts.reuseStim){
 						stimuli = vectorTimeline;
 					}
 				}

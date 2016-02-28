@@ -18,3 +18,6 @@ class BackendConfigException(Exception):
 
 class ParticipationRefused(Exception):
     pass
+
+class InvalidData(Exception):
+    pass

@@ -32,20 +32,9 @@ $(function () {
         
     }
     
-    function sendAway(data, callback){
-    	$.ajax({
-    		url: 'save',
-    		data:{
-    			meta: JSON.stringify(data.meta),
-    			data: JSON.stringify(data.data)
-    		},
-    		dataType: 'json',
-    		methos: 'POST',
-    		type: 'POST',
-    		success: function(response){
-    			if(callback) callback(response);
-    		}
-    	})
+    function augment(data, exp){
+    	data.parameters = exp.parameters;
+    	data.complete = true;
     }
     
     function run(settings){
@@ -61,32 +50,24 @@ $(function () {
 			var exp = launcher.createStandardExperiment(settings, increment, {reuseStim: true, saveDescription: true});
     		exp.meta.startTime = new Date().toISOString();
 			$bar.progressbar("destroy");
+			$("#stimCanvas").remove();
     		//HERE IS WHERE THE EXPERIMENT BEGINS
     		jsPsych.init({
     			display_element: $("#jsPsychTarget"),
     			timeline: exp.timeline,
     			on_finish: function(data){
     				jsPsych.data.displayData("json");
-    				sendAway({meta: exp.meta, data: data}, postSave);
+    				djPsych.save(data, augment, exp.meta);
     			}
     		})
 		})
 	}
     
-    
-    function postSave(response){
-    	if(response['error']){
-    		alert(response.error);
-    	}
-    	else if(response['success']){
-    		alert(response.success);
-    	}
-    }
-    
     $("#start").click(function (e) {
         if (document.getElementById("accept").checked) {
             var top = document.getElementById("top").offsetTop;
             window.scrollTo(0, top);
+            $("#consent").remove();
             var theCanvas = document.getElementById("stimCanvas");
             letsGo("instructionsUp", "#jsPsychTarget", theCanvas);
             $('#start').remove();
@@ -94,7 +75,6 @@ $(function () {
         else {
             alert("veuillez cocher la case J'accepte / Please check the box I Accept");
         }
-
     });
 
     $("span.expand").html("[+] ");

@@ -8,6 +8,8 @@ from djexperiments.models import Experiment
 from djPsych.exceptions import ParticipationRefused
 import random
 import string
+import datetime
+import json
 
 # Create your views here.
 
@@ -68,5 +70,11 @@ def sendSettings(request, exp_label):
     # generate 8 character random sequence to identify this request for an experiment. Make the session remember it, too!
     request.session['exp_id'] = final_settings['exp_id'] = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(16))
     request.session['current_exp'] = final_settings['current_exp'] = exp_label
-    
+    request.session['start_time'] = datetime.datetime.now()
+    save_dict= {}
+    # save a mapping of 'type' attribute to content type id so that later we know with which model to save data-objects of each type
+    for block in final_settings.timeline:
+        save_dict[block.type] = block.save_with_id
+    request.session['data_mapping'] = json.dumps(save_dict)
+    # Good luck :)
     return JsonResponse(final_settings)

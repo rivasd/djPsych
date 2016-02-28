@@ -16,10 +16,12 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from djmanager.views import index
+import allauth.urls
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^webexp/', include('djmanager.urls', namespace='webexp')),
     url(r'^markdown/', include( 'django_markdown.urls')),
+    url(r'^accounts/', include(allauth.urls)),
     url(r'^$', index, name='index'),
 ]
