@@ -28,37 +28,7 @@ $(function () {
         var before = $("#start").html();
         $("#start").html('<img src="/static/style/ajax-loader.gif"/>');
        
-        $.ajax('load', {
-        	dataType: "json", //because that is what we expect from our server
-        	data: {type: 'test'},
-        	error: function(){
-        		alert("someone tell the webmaster his server is broken...");
-        	},
-        	success: function(settings){
-        		var launcher = ExpLauncher(settings, document.getElementById("stimCanvas")); //initialize a launcher and drawer 
-        		var $bar = $("#progressBar");
-        		$bar.progressbar({
-        			max : settings.timeline[0].length
-        		});
-        		function increment(idx, total){
-        			$bar.progressbar("value", idx);
-        		};
-        		launcher.loadMicroComponents(settings, function(){
-        			var exp = launcher.createStandardExperiment(settings, increment, {reuseStim: true, saveDescription: true});
-            		exp.meta.startTime = new Date().toISOString();
-        			$bar.progressbar("destroy");
-            		//HERE IS WHERE THE EXPERIMENT BEGINS
-            		jsPsych.init({
-            			display_element: $("#jsPsychTarget"),
-            			timeline: exp.timeline,
-            			on_finish: function(data){
-            				jsPsych.data.displayData("json");
-            				sendAway({meta: exp.meta, data: data}, postSave);
-            			}
-            		})
-        		})
-        	}
-        });
+        djPsych.request('test', run);
         
     }
     
@@ -77,6 +47,31 @@ $(function () {
     		}
     	})
     }
+    
+    function run(settings){
+		var launcher = ExpLauncher(settings, document.getElementById("stimCanvas")); //initialize a launcher and drawer 
+		var $bar = $("#progressBar");
+		$bar.progressbar({
+			max : settings.timeline[0].length
+		});
+		function increment(idx, total){
+			$bar.progressbar("value", idx);
+		};
+		launcher.loadMicroComponents(settings, function(){
+			var exp = launcher.createStandardExperiment(settings, increment, {reuseStim: true, saveDescription: true});
+    		exp.meta.startTime = new Date().toISOString();
+			$bar.progressbar("destroy");
+    		//HERE IS WHERE THE EXPERIMENT BEGINS
+    		jsPsych.init({
+    			display_element: $("#jsPsychTarget"),
+    			timeline: exp.timeline,
+    			on_finish: function(data){
+    				jsPsych.data.displayData("json");
+    				sendAway({meta: exp.meta, data: data}, postSave);
+    			}
+    		})
+		})
+	}
     
     
     function postSave(response){

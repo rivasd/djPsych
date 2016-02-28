@@ -70,3 +70,4 @@ target/
 *.sqlite3
 djPsych/secrets.py
 /static/
+/.tern-project

@@ -3,9 +3,12 @@
 {% load i18n %}
 
 {% block title %}{{ exp.verbose_name }}{% endblock %}
-
 {% block head %}
 {{ block.super }}
+<script src="{% static "djPsych.js"%}"></script>
+<script>
+djPsych.init("{{ exp.label }}", "{{ static_url }}")
+</script>
 {% for plugin in plugins %}
 {% with script="jspsych-plugins/"|add:plugin%}
 <script src="{% static script %}"></script>
