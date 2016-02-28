@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load static from staticfiles %}
 {% comment %}  
 The home page for our web experiment platform, ready to present and link to multiple experiments!
 This template expects a particular context variable: manips
@@ -9,7 +9,9 @@ manips	an array of arrays, each top level array representing an experiment as se
 		this will obviously be set by the view rendering this template
 		
 {% endcomment %}
+{% block head %}
 
+{% endblock %}
 
 {% block content %}
 <h1>Nos projets de recherches sur le Web</h1>

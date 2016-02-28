@@ -5,6 +5,7 @@ from djPsych.exceptions import SettingException, ParticipationRefused
 from djuser.models import Subject
 from jsonfield import JSONField
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth.models import Group, Permission
 # Create your models here.
 
 class BaseExperiment(models.Model):
@@ -31,7 +32,7 @@ class BaseExperiment(models.Model):
     
     settings_model = models.ForeignKey(ContentType)
     block_models = models.ManyToManyField(ContentType, related_name="experiments")
-    research_group = models.OneToOneField(null=True, blank=True, editable=False)
+    research_group = models.OneToOneField(Group, null=True, blank=True, editable=False)
     
     ParticipationRefused = ParticipationRefused
     
@@ -72,6 +73,17 @@ class BaseExperiment(models.Model):
         
         return self.settings_model.get_object_for_this_type(name=version, experiment=self)
         
+    def save(self, *args, **kwargs):
+        
+        if self.pk is None:
+            new_group = Group(name=self.label+"_researchers")
+            self.research_group = new_group
+            new_group.save()
+            exp_content_type = ContentType.objects.get_for_model(Experiment)
+            exp_perm = Permission.objects.get(content_type=exp_content_type, codename="change_experiment")
+            
+            new_group.permissions.add(exp_perm)
+        super(BaseExperiment, self).save()
         
                 
 class Experiment(BaseExperiment):

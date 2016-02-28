@@ -45,15 +45,6 @@ def loadCustomModels(sender, instance, **kwargs):
         instance.__class__ = custom_models.EXPERIMENT_PROXY # yes this is sacrilegious, but dammit, I get results
     # TODO: set the other class attributes!
     
-@receiver(post_save, sender=Experiment)
-def createGroup(sender, instance, created, **kwargs):
-    if created:
-        new_group = Group(name=instance.label+"_researchers")
-        instance.research_group = new_group
-        new_group.save()
-        exp_content_type = ContentType.objects.get_for_model(Experiment)
-        exp_perm = Permission.objects.get(content_type=exp_content_type, codename="change_experiment")
-        exp_perm.save()
-        new_group.permissions.add(exp_perm)
+
         
     

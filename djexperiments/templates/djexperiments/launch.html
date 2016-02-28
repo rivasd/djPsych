@@ -1,0 +1,58 @@
+{% extends 'homepage.html' %}
+{% load static from staticfiles %}
+{% load i18n %}
+
+{% block title %}{{ exp.verbose_name }}{% endblock %}
+
+{% block head %}
+{{ block.super }}
+{% for plugin in plugins %}
+{% with script="jspsych-plugins/"|add:plugin%}
+<script src="{% static script %}"></script>
+{% endwith %}
+{% endfor %}
+{% for script in scripts %}
+	{% with module="djexperiments/"|add:exp.label|add:"/"|add:script %}
+	<script src="{% static module %}"></script>
+	{% endwith %}
+{% endfor %}
+{% endblock %}
+
+
+{% block content %}
+{% include consent %}
+<form name="consent" id="consent">
+    <fieldset>
+    <legend>{% trans "Consent" %}</legend>
+        <p>{% trans "I Hereby: " %} </p>
+        <ul>
+            <li>
+            {% trans "Recognize having read the present information and consent document;" %}</li>
+            <li>
+            {% trans "Voluntarily consent to participate in this experiment;" %}
+            </li>
+            <li>
+            {% trans "Understand the objectives of the project and what my participation entails;" %}
+            </li>
+            <li>
+            {% trans "Certify having been given a sufficient amount of time to decide of my participation;" %}
+            </li>
+            <li>
+            {% trans "Certify that the project coordinator (or his/her delegate) has answered my questions to my satisfaction; and" %}
+            </li>
+            <li>
+            {% trans "I understand that my participation to this study is completely voluntary and that I can retire from the experiment at any time, without any form of penalty or justification to provide." %}
+            </li>
+        </ul>
+        <div id="checkbox"><input type="checkbox" name="accept" id="accept" value="yes">{% trans "Accept" %}</input></div>
+    </fieldset>
+</form>
+<div id="retroaction"></div>
+<div id="jsPsychTarget">
+	<div id="progressBar"></div>
+	<canvas id="stimCanvas"></canvas>
+</div>
+<div id="instructionsDown">
+	<a href="#top" class="button" id="start">{% trans "Start the experiment!" %}</a>
+</div>
+{% endblock %}
