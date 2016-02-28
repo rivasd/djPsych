@@ -15,12 +15,12 @@ class BaseStimuli(models.Model):
     class Meta:
         abstract=True
         
-    name = models.CharField(max_length=26, help_text=l_("A simple name for this particular stimuli pair"))
-    stimulus = models.CharField(max_length=256, help_text=l_("The path to your stimuli file inside the static files folder we provided. Or it can be a short HTML string"))
-    
     block_type = models.ForeignKey(ContentType)
     block_id = models.PositiveIntegerField()
     block_setting = GenericForeignKey('block_type', 'block_id')
+    name = models.CharField(max_length=26, help_text=l_("A simple name for this particular stimuli pair"))
+    index = models.PositiveSmallIntegerField(blank=True, null=True, help_text=l_("Youn can give a number to indicate the order among the pairs that point to the same block. They will be given in asceding order."))
+    stimulus = models.CharField(max_length=256, help_text=l_("The path to your stimuli file inside the static files folder we provided. Or it can be a short HTML string"))
     
     def to_Dict(self):
         dct = {}

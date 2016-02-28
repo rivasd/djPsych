@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'djcollect',
     'djreceive',
     'djsend',
+    'djadmin',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -54,6 +55,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.paypal',
     'debug_toolbar',
+    'django_markdown',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -146,6 +148,7 @@ LANGUAGES = [
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 SITE_ID = 1
 
 #django-allauth settings
@@ -160,3 +163,6 @@ AUTHENTICATION_BACKENDS = (
 
 # change to live when we go live!
 PAYPAL_MODE = 'sandbox'
+
+# Markdown
+MARKDOWN_EDITOR_SKIN = 'simple'

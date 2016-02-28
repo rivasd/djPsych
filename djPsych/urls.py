@@ -20,5 +20,6 @@ from djmanager.views import index
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^webexp/', include('djmanager.urls', namespace='webexp')),
+    url(r'^markdown/', include( 'django_markdown.urls')),
     url(r'^$', index, name='index'),
 ]

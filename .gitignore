@@ -69,3 +69,4 @@ target/
 /.pydevproject
 *.sqlite3
 djPsych/secrets.py
+/static/

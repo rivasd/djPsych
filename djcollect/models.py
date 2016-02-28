@@ -3,6 +3,7 @@ from django.conf import settings
 from djexperiments.models import Experiment
 from djuser.models import Subject
 from jsonfield import JSONField
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -21,7 +22,7 @@ class Participation(models.Model):
     # browser = models.CharField(max_length=64)
       
     #this is where the magic happens: store options in json format here so that experimental settings stay the same across sessions
-    parameters = JSONField()
+    parameters = JSONField(null=True)
 
 class Researcher(models.Model):
     """
@@ -30,6 +31,6 @@ class Researcher(models.Model):
     It does look like a Django permission, but first, I have no idea how to use them, and also, it's nice to store Researcher data like institution, degree, field, etc.
     """
     
-    user = models.OneToOneField(settings.AUTH_USER_MODEL)
+    user = models.OneToOneField(User)
     institution = models.CharField(max_length=32, blank=True, null=True)
     researchs = models.ManyToManyField(Experiment, blank=True)
