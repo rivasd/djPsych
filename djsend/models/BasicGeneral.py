@@ -10,6 +10,8 @@ from jsonfield import JSONField
 from .BasicBlock import BaseSettingBlock
 from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.models import ContentType
+from pip._vendor.pyparsing import dictOf
+import json
 # Create your models here.
 
 class BaseGlobalSetting(models.Model):
@@ -35,6 +37,11 @@ class BaseGlobalSetting(models.Model):
         dictionary = dict(self.__dict__)
         del dictionary['_state']
         del dictionary['_experiment_cache']
+        del dictionary['experiment_id']
+        
+        if self.extra_parameters is not None:
+            for key, value in json.loads(self.extra_params).iteritems():
+                dictionary[key] = value
         return dictionary
     
     def __str__(self):

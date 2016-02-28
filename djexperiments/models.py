@@ -31,6 +31,7 @@ class BaseExperiment(models.Model):
     
     settings_model = models.ForeignKey(ContentType)
     block_models = models.ManyToManyField(ContentType, related_name="experiments")
+    research_group = models.OneToOneField(null=True, blank=True, editable=False)
     
     ParticipationRefused = ParticipationRefused
     

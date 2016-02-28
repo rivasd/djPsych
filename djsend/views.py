@@ -6,6 +6,8 @@ from django.http import HttpResponseBadRequest, JsonResponse
 from django.utils.translation import ugettext as _
 from djexperiments.models import Experiment
 from djPsych.exceptions import ParticipationRefused
+import random
+import string
 
 # Create your views here.
 
@@ -52,10 +54,19 @@ def sendSettings(request, exp_label):
             raise ParticipationRefused(_("Sorry! You can only do this experiment once."))
     except ParticipationRefused as e:
         return JsonResponse({'error': str(e)})
+    try:
+        global_settings_obj = exp.get_global_settings(exp_version, waiting=on_the_ice, requested=to_be_continued)
+    except Exception as e:
+        return JsonResponse({'error': str(e)})
     
-    global_settings_obj = exp.get_global_settings(exp_version, waiting=on_the_ice, requested=to_be_continued)
     global_settings_obj.build_timeline(global_settings_obj.get_all_blocks(), request)
-    return JsonResponse(global_settings_obj.toDict())
+    final_settings = global_settings_obj.toDict()
+    # add the subject_id to the response
+    final_settings['subject'] = request.user.subject.id
+    # the primary key of the participation to continue if this is a request to continue a previous participation. False otherwise
+    final_settings['previous']= to_be_continued if to_be_continued is not None else False
+    # generate 8 character random sequence to identify this request for an experiment. Make the session remember it, too!
+    request.session['exp_id'] = final_settings['exp_id'] = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(16))
+    request.session['current_exp'] = final_settings['current_exp'] = exp_label
     
-    
-    pass
+    return JsonResponse(final_settings)
