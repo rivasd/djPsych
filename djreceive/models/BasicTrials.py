@@ -8,7 +8,7 @@ from django.db import models
 from .runs import Run
 from jsonfield import JSONField
 import copy
-import json
+
 
 class BaseTrial(models.Model):
     """
@@ -59,10 +59,20 @@ class BaseTrial(models.Model):
         for rebel_field in extra_fields:
             extra_data[rebel_field] = data_dict.pop(rebel_field)
         
-        data_dict['extra_data'] = json.dumps(extra_data)
+        data_dict['extra_data'] = extra_data
         # data_dict should be ok now
         return cls(**data_dict)
     
+    def get_full_field_names(self):
+        headers=['subject_id']
+        for field in self._meta.get_fields():
+            if field.concrete and not field.auto_created and not field.is_relation and not field.name == 'extra_data':
+                headers.append(field.name)
+        if self.extra_data is not None:
+            for key in self.extra_data:
+                headers.append(key)
+        return set(headers)
+            
     def get_subject_id(self):
         return self.run.participation.subject.id
     
@@ -71,9 +81,12 @@ class BaseTrial(models.Model):
         if self.extra_data is not None:
             my_copy = copy.copy(self.extra_data) # shallow copy on purpose, you are not supposed to store nested objects in the extra_data !
             del dictionary['extra_data']
-            for key, val in my_copy.iter():
+            for key, val in my_copy.items():
                 dictionary[key]=val
         dictionary['subject_id'] = self.get_subject_id()
+        del dictionary['_state']
+        del dictionary['run_id']
+        del dictionary['id']
         return dictionary
     
 class CategorizationTrial(BaseTrial):

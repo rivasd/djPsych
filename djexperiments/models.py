@@ -33,8 +33,10 @@ class BaseExperiment(models.Model):
     
     settings_model = models.ForeignKey(ContentType)
     block_models = models.ManyToManyField(ContentType, related_name="experiments")
-    research_group = models.OneToOneField(Group, null=True, blank=True, editable=False)
+    research_group = models.OneToOneField(Group, null=True, blank=True)
     
+    paypal_client_id=models.CharField(max_length=128, null=True, blank=True, help_text=l_("If you plan on paying your subjects via Paypal, put the client id given to you when you registered your developer account. See: https://developer.paypal.com/developer/applications/"))
+    paypal_secret = models.CharField(max_length=128, null=True, blank=True, help_text=l_("The secret key given to you by PayPal"))
     ParticipationRefused = ParticipationRefused
     
     def __str__(self):
@@ -78,12 +80,13 @@ class BaseExperiment(models.Model):
         
         if self.pk is None:
             new_group = Group(name=self.label+"_researchers")
-            self.research_group = new_group
             new_group.save()
+            self.research_group = new_group
             exp_content_type = ContentType.objects.get_for_model(Experiment)
             exp_perm = Permission.objects.get(content_type=exp_content_type, codename="change_experiment")
             
             new_group.permissions.add(exp_perm)
+            new_group.save()
         super(BaseExperiment, self).save()
         
     def create_participation(self, subject, started, complete=False):

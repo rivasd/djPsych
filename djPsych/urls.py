@@ -19,6 +19,7 @@ from djmanager.views import index
 import allauth.urls
 
 urlpatterns = [
+    url(r'^grappelli/', include('grappelli.urls')), # grappelli URLS
     url(r'^admin/', admin.site.urls),
     url(r'^webexp/', include('djmanager.urls', namespace='webexp')),
     url(r'^markdown/', include( 'django_markdown.urls')),

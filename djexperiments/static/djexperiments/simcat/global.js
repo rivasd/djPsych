@@ -52,6 +52,9 @@ $(function () {
 			$bar.progressbar("destroy");
 			$("#stimCanvas").remove();
     		//HERE IS WHERE THE EXPERIMENT BEGINS
+			// Test code to test for unexpected
+			// jsPsych.data.addProperties({dummy: 'lol'}) yay my code works for arbitrary extra data!
+			
     		jsPsych.init({
     			display_element: $("#jsPsychTarget"),
     			timeline: exp.timeline,

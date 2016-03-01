@@ -1,6 +1,6 @@
 from django.db import models
 from django.conf import settings
-from allauth.socialaccount.models import SocialApp
+from django.utils.translation import ugettext as _
 from djPsych.exceptions import PayoutException
 from djcollect.models import Participation
 import paypalrestsdk
@@ -92,10 +92,12 @@ class Payment(models.Model):
         
         if email is None:
             email = self.receiver
-            
-        credentials = SocialApp.objects.get(provider='paypal') #TODO maybe add capabilities to use multiple PayPal accounts? though they would not be private to admins...
-        client_id = credentials.client_id
-        secret = credentials.secret
+        
+        client_id = self.participation.experiment.paypal_client_id
+        secret = self.participation.experiment.paypal_secret
+        if client_id is None or secret is None:
+            raise PayoutException(_("The researchers of this experiment have not configured their Paypal credentials to be able to send money"))
+        
         paypalrestsdk.configure({
             'mode': settings.PAYPAL_MODE,
             'client_id': client_id,
@@ -105,7 +107,7 @@ class Payment(models.Model):
         # attempt payout
         payout = paypalrestsdk.Payout({
             "sender_batch_header": {
-                "sender_batch_id": "batch_"+str(self.pk),
+                "sender_batch_id": "batch_"+str(self.pk+20),
                 "email_subject": _("You have a payment from the Cognition Communication Lab at UQAM"),
             },
             "items": [
@@ -116,8 +118,8 @@ class Payment(models.Model):
                         "currency": self.currency,
                     },
                     "receiver": email,
-                    "note": _("Thank you!"),
-                    "sender_item_id": "item_"+str(self.pk)
+                    "note": _("Thank you for your participation in the experiment: ")+self.participation.experiment.verbose_name,
+                    "sender_item_id": "item_"+str(self.pk+20)
                 }
             ]
         })

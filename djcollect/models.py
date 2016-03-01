@@ -36,7 +36,7 @@ class Participation(models.Model):
         run.save()
         return run
         
-    def createPayment(self, amount, receiver=None, curr='CAD', greedy=None):
+    def create_payment(self, trials=None, receiver=None, curr='CAD', greedy=None):
         """
         Creates a payment linked to this participation. Default currency canadian dollars
         raises exceptions on failure
@@ -47,13 +47,36 @@ class Participation(models.Model):
         if receiver is None:
             receiver = self.subject.user.email
 
-        payment = self.experiment.payment_model(participation=self, amount=amount, receiver=receiver)
+        payment = self.experiment.payment_model(participation=self, amount=self.calculate_payment(trials), receiver=receiver)
         payment.save()
         return payment
     
-    def calculate_payment(self, trials):
+    def calculate_payment(self, trials=None):
+        if trials is None:
+            trials = self.get_all_trials()
+        
         return 5.00
     
+    def get_all_trials(self):
+        trial_list = []
+        for run in self.run_set.all():
+            for trial in run.get_trials():
+                trial_list.append(trial)
+        return trial_list
+    
+    def get_headers(self):
+        header_set = set()
+        for trial in self.get_all_trials():
+            header_set = header_set.union(trial.get_full_field_names())
+        return list(header_set)
+    
+    def get_data_as_dict_array(self):
+        dict_array=[]
+        for trial in self.get_all_trials():
+            dict_array.append(trial.toDict())
+            
+        return dict_array
+        
 class Researcher(models.Model):
     """
     An extension on the Django user model that represents users who are researchers and allowed to get data.

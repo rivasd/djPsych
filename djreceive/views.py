@@ -6,7 +6,7 @@ from django.shortcuts import render
 from django.http import Http404
 from django.http.response import JsonResponse, HttpResponseBadRequest
 from django.utils.translation import ugettext as _
-from djPsych.exceptions import InvalidData
+from djPsych.exceptions import InvalidData, PayoutException
 from djpay.models import Payment
 import json
 from djexperiments.models import Experiment
@@ -63,7 +63,8 @@ def save(request, exp_label):
     sortings = sort_trials(data)
     for trial_type, trial_batch in sortings.items():
         try:
-            trial_model = ContentType.objects.get(pk=mapping[trial_type]).model_class()
+            trial_content_type = ContentType.objects.get(pk=mapping[trial_type])
+            trial_model = trial_content_type.model_class()
         except:
             return JsonResponse({'error': _('We could not handle your trial of type: ')+trial_type})
         instances=[]
@@ -77,14 +78,28 @@ def save(request, exp_label):
                 del trial['run']
                 return JsonResponse({'error':_('Could not create a trial of type ')+ trial_type+ _(' with this data: ')+ json.dumps(trial) + '\n\n'+ str(e)})
             instances.append(instance)
-            
+        
+        new_run.used_trials.add(trial_content_type)
         trial_model.objects.bulk_create(instances)
     
     # By this time the saving should have been done, payments?
-    payment_message="\n"
-    if exp.compensated and participation.complete:
-        participation.create_payment(data)
+    message="\n"
+    if exp.compensated and participation.complete and not request.user.groups.filter(name=exp.research_group.name).exists(): # prevents researchers from being paid for doing their own experiment
+        try:
+            payment = participation.create_payment(data)
+            message = _("You have earned a payment of %f.2 %s. Go to your profile page to claim it!") % (round(payment.amount, 2), payment.currency)
+        except PayoutException as e:
+            message= _("However payment will not be issued because of the following reason: ")+str(e)
     
+    # dont forget to save stuff
+    if finished:
+        participation.complete = finished
+        participation.finished = datetime.datetime.now()
+    participation.save()
+    new_run.save()
+    
+    request.session['lastCompleted'] = exp.label # just so that we can give a message on the next visit
+    del request.session['exp_id']       # Puts this use back in a state where he is not waiting for data
+    del request.session['current_exp']  #   
     # just to test
-    return JsonResponse({'success':_("you reached me!")})
-    pass
+    return JsonResponse({'success':_("Your data has been recorded successfully, thank you very much!\n")+message})
