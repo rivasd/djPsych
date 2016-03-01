@@ -57,7 +57,7 @@ $(function () {
     			timeline: exp.timeline,
     			on_finish: function(data){
     				jsPsych.data.displayData("json");
-    				djPsych.save(data, augment, exp.meta);
+    				djPsych.save(data, true);
     			}
     		})
 		})

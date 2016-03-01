@@ -10,6 +10,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelatio
 from jsonfield import JSONField
 from .Instructions import Instruction
 import json
+from gfklookupwidget.fields import GfkLookupField
 
 class BaseSettingBlock(models.Model):
     
@@ -18,7 +19,7 @@ class BaseSettingBlock(models.Model):
         index_together = ['global_settings_type', 'global_settings_id'] # indexed because block settings will be frequently fetched by these fields, and rarely created.
     
     global_settings_type = models.ForeignKey(ContentType, help_text=l_("What kind of global configuration is this object part of?"))
-    global_settings_id = models.PositiveIntegerField(help_text=l_("Which configuration object among your configs of the above type is this block attached to?"))
+    global_settings_id = GfkLookupField('global_settings_type', help_text=l_("Which configuration object among your configs of the above type is this block attached to?"))
     part_of = GenericForeignKey('global_settings_type', 'global_settings_id')
     
     

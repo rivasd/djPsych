@@ -6,6 +6,7 @@ from djuser.models import Subject
 from jsonfield import JSONField
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import Group, Permission
+
 # Create your models here.
 
 class BaseExperiment(models.Model):
@@ -87,7 +88,7 @@ class BaseExperiment(models.Model):
         
     def create_participation(self, subject, started, complete=False):
         
-        part = self.participation_model(subejct=subject, experiment=self, started=started, complete=complete)
+        part = self.participation_model(subject=subject, experiment=self, started=started, complete=complete)
         part.save()
         return part
         

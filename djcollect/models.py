@@ -29,8 +29,8 @@ class Participation(models.Model):
         
         run = self.experiment.run_model(participation=self, start_time=start, end_time=end)
         if browserdict is not None:
-            browser = browserdict.name
-            version = browserdict.version
+            browser = browserdict['name']
+            version = browserdict['version']
             run.browser = browser
             run.browser_version = version
         run.save()

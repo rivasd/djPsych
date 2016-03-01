@@ -17,3 +17,10 @@ class Run(models.Model):
     end_time = models.DateTimeField()
     browser = models.CharField(max_length=16, editable=False, null=True)
     browser_version = models.CharField(max_length=8, editable=False, null=True)
+    
+    def pre_process_data(self, data_object, request):
+        """
+        Override this method to make any adjustments to the raw data that is about to be turned to a Trial object attached to this Run
+        """
+        
+        return data_object

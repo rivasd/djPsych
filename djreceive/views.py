@@ -23,7 +23,7 @@ def save(request, exp_label):
     if not request.user.is_authenticated():
         return JsonResponse({'error': _("You must be logged in to submit data. Refused.")})
     
-    if not hasattr(request.session, 'exp_id') or not hasattr(request.session, 'current_exp'):
+    if not 'exp_id' in request.session or not 'current_exp' in request.session:
         return JsonResponse({'error':_("Data received unexpectedly. Refused.")})
     
     try:
@@ -31,13 +31,13 @@ def save(request, exp_label):
         data = json.loads(request.POST['data'])
         subject_id = meta['subject']
         previous = meta['previous']
-        finished = meta['complete']
+        finished = meta['completed']
         setting_name = meta['name']
         browser_info = meta['browser']
         code = meta['exp_id']
-        exp_name = meta['current_Exp']
-    except AttributeError:
-        return JsonResponse({'error':_("Invalid data format or missing obligatory metadata attribtues. Refused.")})
+        exp_name = meta['current_exp']
+    except KeyError:
+        return JsonResponse({'error':_("Invalid data format or missing obligatory metadata attributes. Refused.")})
     except ValueError:
         return JsonResponse({'error':_("Data was malformed, expecting two POST variable, each a correct JSON string. Refused")})
     
@@ -48,7 +48,7 @@ def save(request, exp_label):
     
     exp = Experiment.objects.get(label=exp_label)
     if previous == False:
-        participation = exp.create_participation(subject=request.user.subject, experiment=exp, created=request.session['start_time'], complete=finished)
+        participation = exp.create_participation(subject=request.user.subject, started=request.session['start_time'], complete=finished)
     else:
         participation = exp.participation_model.objects.get(pk=previous)
     
@@ -56,26 +56,29 @@ def save(request, exp_label):
     new_run = participation.create_run(request.session['start_time'], datetime.datetime.now(), browser_info) 
     
     try:
-        mapping = request.session['data_mapping']
+        mapping = json.loads(request.session['data_mapping'])
     except AttributeError:
         return JsonResponse({'error':_("A mapping between types and trial models was not specified before the experiment was sent. Cannot save.")})
     
     sortings = sort_trials(data)
     for trial_type, trial_batch in sortings.items():
         try:
-            trial_model = ContentType.objects.get(pk=mapping[trial_type])
+            trial_model = ContentType.objects.get(pk=mapping[trial_type]).model_class()
         except:
             return JsonResponse({'error': _('We could not handle your trial of type: ')+trial_type})
         instances=[]
         for trial in trial_batch:
             trial['run'] = new_run
+            trial = new_run.pre_process_data(trial, request) # hook to preprocess the data
             try:
-                instance = trial_model(**trial) #TODO: write the post_init signal to handle unexpected arguments
-            except:
-                return JsonResponse({'error':_('Could not create a trial of type ')+ trial_type+ _(' with this data: ')+ json.dumps(trial)})
+                instance = trial_model.create_from_raw_data(trial) #DONE: write the post_init signal to handle unexpected arguments
+            except Exception as e:
+                raise e  # for debuggin purposes
+                del trial['run']
+                return JsonResponse({'error':_('Could not create a trial of type ')+ trial_type+ _(' with this data: ')+ json.dumps(trial) + '\n\n'+ str(e)})
             instances.append(instance)
             
-        trial_type.objects.bulk_create(instances)
+        trial_model.objects.bulk_create(instances)
     
     # By this time the saving should have been done, payments?
     payment_message="\n"

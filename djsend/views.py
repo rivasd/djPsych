@@ -52,7 +52,7 @@ def sendSettings(request, exp_label):
         
         if exp.max_repeats is not None and previous.count() >= exp.max_repeats: # the completion of this participation would lead to too many participations
             raise ParticipationRefused(_("You have reached the maximum number of participations to this experiment."))
-        if previous.count() > 0 and exp.allow_repeats:
+        if previous.count() > 0 and not exp.allow_repeats:
             raise ParticipationRefused(_("Sorry! You can only do this experiment once."))
     except ParticipationRefused as e:
         return JsonResponse({'error': str(e)})
@@ -70,11 +70,11 @@ def sendSettings(request, exp_label):
     # generate 8 character random sequence to identify this request for an experiment. Make the session remember it, too!
     request.session['exp_id'] = final_settings['exp_id'] = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(16))
     request.session['current_exp'] = final_settings['current_exp'] = exp_label
-    request.session['start_time'] = datetime.datetime.now()
+    request.session['start_time'] = str(datetime.datetime.now())
     save_dict= {}
     # save a mapping of 'type' attribute to content type id so that later we know with which model to save data-objects of each type
-    for block in final_settings.timeline:
-        save_dict[block.type] = block.save_with_id
+    for block in final_settings['timeline']:
+        save_dict[block['type']] = block['save_with_id']
     request.session['data_mapping'] = json.dumps(save_dict)
     # Good luck :)
     return JsonResponse(final_settings)

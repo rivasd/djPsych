@@ -86,7 +86,7 @@ var djPsych = (function djPsych($){
 	 * @param	{function=}		lastChance	Optional function that can be called on the full payload (e.g. containing both data and meta) just before sending it away. Must do changes in-place, return value will be ignored
 	 * @param	{*=}			local		the lastChance function will be called with this as second parameter if given
 	 */
-	core.save = function save(data, lastChance, local){
+	core.save = function save(data, complete, lastChance, local){
 		if(meta == "" || meta==undefined){
 			alert("metadata was not set by a previous call to djPsych.request");
 		}
@@ -106,8 +106,9 @@ var djPsych = (function djPsych($){
 		metadata.current_exp = meta.current_exp;
 		metadata.exp_id = meta.exp_id;
 		metadata.previous = meta.previous;
+		metadata.completed = complete;
 		payload.meta = metadata;
-		if(typeof lastChance != undefined){
+		if(typeof lastChance != "undefined"){
 			lastChance(payload, local);
 		}
 		$.ajax({
