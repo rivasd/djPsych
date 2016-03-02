@@ -3,7 +3,7 @@ from django.conf import settings
 from django.contrib.auth.models import User
 
 # Create your models here.
-
+# TODO: check violation of single email adress requirement
 class BaseSubject(models.Model):
     """
     Abstract base model for a registered human subject with it's full profile data
@@ -16,7 +16,7 @@ class BaseSubject(models.Model):
     
     class Meta:
         abstract = True
-        
+    
     #optional: birthdate of the subject, to calculate age
     birthday = models.DateField(blank=True, null=True)
     
@@ -43,8 +43,6 @@ class BaseSubject(models.Model):
     def __str__(self):
         return self.user.username
     
-class Subject(BaseSubject):
-    pass
 
 class profileEntry(model.models):
     pass
