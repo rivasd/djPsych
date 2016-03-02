@@ -37,7 +37,6 @@ class Instruction(models.Model):
         
         dictionary = {
             'type': 'instructions',
-            'is_html': self.is_html,
             'text': self.text,
         }
         return dictionary

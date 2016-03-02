@@ -1,0 +1,26 @@
+{% load i18n %}
+
+<form id='exp-probe' method='post'>
+	<fieldset>
+	    <legend>{% trans "Progression questionnaire" %}</legend>
+	    <p>{% trans "How hard do you find the task up until now?" %} </p>
+		<input id='very-easy' name='difficulty' value='1' type='radio' />
+        <label for='very-easy'>{% trans "Very easy" %}</label>
+		<input id='somewhat-easy' name='difficulty' value='2' type='radio'/>
+        <label for='somewhat-easy'>{% trans "Somewhat easy" %}</label>
+		<input id='somewhat-difficult' name='difficulty' value='3' type='radio'/>
+        <label for='somewhat-difficult'>{% trans "Somewhat difficult" %}</label>
+		<input id='very-difficult' name='difficulty' value='4' type='radio'/>
+        <label for='very-difficult'>{% trans "Very difficult" %}</label>
+		<p>{% trans "Have you found a rule to categorize textures" %}</p>
+		<input id='oui' name='ruleFound' value='yes' type='radio' />
+        <label for='oui'>{% trans "Yes" %}</label>
+		<input id='non' name='ruleFound' value='no' type='radio' />
+        <label for='non'>{% trans "No" %}</label>
+		<p>{% trans "If you said yes, please describe your rule so far: " %}</p>
+		<input type='textarea' name='ruleDescription' />
+		<p>{% trans "If you said no, describe the strategy that you use (even if you choose at random!): " %}</p>
+		<input type='textarea' name='stratDescription' />
+		<button type='button' id='ctn-button'>{% trans "Submit" %}</button>
+	</fieldset>
+</form>

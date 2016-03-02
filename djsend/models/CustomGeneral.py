@@ -15,6 +15,7 @@ class SimCatGlobalSetting(BaseGlobalSetting):
     # Stimuli creation settings
     density = models.IntegerField(help_text="how many micro components should fit along the height and width of the finished stimulus, controls how dense is the stimulus")
     size = models.PositiveIntegerField(help_text=l_("The size of the square stimuli in pixels (length of its sides)"))
+    number_of_pauses = models.PositiveSmallIntegerField(default=0, help_text=l_("how many pauses with questionnaire should we insert"))
     
     def toDict(self):
         super_dict = super(SimCatGlobalSetting, self).toDict()
