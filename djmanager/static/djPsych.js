@@ -48,6 +48,33 @@ var djPsych = (function djPsych($){
 	core.prefix = function(path){
 		return prefix+path;
 	}
+	core.getLabel = function(){
+		return expLabel;
+	}
+	
+	
+	function unpackInstructions(timeline){
+		 var newTimeline = [];
+		timeline.forEach(function(elt, i, array) {
+			if(typeof elt.instructions != 'undefined'){
+				// add the instructions that should go before
+				if(typeof elt.instructions.before != 'undefined'){
+					newTimeline.push(elt.instructions.before);
+				}
+				// add the actual trial
+				newTimeline.push(elt);
+				// add the instructions that should go after
+				if(typeof elt.instructions.after != 'undefined'){
+					newTimeline.push(elt.instructions.after);
+				}
+			}
+			// no instruction objects? just push it!
+			else{
+				newTimeline.push(elt);
+			}
+		})
+		return newTimeline;
+	}
 	
 	/**
 	 * Requests a setting object from the server in order to start an experiment. 
@@ -72,6 +99,7 @@ var djPsych = (function djPsych($){
 				}
 				else{
 					meta = resp;
+					resp.timeline = unpackInstructions(resp.timeline);
 					callback(resp)
 				}
 			},

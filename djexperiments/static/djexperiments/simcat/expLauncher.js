@@ -251,6 +251,30 @@ function ExpLauncher(opts, canvas){
 	}
 	
 	
+	function insertPauses(timeline, howMany, url, check_fn){
+		if(howMany <= 0 ){
+			return;
+		}
+		var pauseTrial = {
+			type: 'html',
+			url: '/webexp/'+djPsych.getLabel()+'/request/snippet/'+url,
+			cont_btn: 'ctn-button',
+			check_fn: check_fn
+		}
+		
+		if(howMany>timeline.length){
+			throw "you want more pauses than trials??? wtf"
+		}
+		else{
+			var interval = Math.floor(timeline.length/(howMany+1));
+			// now actually proceed to insert
+			for(cursor=interval; cursor<timeline.length; cursor += interval+1){
+				timeline.splice(cursor, 0, pauseTrial);
+			}
+		}
+	}
+	
+	
 	/**
 	 * The settings object returned by our server. This list of properties is non-exhaustive and more can appear, but those are the required ones.
 	 * @typedef		{Object}	ServerSetting	A dictionnary read from a JSON string returned by a call to our server requesting a description of the experiment to run
@@ -341,6 +365,7 @@ function ExpLauncher(opts, canvas){
 					block.choices = choices;
 					if(opts.reuseStim){
 						block.timeline = module.getCategorizationTimelineFromSim(stimuli, settings.categories, block.length);
+						insertPauses(block.timeline, settings.number_of_pauses, 'questionnaire.html', collectQuestionnaire)
 					}
 					else{
 						//I dont have code to create a categorization task from scratch but it would simple to do. Ill do this if i have time
@@ -361,6 +386,12 @@ function ExpLauncher(opts, canvas){
 		meta.current_exp = settings.current_exp;
 		return {meta: meta, timeline: timeline};
 	}
+	
+	function collectQuestionnaire(jsPsychTarget){
+		alert("checking questionnaire...")
+		return true;
+	}
+	
 	
 	/**
 	 * Allows you to set the {@link StimEngine} object used to create the stimuli

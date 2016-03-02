@@ -63,14 +63,14 @@ class BaseSettingBlock(models.Model):
         instructions_after.sort(key=lambda x:x.order)
         
         if instructions_after:
-            instructions['after']=[]
+            instructions['after']={'type': 'instructions', 'pages': []}
             for instruction in instructions_after:
-                instructions['after'].append(instruction.toDict())
+                instructions['after']['pages'].append(instruction.toDict()['text'])
                 
         if instructions_before:
-            instructions['before']=[]
+            instructions['before']={'type': 'instructions', 'pages': []}
             for instruction in instructions_before:
-                instructions['before'].append(instruction.toDict())
+                instructions['before']['pages'].append(instruction.toDict()['text'])
         
         return instructions
         

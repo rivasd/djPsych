@@ -6,10 +6,13 @@ from django.http import HttpResponseBadRequest, JsonResponse
 from django.utils.translation import ugettext as _
 from djexperiments.models import Experiment
 from djPsych.exceptions import ParticipationRefused
+from .models import TextTrial
 import random
 import string
 import datetime
 import json
+from django.shortcuts import render
+
 
 # Create your views here.
 
@@ -78,3 +81,8 @@ def sendSettings(request, exp_label):
     request.session['data_mapping'] = json.dumps(save_dict)
     # Good luck :)
     return JsonResponse(final_settings)
+
+def serve_snippet(request, exp_label, template):
+    prefix = 'djexperiments/'+exp_label+'/'
+    return render(request, prefix+template)
+    

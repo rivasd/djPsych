@@ -48,3 +48,8 @@ class Subject(BaseSubject):
 
 class profileEntry(models.Model):
     pass
+class Subject(BaseSubject):
+    pass
+    
+class profileEntry(models.Model):
+    pass
