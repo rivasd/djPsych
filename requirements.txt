@@ -1,0 +1,8 @@
+django >= 1.8
+django-models-utils
+django-gfklookupwidget
+django-grappelli
+django-allauth
+django-markdown
+django-debug-toolbar
+django-modeltranslation
