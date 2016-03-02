@@ -42,3 +42,7 @@ class BaseSubject(models.Model):
     
     def __str__(self):
         return self.user.username
+    
+    
+class profileEntry(models.Model):
+    pass
