@@ -82,6 +82,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'djuser.contextprocessors.addLoginForm',
             ],
         },
     },
@@ -161,6 +162,13 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 ACCOUNT_EMAIL_REQUIRED = True
+# email sending settings
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = secrets.GMAIL_ACCOUNT_NAME
+EMAIL_HOST_PASSWORD = secrets.GMAIL_ACCOUNT_PASSWORD
+DEFAULT_FROM_EMAIL = secrets.GMAIL_ACCOUNT_NAME
 
 # change to live when we go live!
 PAYPAL_MODE = 'sandbox'

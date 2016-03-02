@@ -14,6 +14,9 @@ content	Well, the content of the page
 
 {% load static from staticfiles %}
 {% load i18n %}
+{% load socialaccount %}
+
+{% get_providers as socialaccount_providers %}
 {% get_current_language as lang %}
 <!doctype html>
 <html lang="{{ lang }}">
@@ -39,18 +42,43 @@ content	Well, the content of the page
 		<header>
 			<img src="{% static 'style/Banner.png'%}" alt="Cognition - Communication" id="banner"/>
 			<form class="login" name="login" id="login" data-logged="">
+				
 				{% if user.is_authenticated %}
-				<button id="logout-button">logout</button>
+				<p>{% trans "Welcome, " %} {{ user.username }}</p>
+				<a href="{% url "account_logout" %}" class="button">{% trans "logout" %}</a>
+				
 				{% else %}
-				<ul id='auth-options'>
-					<li></li>
-					<li></li>
-				</ul>
+				<p>
+				<a id="sign-in-popup" href="/" class="button">{% trans "Sign in" %}</a>
+				</p>
 				{% endif %}
 			</form>
 			<a id='top'></a>
 			<p id="subtitle">Canada Research Chair in Cognitive Science</p>
 		</header>
+		<div id="hidden-login">
+			<div class="login-panel">
+				<p>{% trans "You can login or register using your existing account for: "%}</p>
+				{% for provider in socialaccount_providers %}
+				<li>
+				  <a title="{{provider.name}}" class="socialaccount_provider {{provider.id}}" 
+				     href="{% provider_login_url provider.id process="login" %}"><img src="{% static "style/"%}provider-img-{{ provider.name }}.png" id="provider-img-{{ provider.name }}" class="login-btn"/></a>
+				</li>
+				{% endfor %}
+			</div>
+			<div class="login-panel">
+				<p>{% trans "or with regular, boring, username and password" %}</p>
+				<form class="login" method="POST" action="{% url 'account_login' %}" id="hidden-login-form">
+					{% csrf_token %}
+					{{ login_form.as_ul }}
+					<a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a> 
+					<a class="button secondaryAction" href="{% url 'account_signup' %}?next={{ request.get_full_path }}"> {% trans "Create account" %}</a>
+		 			<input type="hidden" name="next" value="{{ request.get_full_path }}" />
+		 			</br>
+		 			<button class="primaryAction" type="submit">{% trans "Sign In" %}</button>
+	 			</form>
+ 			</div>
+		</div>
 		<div id='content'>
 			{% block content %}
 			<p>Bonjour!</p>

@@ -6,6 +6,8 @@ author: Daniel Rivas
 23-08-2014
 */
 
+
+
 @font-face{
     font-family: "Titillium-Web";
     src: url('Titillium_Web/TitilliumWeb-Regular.ttf'),
@@ -18,9 +20,9 @@ author: Daniel Rivas
 }
 
 *{
-	margin:0px;
+	/* margin:0px; */
 	line-height: 1.2em;
-    font-family: "Titillium-Web", "sans-serif";
+	font-family: "Titillium-Web", "sans-serif";
 	color: black;
 	}
 
@@ -44,6 +46,11 @@ header fieldset{
     padding: 1px;
 }
 
+#hidden-login{
+	display: none;
+	background-color:#EAEAEA;
+}
+
 #subtitle{
     margin-top: 0px;
     margin-left: 20px;
@@ -63,7 +70,7 @@ header fieldset{
 }
 	
 #page {
-	margin-top:0px;
+	margin-top: 20px;
 	margin-bottom:30px;
 	width: 1280px;
 	border-radius:8px;
@@ -494,4 +501,61 @@ div.entry{
 
 #accept{
     margin: 0 auto;
+}
+
+body #page #content div.login-popup{
+	padding: 0;
+	margin:0;
+	background-color: inherit;
+	color: black;!important
+}
+
+body #page #content div.ui-dialog-titlebar.ui-widget-header{
+	background-image: url('txture.png');
+	color:#e2e2e2;
+	font-family: "Titillium-Web", "Lucida Grande", sans-serif;
+}
+
+li{
+	list-style: none;
+}
+
+#hidden-login a.button{
+	color: black;
+	margin: 0px 3px;
+}
+
+a, a.button, #hidden-login a {
+	transition: 0.3s color;
+}
+
+a:hover, a.button:hover, #hidden-login a:hover{
+	color: #EC4409;
+}
+
+#provider-img-Facebook{
+	height: 50px;
+	width: 310px;
+}
+#provider-img-Google{
+	height: 55px;
+	width: 240px;
+}
+img.login-btn {
+   -webkit-transition: all 0.4s ease;
+   -moz-transition: all 0.4s ease;
+   -o-transition: all 0.4s ease;
+   -ms-transition: all 0.4s ease;
+   transition: all 0.4s ease;
+   margin: 0 auto;
+   display: block;
+}
+
+img.login-btn:hover {
+   -webkit-filter: brightness(85%);
+   filter: brightness(80%);
+}
+
+input[type=text], input[type=password], input[type=select]{
+	font-size: 13px;
 }
