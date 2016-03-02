@@ -22,6 +22,9 @@ $(function () {
     		data: $(this).serialize(),
     		success: function(resp){
     			window.location.reload();
+    		},
+    		error: function(resp){
+    			$("#login-error").text(resp.responseJSON.form_errors.__all__[0])
     		}
     	})
     });

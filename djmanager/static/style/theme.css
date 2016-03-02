@@ -559,3 +559,8 @@ img.login-btn:hover {
 input[type=text], input[type=password], input[type=select]{
 	font-size: 13px;
 }
+
+#login-error{
+	color: red;
+	font-weight: bold;
+}

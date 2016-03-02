@@ -57,6 +57,7 @@ content	Well, the content of the page
 			<p id="subtitle">Canada Research Chair in Cognitive Science</p>
 		</header>
 		<div id="hidden-login">
+			
 			<div class="login-panel">
 				<p>{% trans "You can login or register using your existing account for: "%}</p>
 				{% for provider in socialaccount_providers %}
@@ -78,6 +79,7 @@ content	Well, the content of the page
 		 			<button class="primaryAction" type="submit">{% trans "Sign In" %}</button>
 	 			</form>
  			</div>
+ 			<span id="login-error"></span>
 		</div>
 		<div id='content'>
 			{% block content %}
