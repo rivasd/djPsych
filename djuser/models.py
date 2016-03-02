@@ -44,5 +44,5 @@ class BaseSubject(models.Model):
         return self.user.username
     
 
-class profileEntry(model.models):
+class profileEntry(models.Model):
     pass
