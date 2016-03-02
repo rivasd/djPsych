@@ -46,3 +46,5 @@ class BaseSubject(models.Model):
 class Subject(BaseSubject):
     pass
 
+class profileEntry(model.models):
+    pass
