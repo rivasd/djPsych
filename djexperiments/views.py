@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.http.response import HttpResponse
+from django.http.response import HttpResponse, Http404
 from django.conf import settings
 import glob
 import os.path
@@ -8,8 +8,12 @@ from djexperiments.models import Experiment
 
 # Create your views here.
 def lobby(request, exp_label):
-    template_name = 'djexperiments/'+exp_label+'/index.html'
-    return render(request, template_name, )
+    exp = get_object_or_404(Experiment, label=exp_label)
+    if exp.is_active:
+        template_name = 'djexperiments/'+exp_label+'/index.html'
+        return render(request, template_name, )
+    else:
+        return Http404
 
 @login_required
 def launch(request, exp_label):

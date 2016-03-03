@@ -95,7 +95,7 @@ class BaseExperiment(models.Model):
         return part
         
 class Experiment(BaseExperiment):
-    # participations = models.ManyToManyField(Subject, through='djcollect.Participation')
+    participations = models.ManyToManyField(Subject, through='djcollect.Participation')
     
     
     pass
