@@ -11,13 +11,17 @@ from jsonfield import JSONField
 from .Instructions import Instruction
 import json
 from gfklookupwidget.fields import GfkLookupField
+from pip.cmdoptions import verbose
+
 
 class BaseSettingBlock(models.Model):
     
     class Meta:
         abstract = True
         index_together = ['global_settings_type', 'global_settings_id'] # indexed because block settings will be frequently fetched by these fields, and rarely created.
-    
+        verbose_name= "Experimental block basic configuration"
+        
+        
     global_settings_type = models.ForeignKey(ContentType, help_text=l_("What kind of global configuration is this object part of?"))
     global_settings_id = GfkLookupField('global_settings_type', help_text=l_("Which configuration object among your configs of the above type is this block attached to?"))
     part_of = GenericForeignKey('global_settings_type', 'global_settings_id')

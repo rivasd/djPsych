@@ -78,7 +78,7 @@ class BaseGlobalSetting(models.Model):
             timeline.append(block.toDict())
         self.timeline = timeline
         
-        
+    
         
 class GenericGlobalSetting(BaseGlobalSetting):
     pass

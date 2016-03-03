@@ -18,9 +18,9 @@
 		<input id='non' name='ruleFound' value='no' type='radio' />
         <label for='non'>{% trans "No" %}</label>
 		<p>{% trans "If you said yes, please describe your rule so far: " %}</p>
-		<input type='textarea' name='ruleDescription' />
+		<textarea name='ruleDescription'> </textarea>
 		<p>{% trans "If you said no, describe the strategy that you use (even if you choose at random!): " %}</p>
-		<input type='textarea' name='stratDescription' />
+		<textarea name='stratDescription'> </textarea>
 		<button type='button' id='ctn-button'>{% trans "Submit" %}</button>
 	</fieldset>
 </form>
