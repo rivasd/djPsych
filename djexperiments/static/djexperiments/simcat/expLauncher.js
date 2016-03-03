@@ -387,11 +387,9 @@ function ExpLauncher(opts, canvas){
 		return {meta: meta, timeline: timeline};
 	}
 	
-	function collectQuestionnaire(jsPsychTarget){
-		alert("checking questionnaire...")
-		return true;
+	function collectQuestionnaire(jsPsychTarget, inputDict){
+		return inputDict;
 	}
-	
 	
 	/**
 	 * Allows you to set the {@link StimEngine} object used to create the stimuli

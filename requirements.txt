@@ -6,4 +6,5 @@ django-allauth
 django-markdown
 django-debug-toolbar
 django-modeltranslation
+django-genericadmin
 jsonfield

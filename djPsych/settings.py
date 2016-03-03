@@ -153,10 +153,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 SITE_ID = 1
 
 #django-allauth settings
-# ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_AUTHENTICATION_METHOD= "username_email"
 LOGIN_REDIRECT_URL = "/"
 # SOCIALACCOUNT_ADAPTER = 'expManager.adapters.SocialAuthAdapter'
-ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_EMAIL_VERIFICATION = 'optional'
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
