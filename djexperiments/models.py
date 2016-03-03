@@ -3,7 +3,6 @@ from django.utils.translation import ugettext_lazy as l_
 from django.utils.translation import ugettext as _
 from djPsych.exceptions import SettingException, ParticipationRefused
 from djuser.models import Subject
-from jsonfield import JSONField
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import Group, Permission
 
@@ -96,7 +95,7 @@ class BaseExperiment(models.Model):
         return part
         
 class Experiment(BaseExperiment):
-    participations = models.ManyToManyField(Subject, through='djcollect.Participation')
+    # participations = models.ManyToManyField(Subject, through='djcollect.Participation')
     
     
     pass

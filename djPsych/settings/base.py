@@ -11,17 +11,31 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
-from . import secrets
+import json
+from django.core.exceptions import ImproperlyConfigured
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Using json-based secret params to avoid any code in the secrets file
+with open(os.path.join(BASE_DIR, 'settings/secrets.json'), 'r') as f:
+    secrets = json.loads(f.read())
+
+def get_secret(setting, secrets=secrets):
+    """Get the secret variable or return explicit exception."""
+    
+    try:
+        return secrets[setting]
+    except KeyError:
+        error_msg = "Set the {0} entry in your secrets.json file".format(setting)
+        raise ImproperlyConfigured(error_msg)
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = secrets.SECRET_KEY
+SECRET_KEY = get_secret("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -33,7 +47,6 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'modeltranslation',
-    #'grappelli',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -54,7 +67,6 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
-    'debug_toolbar',
     'django_markdown',
 ]
 
@@ -91,15 +103,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'djPsych.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
 
 
 # Password validation
@@ -161,17 +165,19 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 )
+
 ACCOUNT_EMAIL_REQUIRED = True
 # email sending settings
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = secrets.GMAIL_ACCOUNT_NAME
-EMAIL_HOST_PASSWORD = secrets.GMAIL_ACCOUNT_PASSWORD
-DEFAULT_FROM_EMAIL = secrets.GMAIL_ACCOUNT_NAME
+EMAIL_HOST_USER = get_secret("GMAIL_ACCOUNT_NAME")
+EMAIL_HOST_PASSWORD = get_secret("GMAIL_ACCOUNT_PASSWORD")
+DEFAULT_FROM_EMAIL = get_secret("GMAIL_ACCOUNT_NAME")
 
 # change to live when we go live!
 PAYPAL_MODE = 'sandbox'
 
 # Markdown
 MARKDOWN_EDITOR_SKIN = 'simple'
+
