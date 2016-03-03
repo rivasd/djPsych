@@ -7,6 +7,7 @@ Created on Mar 3, 2016
 from .base import *
 
 DEBUG= False
+ALLOWED_HOSTS =['www.cogcommtl.ca']
 
 prod_only_apps = [
     

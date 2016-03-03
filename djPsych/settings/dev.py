@@ -9,6 +9,7 @@ dev_only_apps = [
     'debug_toolbar'
 ]
 
+
 DEBUG = True
 INSTALLED_APPS.extend(dev_only_apps)
 
