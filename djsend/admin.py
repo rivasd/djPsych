@@ -20,8 +20,6 @@ class InstructionInline(TranslationGenericStackedInline):
     model = Instruction
     extra = 1
     classes = ('grp-collapse grp-open',)
-    
-
 
 
 @admin.register(GenericSettingBlock)

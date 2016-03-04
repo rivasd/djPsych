@@ -26,3 +26,5 @@ urlpatterns = [
     url(r'^accounts/', include(allauth.urls)),
     url(r'^$', index, name='index'),
 ]
+
+
