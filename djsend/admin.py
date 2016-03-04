@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as l_
 # Register your models here.
-from django_markdown.admin  import MarkdownModelAdmin
 from django_markdown.models import MarkdownField
 from django_markdown.widgets import AdminMarkdownWidget
 from django.apps import apps
@@ -81,7 +80,6 @@ class GenericGlobalSettingAdmin(admin.ModelAdmin):
         qs = super(GenericGlobalSettingAdmin, self).get_queryset(request)
         return qs.filter(experiment__in=get_allowed_exp_for_user(request))
     
-    list_display= ('__str__', 'experiment', 'number_of_blocks')
     
 # ModelAdmins for the more targeted config models
 
