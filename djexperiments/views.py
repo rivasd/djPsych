@@ -5,15 +5,19 @@ from django.conf import settings
 import glob
 import os.path
 from djexperiments.models import Experiment
+from django.utils.translation import ugettext as _
 
 # Create your views here.
 def lobby(request, exp_label):
-    exp = get_object_or_404(Experiment, label=exp_label)
+    try:
+        exp = get_object_or_404(Experiment, label=exp_label)
+    except:
+        raise Http404(_("No such experiment"))
     if exp.is_active:
         template_name = 'djexperiments/'+exp_label+'/index.html'
-        return render(request, template_name, )
+        return render(request, template_name)
     else:
-        return Http404
+        raise Http404(_("Experiment"))
 
 @login_required
 def launch(request, exp_label):
