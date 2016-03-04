@@ -11,10 +11,10 @@ class CategorizationBlock(BaseSettingBlock):
     
     show_stim_with_feedback = models.BooleanField(default=False, help_text= l_("Should the stimulus be shown together with the feedback text?"))
     show_feedback_on_timeout = models.BooleanField(default=False, help_text=l_("Should we show the feedback even when the trial times out?"))
-    timing_stim = models.IntegerField(help_text=l_("How long to show the stimulus for (milliseconds). If -1, then the stimulus is shown until a response is given."))
-    timing_feedback_duration = models.IntegerField(help_text=l_("How long to show the feedback for "))
-    timing_response = models.IntegerField(help_text=l_("The maximum time allowed for a response. If -1, then the experiment will wait indefinitely for a response."))
-    timing_post_trial = models.IntegerField(help_text=l_("Sets the time, in milliseconds, between the current trial and the next trial."))
+    timing_stim = models.IntegerField(null=True, help_text=l_("How long to show the stimulus for (milliseconds). If -1, then the stimulus is shown until a response is given."))
+    timing_feedback_duration = models.IntegerField(null=True, help_text=l_("How long to show the feedback for "))
+    timing_response = models.IntegerField(null=True, help_text=l_("The maximum time allowed for a response. If -1, then the experiment will wait indefinitely for a response."))
+    timing_post_trial = models.IntegerField(null=True, help_text=l_("Sets the time, in milliseconds, between the current trial and the next trial."))
     
 class SimilarityBlock(BaseSettingBlock):
     

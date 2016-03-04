@@ -6,7 +6,6 @@ from django.http import HttpResponseBadRequest, JsonResponse
 from django.utils.translation import ugettext as _
 from djexperiments.models import Experiment
 from djPsych.exceptions import ParticipationRefused
-from .models import TextTrial
 import random
 import string
 import datetime

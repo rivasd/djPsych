@@ -10,6 +10,8 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django_markdown.models import MarkdownField
 
+
+# TODO: maybe reuse this to have intro and outro 'instructions' attached to a global setting?
 class Instruction(models.Model):
     """
     This is the sole model for instructions so far, I thought there is not much need for multiple models as I don't see much diversity

@@ -8,6 +8,4 @@ from .BasicGeneral import GenericGlobalSetting, BaseGlobalSetting
 from .CustomGeneral import SimCatGlobalSetting
 from .BasicBlock import GenericSettingBlock
 from .CustomBlock import *
-from .BasicStimuli import *
-from .Misc import *
-from .Instructions import *
+from .Instructions import * 

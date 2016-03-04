@@ -1,4 +1,4 @@
-'''
+''''
 Created on Feb 23, 2016
 
 @author: User
@@ -10,6 +10,7 @@ from jsonfield import JSONField
 from .BasicBlock import BaseSettingBlock
 from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.models import ContentType
+from django.utils.translation import ugettext_lazy as l_
 from pip._vendor.pyparsing import dictOf
 import json
 # Create your models here.
@@ -45,7 +46,8 @@ class BaseGlobalSetting(models.Model):
         return dictionary
     
     def __str__(self):
-        return self.name
+        # Translators: %s represents the name of this object, so in French you should make it go after the word configuration since its name is kind of an adjective
+        return l_("%s configuration") % self.name
     
     def get_all_blocks(self):
         """
@@ -78,7 +80,8 @@ class BaseGlobalSetting(models.Model):
             timeline.append(block.toDict())
         self.timeline = timeline
         
-    
+    def number_of_blocks(self):
+        return len(self.get_all_blocks())
         
 class GenericGlobalSetting(BaseGlobalSetting):
     pass

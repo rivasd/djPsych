@@ -6,7 +6,7 @@ Created on Mar 3, 2016
 from .base import *
 
 dev_only_apps = [
-    'debug_toolbar'
+    'debug_toolbar',
 ]
 
 ALLOWED_HOSTS =['www.cogcommtl.ca']
