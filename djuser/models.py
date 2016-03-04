@@ -14,7 +14,7 @@ class BaseSubject(models.Model):
     """
     
     user = models.OneToOneField(User)
-    student_id = models.CharField(max_length=12, help_text=l_("If you have a student id, enter it here"), null=True, blank=True)
+    student_participant_id = models.CharField(max_length=12, help_text=l_("If you wish to link your account with a student id so that your institution can track your participations, enter it here"), null=True, blank=True)
     
     class Meta:
         abstract = True
@@ -49,10 +49,5 @@ class BaseSubject(models.Model):
 class Subject(BaseSubject):
     pass
 
-class profileEntry(models.Model):
-    pass
-class Subject(BaseSubject):
-    pass
-    
 class profileEntry(models.Model):
     pass

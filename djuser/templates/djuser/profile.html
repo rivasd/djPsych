@@ -1,0 +1,63 @@
+{% extends 'base.html' %} {# this means we want to show the file djmanager/templates/base.html but with some of its blocks replaced with what is here #}
+{% load i18n %} {# Allow the use of the trans tag to tag Strings for translation later #}
+
+{% comment %}  
+
+In this template, we expect to be passed two template variables: subjectform and userform, two ModelForms that we will insert into our own
+<form> html element. Note that, like in any template, we are passed the request variable, and thus, the current user through request.user
+
+WE ASSUME THIS TEMPLATE IS UNREACHABLE BY USERS THAT ARE NOT LOGGED IN
+{% endcomment %}
+
+{% block content %}
+<h1>{% trans "Hello, " %} {% if request.user.first_name %}{{ request.user.first_name }} {{ request.user.last_name }}
+{%else %} 
+{{ request.user.username }}
+{% endif %}
+</h1>
+<div id="user-activity">
+<h3>{% trans "Completed experiments:" %}</h3>
+<ul>
+{% for participation in participations %}
+	<li> {{participation.experiment.label}} </li>
+{% empty %}
+	<li> {% trans "You have not completed any experiments! Get started:  "%}<a href="{% url "webexp:home" %}">{% trans "here" %}</a> </li>
+{% endfor %}
+</ul>
+<h3>{% trans "Unclaimed payments: " %}</h3>
+<ul>
+{% for pay in payments %}
+	<li><a href="{% url "claim" pay.pk%}"> {% trans "payment for "%}{{ pay.participation.experiment.label }}</a></li>
+{% empty %}
+	<li>{% trans "None... for now!" %}</li>
+{% endfor %}
+</ul>
+{% if is_researcher %}
+<h3>{% trans "You are also a researcher!" %}</h3>
+	{% for exp in researchs %}
+	<a href="{% url "download:all" exp.label%}"> {% trans "Get full data for the experiment: "%}{{ exp.label }}</a>
+	{% endfor %}	
+{% endif %}
+</div>
+<div id="user-profile">
+	<h3>{% trans "Add data to your profile: " %}</h3>
+	
+	<form id="edit-profile" method="post" action="{{ request.get_full_path }}">
+		{% csrf_token %}
+		<fieldset>
+			<legend> {% trans "General info" %}</legend>
+			<table>
+			{{ userform.as_table }}
+			</table>
+		</fieldset>
+		<fieldset>
+			<legend> {% trans "Personal info" %}</legend>
+			<table>
+			{{ subjectform.as_table }}
+			</table>
+		</fieldset>
+		<button type="submit" action="submit"> {% trans "Save my changes" %} </button>
+	</form>
+</div>
+
+{% endblock %}

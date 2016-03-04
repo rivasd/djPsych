@@ -8,9 +8,9 @@ from django.conf.urls import url, include
 from .views import home
 
 
-
 urlpatterns = [
     url(r'^$', home, name="home"),
+    url(r'^profile/', include('djuser.urls', namespace='profiles')),
     url(r'(?P<exp_label>\w+)/', include('djexperiments.urls')),
 ]
 
