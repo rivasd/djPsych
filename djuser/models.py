@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.utils.translation import ugettext_lazy as l_
 
 # Create your models here.
 # TODO: check violation of single email adress requirement
@@ -13,6 +14,7 @@ class BaseSubject(models.Model):
     """
     
     user = models.OneToOneField(User)
+    student_id = models.CharField(max_length=12, help_text=l_("If you have a student id, enter it here"), null=True, blank=True)
     
     class Meta:
         abstract = True
@@ -26,6 +28,7 @@ class BaseSubject(models.Model):
         ('F', 'female'),
         ('O', 'other'),
     )
+    
     sex = models.CharField(choices=gender_choices, max_length=1, blank=True, null=True)
     
     #optional: subject's main occupation

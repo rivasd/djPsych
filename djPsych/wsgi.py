@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "djPsych.settings.prod") # the default value will be the development settings, since it uses only sqlite
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "djPsych.settings.production") # the default value will be the development settings, since it uses only sqlite
 
 application = get_wsgi_application()

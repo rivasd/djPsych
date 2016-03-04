@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 import os
 import json
 from django.core.exceptions import ImproperlyConfigured
+from django.utils.translation import ugettext_lazy as l_
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -47,6 +48,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'modeltranslation',
+    'grappelli',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -61,6 +63,7 @@ INSTALLED_APPS = [
     'djcollect',
     'djreceive',
     'djsend',
+    'djstim',
     'djadmin',
     'allauth',
     'allauth.account',
@@ -148,6 +151,7 @@ LANGUAGES = [
     ('fr', 'Français'),
     ('es', 'Español'),
 ]
+MODELTRANSLATION_DEFAULT_LANGUAGE = 'en'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
@@ -181,3 +185,6 @@ PAYPAL_MODE = 'sandbox'
 # Markdown
 MARKDOWN_EDITOR_SKIN = 'simple'
 
+# Grappelli options
+
+GRAPPELLI_ADMIN_TITLE = l_("Web laboratory dashboard")

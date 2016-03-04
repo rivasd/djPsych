@@ -12,7 +12,7 @@ import json
 
 class BaseStimuli(models.Model):
     
-    class Meta:
+    class Meta: 
         abstract=True
         
     block_type = models.ForeignKey(ContentType)

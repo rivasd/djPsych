@@ -14,19 +14,20 @@ from gfklookupwidget.fields import GfkLookupField
 from pip.cmdoptions import verbose
 
 
+
 class BaseSettingBlock(models.Model):
     
     class Meta:
         abstract = True
         index_together = ['global_settings_type', 'global_settings_id'] # indexed because block settings will be frequently fetched by these fields, and rarely created.
-        verbose_name= "Experimental block basic configuration"
         
         
+    
     global_settings_type = models.ForeignKey(ContentType, help_text=l_("What kind of global configuration is this object part of?"))
-    global_settings_id = GfkLookupField('global_settings_type', help_text=l_("Which configuration object among your configs of the above type is this block attached to?"))
+    global_settings_id = models.PositiveIntegerField(help_text=l_("Which configuration object among your configs of the above type is this block attached to?"))
     part_of = GenericForeignKey('global_settings_type', 'global_settings_id')
     
-    
+    name = models.CharField(max_length=24, help_text=l_("A short name to describe this block"))
     position_in_timeline = models.PositiveSmallIntegerField(null=True, blank=True, help_text=l_("This number is used by the global setting this object is part of to build its timeline. It represents the ordinal position in which this block should come."))
     reprise = models.PositiveSmallIntegerField(null=True, blank=True, help_text=l_("If set, indicates that this block is a reprise of the n'th block, where n is the value of the field"))
     length= models.PositiveIntegerField(null=True, blank=True, help_text=l_("How many individual trials of this type should there be. You can leave blank if you don't need it"))
@@ -54,6 +55,8 @@ class BaseSettingBlock(models.Model):
         dictionary['instructions'] = self.sort_instructions()
         return dictionary
     
+    
+    
     def sort_instructions(self):
         instructions = {}
         instructions_before=[]
@@ -77,7 +80,23 @@ class BaseSettingBlock(models.Model):
                 instructions['before']['pages'].append(instruction.toDict()['text'])
         
         return instructions
+    
+    def get_parent_name(self):
         
+        if self.part_of is not None and hasattr(self.part_of, 'name'):
+            return self.part_of.name
+        else:
+            return l_("No name for the containing global config")
+            
+    get_parent_name.short_description= l_("Part of")
+    
 class GenericSettingBlock(BaseSettingBlock):
+    
+    class Meta:
+        verbose_name= l_("Experimental block basic configuration")
+    
+    def __str__(self):
+        # Translators: 
+        return l_('Exp. block "')+self.name+'"'
     pass
 

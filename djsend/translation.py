@@ -5,12 +5,9 @@ Created on Feb 24, 2016
 '''
 
 from modeltranslation.translator import register, TranslationOptions
-from .models import Instruction, TextTrial
+from .models import Instruction
 
 @register(Instruction)
 class InstructionTransOptions(TranslationOptions):
     fields = ('text',)
 
-@register(TextTrial)
-class HtmlStimTransOptions(TranslationOptions):
-    fields = ('text',)

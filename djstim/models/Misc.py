@@ -4,7 +4,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as l_
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
-from .CustomGeneral import SimCatGlobalSetting
+from djsend.models.CustomGeneral import SimCatGlobalSetting
 from djsend.models.BasicBlock import BaseSettingBlock
 from django_markdown.models import MarkdownField
 
@@ -19,7 +19,8 @@ class Category(models.Model):
     
     def __str__(self):
         return self.name
-    
+
+#TODO:  is there really a point to having an index if everything will be randomized?
 class MicroComponentPair(models.Model):
     index = models.PositiveIntegerField()
     setting = models.ForeignKey(SimCatGlobalSetting)
