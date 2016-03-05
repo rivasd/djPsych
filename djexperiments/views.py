@@ -6,6 +6,7 @@ import glob
 import os.path
 from djexperiments.models import Experiment
 from django.utils.translation import ugettext as _
+from djPsych.utils import get_all_js_files_in_exp
 
 # Create your views here.
 def lobby(request, exp_label):
@@ -22,7 +23,7 @@ def lobby(request, exp_label):
 @login_required
 def launch(request, exp_label):
     exp = Experiment.objects.get(label=exp_label)
-    js_modules = [os.path.basename(file) for file in glob.glob('./djexperiments/static/djexperiments/'+exp_label+'/*.js')]
+    js_modules = get_all_js_files_in_exp(exp_label=exp_label)
     consentfile = 'djexperiments/'+exp_label+'/consent.html'
     plugins = [os.path.basename(file) for file in glob.glob('./djmanager/static/jspsych-plugins/*.js')]
     return render(request, 'djexperiments/launch.html', {'scripts': js_modules, 'exp': exp, 
@@ -30,3 +31,9 @@ def launch(request, exp_label):
 
 def summary(request, exp_label):
     return HttpResponse()
+
+def sandbox(request, exp_label):
+    pass
+    
+    
+    

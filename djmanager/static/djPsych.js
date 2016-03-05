@@ -9,8 +9,10 @@ var djPsych = (function djPsych($){
 	var expLabel = "";
 	var staticUrl = "";
 	var prefix = "";
-		
+	var version ="";
 	var meta = "";
+	var sandbox = false;
+	
 	
 	function get_browser_info(){
 	    var ua=navigator.userAgent,tem,M=ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || []; 
@@ -35,7 +37,12 @@ var djPsych = (function djPsych($){
 	 * @param {String} expLabel		When you created your Experiment object on djPsych, this is the label field. your experiment lives at this URL
 	 * @param {String} staticRoot	corresponds to the STATIC_URL setting in the settings.py of the server. tells us where to fetch static content.
 	 */
-	core.init = function init(name, staticRoot){
+	core.init = function init(name, staticRoot, sandboxval){
+		
+		if(typeof sandboxval != 'undefined'){
+			sandbox = sandboxval;
+		}
+		
 		expLabel = name;
 		staticUrl = staticRoot;
 		prefix = staticUrl+'djexperiments/'+expLabel+'/';
@@ -52,6 +59,17 @@ var djPsych = (function djPsych($){
 		return expLabel;
 	}
 	
+	core.chooseVersion(newversion){
+		version = newversion;
+	}
+	
+	core.getSandboxVal(){
+		return sandbox;
+	}
+	
+	core.asSandbox(){
+		sandbox = true;
+	}
 	
 	function unpackInstructions(timeline){
 		 var newTimeline = [];
@@ -81,10 +99,13 @@ var djPsych = (function djPsych($){
 	 * @param {string} 		version		A string indicating the 'name' field of the global setting object to fetch from the server. With this you can choose which version of the experiment to fetch
 	 * @param {function}	callback	A function to execute after receiving an answer. Will be called only if the server does not respond with an error. Default behavior is to display a dialog box with the error content. Receives the full server answer as the sole argument
 	 */
-	core.request = function request(version, callback){
+	core.request = function request(callback, reqversion){
+		if(sandbox){
+			reqversion = 'test';
+		}
 		$.ajax({
 			data:{
-				version: version
+				version: reqversion
 			},
 			dataType: 'json',
 			error: function(jqHXR, status, thrown){

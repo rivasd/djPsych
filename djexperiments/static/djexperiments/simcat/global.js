@@ -1,12 +1,5 @@
 $(function () {
 
-
-    //preload the little spinner
-    var spinner = document.createElement('img');
-    spinner.src = "style/stimCreationLoader.gif";
-
-
-
     $.fn.clicktoggle = function (a, b) {
         return this.each(function () {
             var clicked = false;
@@ -21,15 +14,14 @@ $(function () {
         });
     };
 
-    function letsGo(pageText, target, paintingArea) {
-        var toKill = document.getElementById(pageText);
-        toKill.parentNode.removeChild(toKill);
-        //NEW CODE HERE!!
-        var before = $("#start").html();
-        $("#start").html('<img src="/static/style/ajax-loader.gif"/>');
-       
-        djPsych.request('test', run);
-        
+    function runExperiment() {
+    	//we need the progress bar and the canvas
+    	var $progressbar = $("<div></div>", {id:'progressBar'});
+    	var $stimCanvas = $("<canvas></canvas>", {id: 'stimCanvas', height: 300, width: 300});
+    	var $feedback = $("<div></div>", {id: 'retroaction'});
+    	$("#content").prepend($feedback);
+    	$("#jsPsychTarget").append($progressbar).append($stimCanvas);
+        djPsych.request(run);
     }
     
     function augment(data, exp){
@@ -65,20 +57,6 @@ $(function () {
     		})
 		})
 	}
-    
-    $("#start").click(function (e) {
-        if (document.getElementById("accept").checked) {
-            var top = document.getElementById("top").offsetTop;
-            window.scrollTo(0, top);
-            $("#consent").remove();
-            var theCanvas = document.getElementById("stimCanvas");
-            letsGo("instructionsUp", "#jsPsychTarget", theCanvas);
-            $('#start').remove();
-        }
-        else {
-            alert("veuillez cocher la case J'accepte / Please check the box I Accept");
-        }
-    });
 
     $("span.expand").html("[+] ");
     $(".entryBody").hide();
