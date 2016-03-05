@@ -29,7 +29,7 @@ def show_profile(request):
         if subject_form.is_valid() and user_form.is_valid():
             subject_form.save()
             user_form.save()
-            return HttpResponseRedirect(reverse("webexp:profiles:personal"))
+            return HttpResponseRedirect(reverse("webexp:home"))
         
     else:
         subject = request.user.subject
