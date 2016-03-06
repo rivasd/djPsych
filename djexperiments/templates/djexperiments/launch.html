@@ -5,34 +5,7 @@
 {% block title %}{{ exp.verbose_name }}{% endblock %}
 {% block head %}
 {{ block.super }}
-<script src="{% static "djPsych.js"%}"></script>
-<script>
-$(function(){
-	djPsych.init("{{ exp.label }}", "{{ static_url }}", "{{ version }}")
-	
-	function serverSideBegin(e){
-        var top = document.getElementById("top").offsetTop;
-        window.scrollTo(0, top);
-        $("#jsPsychtarget").empty();
-        $('#start').remove();
-            
-        //this is the function that must be defined by all experiments
-        runExperiment();
-	}
-	
-	$("#start").click(function(e){
-		if (document.getElementById("accept").checked) {
-			serverSideBegin(e);
-		}
-		else{
-			alert("veuillez cocher la case J'accepte / Please check the box I Accept");
-		}
-	})
-})
 
-
-
-</script>
 {% for plugin in plugins %}
 {% with script="jspsych-plugins/"|add:plugin%}
 <script src="{% static script %}"></script>
@@ -43,9 +16,38 @@ $(function(){
 	<script src="{% static module %}"></script>
 	{% endwith %}
 {% endfor %}
+<script src="{% static "djPsych.js"%}"></script>
+<script>
+$(function(){
+	function serverSideBegin(e){
+        var top = document.getElementById("top").offsetTop;
+        window.scrollTo(0, top);
+        $("#jsPsychtarget").empty();
+        $('#start').remove();
+            
+        //this is the function that must be defined by all experiments
+        runExperiment();
+	}
+
+	djPsych.init("{{ exp.label }}", "{{ static_url }}", "{{ version }}")
+	
+	$("#start").click(function(e){
+		if (document.getElementById("accept").checked) {
+			serverSideBegin(e);
+		}
+		else{
+			alert("veuillez cocher la case J'accepte / Please check the box I Accept");
+		}
+	})
+	
+	$("#begin-test").click(function(e){
+		e.preventDefault();
+		serverSideBegin(e);
+		return false;
+	})
+})
+</script>
 {% endblock %}
-
-
 {% block content %}
 
 {% if not sandbox %}
@@ -79,40 +81,42 @@ $(function(){
 	    </fieldset>
 	</form>
 </div>
+<a href="#top" class="button" id="start">{% trans "Start the experiment!" %}</a>
 {% else %}
 {# This is shown if the experiment is requested by a researcher #}
-<div id="sandbox">
+<div id="sandbox" class="full-width">
 	<h2>{% trans "Researcher's sandbox" %}</h2>
-	<div id="jsPsychTarget"></div>
+	<div id="jsPsychTarget" style="border: 1px solid black;"></div>
 	<div id="dashboard">
-		<form id="controls" name="controls" action="{{ request.get_full_path }}">
+		<form id="controls" name="controls" action="/" method="post">
 			<ul id="flow-controls">
-				<li>
+				<li class="horizontal-li">
 					<button id="begin-test">{% trans "Begin" %}</button>
 				</li>
-				<li>
+				<li class="horizontal-li">
 					<button id="abort">{% trans "Abort" %}</button>
 				</li>
-				<li>
+				<li class="horizontal-li">
 					<button id="end-block">{% trans "Skip block" %}</button>
-				</li>
-				<li>
+				</li >
+				<li class="horizontal-li">
 					<button id="show-settings">{% trans "Show initial settings" %}</button>
 				</li>
 			</ul>
 			{{ sandboxform }}
-			<textarea id="datadump"></textarea>
+			<div id="textarea-hack" class="full-width">
+				<textarea id="datadump" class="full-width"></textarea>
+			</div>
 		</form>
 	</div>
 </div>
 <script>
-	$("#begin-test").click(function(e){
-		e.preventDefautlt();
-		serverSideBegin(e);
-	})
+$(function(){
+	
+})
 </script>
 
 {% endif %}
-<a href="#top" class="button" id="start">{% trans "Start the experiment!" %}</a>
+
 
 {% endblock %}

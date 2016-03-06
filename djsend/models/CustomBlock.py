@@ -6,8 +6,14 @@ Created on Feb 24, 2016
 from .BasicBlock import BaseSettingBlock
 from django.utils.translation import ugettext_lazy as l_
 from django.db import models
+from jsonfield import JSONCharField
 
 class CategorizationBlock(BaseSettingBlock):
+    
+    correct_text = models.CharField(max_length=64, help_text=l_("Text to show after a subject makes a correct categorization"))
+    incorrect_text = models.CharField(max_length=64, help_text=l_("Text to show after a subject makes an incorrect categorization"))
+    prompt = models.CharField(max_length=64, help_text=l_("Text to show beneath the stimuli for all trials, as a reminder of what to do."))
+    timeout_message = models.CharField(max_length=64, help_text=l_("Text to display when a subject does not respond fast enough and the trial times out"))
     
     show_stim_with_feedback = models.BooleanField(default=False, help_text= l_("Should the stimulus be shown together with the feedback text?"))
     show_feedback_on_timeout = models.BooleanField(default=False, help_text=l_("Should we show the feedback even when the trial times out?"))
@@ -16,6 +22,14 @@ class CategorizationBlock(BaseSettingBlock):
     timing_response = models.IntegerField(null=True, help_text=l_("The maximum time allowed for a response. If -1, then the experiment will wait indefinitely for a response."))
     timing_post_trial = models.IntegerField(null=True, help_text=l_("Sets the time, in milliseconds, between the current trial and the next trial."))
     
+    def toDict(self):
+        initial = super(CategorizationBlock, self).toDict()
+        initial['correct_text'] = "<p class=\"feeback success\">{} </p>".format(self.correct_text)
+        initial['incorrect_text'] = "<p class=\"feeback error\">{} </p>".format(self.incorrect_text)
+        initial['prompt'] = "<p class=\"prompt\">{} </p>".format(self.prompt)
+        initial['timeout_message'] = "<p class=\"feeback error\">{} </p>".format(self.timeout_message)
+        return initial
+        
 class SimilarityBlock(BaseSettingBlock):
     
     show_response_choices = (
@@ -32,4 +46,10 @@ class SimilarityBlock(BaseSettingBlock):
     timing_image_gap = models.IntegerField(help_text=l_("How long to show a blank screen in between the two stimuli."))
     timing_post_trial = models.IntegerField(help_text=l_("Sets the time, in milliseconds, between the current trial and the next trial."))
     prompt = models.CharField(max_length=32, blank=True, help_text=l_("Any content here will be displayed below the stimulus, as a reminder to the participant"))
+    labels = JSONCharField(max_length=64, help_text=l_('An array of tags to label the slider. must be eclosed in square brackets. Each label must be enclosed in double quotation marks. Labels must be separated by a single comma.'))
+    
+    def toDict(self):
+        initial = super(SimilarityBlock, self).toDict()
+        initial['prompt'] = "<p class=\"prompt\"> {} </p>".format(self.prompt)
+        return initial
     

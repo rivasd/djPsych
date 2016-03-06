@@ -7,6 +7,8 @@ import os.path
 from djexperiments.models import Experiment
 from django.utils.translation import ugettext as _
 from djPsych.utils import get_all_js_files_in_exp
+from django.contrib.auth.models import Group
+from djexperiments.forms import SandboxForm
 
 # Create your views here.
 def lobby(request, exp_label):
@@ -32,7 +34,34 @@ def launch(request, exp_label):
 def summary(request, exp_label):
     return HttpResponse()
 
+@login_required
 def sandbox(request, exp_label):
+    
+    exp = Experiment.objects.get(label=exp_label)
+    
+    if not exp.research_group in request.user.groups.all():
+        raise Http404(_("You do not have permission to access the sandbox"))
+    
+    plugins = [os.path.basename(file) for file in glob.glob('./djmanager/static/jspsych-plugins/*.js')]
+    js_modules = get_all_js_files_in_exp(exp_label)
+    configs = exp.get_all_configurations()
+    choices = []
+    for config in configs:
+        choices.append((config.name, config.__str__()))
+        
+    sandboxform = SandboxForm(versions=choices)
+    context= {
+        'scripts': js_modules,
+        'exp': exp,
+        'plugins': plugins,
+        'static_url': settings.STATIC_URL,
+        'sandboxform': sandboxform,
+        'sandbox': True,
+        'version': 'test'
+    }
+    
+    
+    return render(request, 'djexperiments/launch.html', context)
     pass
     
     

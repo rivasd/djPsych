@@ -27,6 +27,7 @@ class Instruction(models.Model):
     text = MarkdownField(help_text=l_('Write your instruction page here using Markdown syntax! see: https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet'))
     order = models.PositiveIntegerField(help_text=l_("if a setting has multiple instruction pages, we use this number to sort the order in which you want them presented."))
     after = models.BooleanField(help_text=l_("check if this instruction page is meant to be shown AFTER the task it is attached to."))
+    css_class = models.CharField(blank=True, null=True, default='', max_length=64, help_text=l_("All instructions are rendered inside an HTML 'p' element with a class attribute 'instructions'. You can add to the class attribute here."))
     # TODO: switched to Markdown for better editing, but still make sure to disallow HTML sine markdown is a superset of HTML
     
     def toDict(self):
@@ -37,8 +38,9 @@ class Instruction(models.Model):
         In the default only the 'text' and 'is_html' attributes are returned. 
         """
         
+        html_wrap = "<p class=\"instructions {0.css_class}\"> {0.text} </p>".format(self)
         dictionary = {
             'type': 'instructions',
-            'text': self.text,
+            'text': html_wrap,
         }
         return dictionary

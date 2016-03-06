@@ -9,11 +9,12 @@ from .adminForms import GenericSettingBlockForm
 from django.contrib.contenttypes.models import ContentType
 import inspect
 from djmanager.utils import get_allowed_exp_for_user, get_subclass_ct_pk
-from djreceive.models.BasicTrials import BaseTrial
+from djreceive.models.BasicTrials import BaseTrial, CategorizationTrial
 from django.contrib.contenttypes.admin import GenericTabularInline,\
     GenericStackedInline
 from modeltranslation.admin import TranslationAdmin, TranslationGenericStackedInline
 from djstim.models import Category, MicroComponentPair
+from djreceive.models.CustomTrials import CogComSimilarityTrial
 
 
 class InstructionInline(TranslationGenericStackedInline):
@@ -23,7 +24,7 @@ class InstructionInline(TranslationGenericStackedInline):
 
 
 @admin.register(GenericSettingBlock)
-class GenericBlockAdmin(admin.ModelAdmin):
+class GenericBlockAdmin(TranslationAdmin):
     
     class Media:
         js = (
@@ -86,6 +87,10 @@ class CategorizationBlockAdmin(GenericBlockAdmin):
     
     fieldsets = GenericBlockAdmin.fieldsets + (
         (l_("Categorization task parameters"), {'fields': (
+            'correct_text',
+            'incorrect_text',
+            'prompt',
+            'timeout_message',
             'show_stim_with_feedback',
             'show_feedback_on_timeout',
             'timing_stim',
@@ -99,9 +104,13 @@ class CategorizationBlockAdmin(GenericBlockAdmin):
         'generic' :[['global_settings_type', 'global_settings_id']]
     }
     
-    
-    
-    
+    def get_form(self, request, obj=None, **kwargs):
+        form = super(CategorizationBlockAdmin, self).get_form(request, obj=obj, **kwargs)
+        form.base_fields['type'].initial = 'categorize'
+        form.base_fields['save_with'].initial = ContentType.objects.get_for_model(CategorizationTrial)
+        return form
+        
+        
 @admin.register(SimilarityBlock)
 class SimilarityBlockAdmin(GenericBlockAdmin):
     
@@ -117,6 +126,13 @@ class SimilarityBlockAdmin(GenericBlockAdmin):
             'prompt'
         )}),                               
     )
+    
+    def get_form(self, request, obj=None, **kwargs):
+        form = super(SimilarityBlockAdmin, self).get_form(request, obj=obj, **kwargs)
+        form.base_fields['type'].initial = 'similarity'
+        form.base_fields['save_with'].initial = ContentType.objects.get_for_model(CogComSimilarityTrial)
+        return form
+    
     
 class CategoryInline(admin.StackedInline):
     model = Category

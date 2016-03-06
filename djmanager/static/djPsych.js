@@ -3,6 +3,7 @@
  * @see {@link https://github.com/rivasd/djPsych}
  * @requires jQuery
  * @requires jQuery-UI
+ * @requires jsPsych
  */
 var djPsych = (function djPsych($){
 	var core ={};
@@ -36,6 +37,7 @@ var djPsych = (function djPsych($){
 	 * Initialize the djPSych.js module by pointing it to the right URLs for communicating with the server
 	 * @param {String} expLabel		When you created your Experiment object on djPsych, this is the label field. your experiment lives at this URL
 	 * @param {String} staticRoot	corresponds to the STATIC_URL setting in the settings.py of the server. tells us where to fetch static content.
+	 * @param {boolean) sandboxval	Set to true if you wish to use djPsych with the sandbox page of the djPsych server. Wont actually send but display it locally
 	 */
 	core.init = function init(name, staticRoot, sandboxval){
 		
@@ -59,15 +61,15 @@ var djPsych = (function djPsych($){
 		return expLabel;
 	}
 	
-	core.chooseVersion(newversion){
+	core.chooseVersion= function(newversion){
 		version = newversion;
 	}
 	
-	core.getSandboxVal(){
+	core.getSandboxVal = function(){
 		return sandbox;
 	}
 	
-	core.asSandbox(){
+	core.asSandbox = function(){
 		sandbox = true;
 	}
 	
@@ -101,8 +103,9 @@ var djPsych = (function djPsych($){
 	 */
 	core.request = function request(callback, reqversion){
 		if(sandbox){
-			reqversion = 'test';
+			reqversion = $("#id_sandbox-version").val();
 		}
+		
 		$.ajax({
 			data:{
 				version: reqversion
@@ -139,12 +142,7 @@ var djPsych = (function djPsych($){
 		if(meta == "" || meta==undefined){
 			alert("metadata was not set by a previous call to djPsych.request");
 		}
-		var $dialog = $('<div><p>Sending data...</p><img src="'+staticUrl+'style/ajax-loader.gif" height="10px" width="10px"/></div>');
-		$dialog.dialog({
-			modal:true,
-			closeOnEscape: false,
-			draggable: false
-		})
+		
 		
 		payload = {};
 		payload.data = data;
@@ -160,22 +158,48 @@ var djPsych = (function djPsych($){
 		if(typeof lastChance != "undefined"){
 			lastChance(payload, local);
 		}
-		$.ajax({
-			url: '/webexp/'+expLabel+'/save',
-			method: 'POST',
-			type: 'POST',
-			data: {
-				data: JSON.stringify(payload.data),
-				meta: JSON.stringify(payload.meta)
-			},
-			dataType: 'json',
-			error: function(jqHXR, status, thrown){
-				$dialog.html("server could not be reached at: /webexp/"+expLabel+'/save\n\nError: '+status+' '+thrown);
-			},
-			success: function(resp){
-				$dialog.html("<p>"+resp.success+'</p><p><a href="/webexp">'+"Back to homepage"+'</a>');
+		
+		if(!sandbox){
+			var $dialog = $('<div><p>Sending data...</p><img src="'+staticUrl+'style/ajax-loader.gif" height="10px" width="10px"/></div>');
+			$dialog.dialog({
+				modal:true,
+				closeOnEscape: false,
+				draggable: false
+			})
+			
+			$.ajax({
+				url: '/webexp/'+expLabel+'/save',
+				method: 'POST',
+				type: 'POST',
+				data: {
+					data: JSON.stringify(payload.data),
+					meta: JSON.stringify(payload.meta)
+				},
+				dataType: 'json',
+				error: function(jqHXR, status, thrown){
+					$dialog.html("server could not be reached at: /webexp/"+expLabel+'/save\n\nError: '+status+' '+thrown);
+				},
+				success: function(resp){
+					if(resp.error){
+						$dialog.html("<p>"+resp.error+'</p><p><a href="/webexp">'+"Back to homepage"+'</a>');
+					}
+					else{
+						$dialog.html("<p>"+resp.success+'</p><p><a href="/webexp">'+"Back to homepage"+'</a>');
+					}	
+				}
+			});
+		}
+		else{
+			// djPsych was started in sandbox mode, dont actually send the request, but gather data and display it in the <textarea>
+			chosenFormat = $("#id_sandbox-format").val();
+			if(chosenFormat == 'csv'){
+				$('#datadump').val(jsPsych.data.dataAsCSV());
 			}
-		});
+			else if(chosenFormat =='json'){
+				$("#datadump").val(jsPsych.data.dataAsJSON());
+			}
+		}
+		
 	}
 	
 	return core

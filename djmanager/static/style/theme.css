@@ -148,8 +148,23 @@ button:hover{
 
 #jsPsychTarget{
 	text-align: left;
-	}
+	min-height:500px;
+	padding: 10px;
+	text-align: center;
+}
 	
+.horizontal-li{
+	display:inline;
+}
+
+.full-width {
+	width: 100%;
+}
+	
+#datadump{
+	min-height:300px;
+}
+
 #jspsych_sim_stim{
 	margin-left: auto;
 	margin-right: auto;
@@ -327,90 +342,6 @@ header button{
     padding: 1px;
 }
 
-form.login{
-    text-align: right;
-}
-
-form.login button{
-    display: inline;
-    float: right;
-    font-size: small;
-    min-width: 85px;
-}
-form.login a{
-    color: #e2e2e2;
-    text-decoration: none;
-    float: left;
-    margin: 0;
-    font-size: small;
-}
-#registration{
-    margin-left: auto;
-    margin-right: auto;
-    min-width: 550px;
-    display: inline-block;
-    text-align: left;
-    margin: 15px;
-    padding: 15px;
-}
-
-#regInstructions{
-    max-width: 400px;
-    text-align: left;
-}
-
-#registrationWrapper{
-    text-align: center;
-    background-image: url('brushed_alu.png');
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-
-div.pseudoTableRow label{
-    text-align: left;
-    display: block;
-    padding-left: 10px;
-    font-weight: 700;
-    margin-bottom: 4px;
-}
-
-div.pseudoTableRow input{
-}
-
-div.pseudoTableRow{
-    clear: both;
-    height: auto;
-    margin-top: 5px;
-}
-
-input.passwd{
-    background-image: url('locked59.png');
-}
-
-input.usr{
-    background-image: url('user168.png');
-}
-
-input.email{
-    background-image: url('mail59.png');
-}
-
-input{
-    background-repeat: no-repeat;
-    background-size: 15px;
-    background-position: 5px 7px;
-}
-
-p.tip{
-    font-size: 0.65em;
-    font-style: italic;
-    margin-left: 20px;
-    margin-top: 0px;
-    margin-bottom: 1px;
-    font-family: "Titilium-Web", sans-serif;
-}
 /*
 button[type=submit]{
     background-color: #f99b41;
