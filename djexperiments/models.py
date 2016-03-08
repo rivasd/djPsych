@@ -134,4 +134,15 @@ class Debrief(models.Model):
         else:
             return l_("No debrief information has been set by the experimenters")
 
+class Lobby(models.Model):
     
+    experiment=models.OneToOneField(Experiment)
+    content = MarkdownField(help_text=l_("Write here the content that people will see on the homepage of the experiment, before choosing to do it or not"))
+    
+    def render(self):
+        if self.content is not None:
+            return markdown.markdown(self.content)
+        else:
+            return l_("No homepage information has been set by the experimenters")
+        
+        

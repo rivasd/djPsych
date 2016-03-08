@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+{{ lobby|safe }}
+{% if exp.is_active %}
+<button id="launch" onClick = "window.location = '{% url "webexp:launch" exp.label%}';">{% trans "Participate!" %}</button>
+<button id="debrief" onClick = "window.location = '{% url "webexp:debrief" exp.label%}';">{% trans "Go to debrief" %}</button>
+{% else %}
+<p class="warning">{% trans "Sorry! this experiment is not currently active." %}</p>
+{% endif %}
+{% if researcher %}
+<button id="tosandbox" onClick = "window.location = '{% url "webexp:sandbox" exp.label %}';">{% trans "Test the experiment" %}</button>
+<button id="download-data" onClick = "window.location = '{% url "webexp:collect:all" exp.label %}';">{% trans "Collect the data" %}</button>
+
+{% endif %}
+{% endblock %}

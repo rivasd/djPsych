@@ -6,7 +6,7 @@ Created on Mar 3, 2016
 
 from modeltranslation.translator import register, TranslationOptions
 from .models import Experiment
-from djexperiments.models import Debrief
+from djexperiments.models import Debrief, Lobby
 
 @register(Experiment)
 class ExperimentTranslationOptions(TranslationOptions):
@@ -16,3 +16,7 @@ class ExperimentTranslationOptions(TranslationOptions):
 @register(Debrief)
 class DebriefTranslationOptions(TranslationOptions):
     fields =('content',)
+    
+@register(Lobby)
+class LobbyTranslationOptions(TranslationOptions):
+    fields = ('content',)

@@ -6,7 +6,7 @@ from django.contrib.contenttypes.models import ContentType
 from modeltranslation.admin import TranslationAdmin,\
     TranslationGenericStackedInline, TranslationTabularInline,\
     TranslationStackedInline
-from djexperiments.models import Debrief
+from djexperiments.models import Debrief, Lobby
 from django_markdown.models import MarkdownField
 from django_markdown.widgets import AdminMarkdownWidget
 
@@ -24,6 +24,20 @@ class DebriefTabularInline(TranslationStackedInline):
     
     def get_form(self, request, obj=None, **kwargs):
         form = super(DebriefTabularInline, self).get_form(request, obj=obj, **kwargs)
+        form.base_fields['experiment'].queryset = get_allowed_exp_for_user(request)
+
+
+class LobbyTabularInline(TranslationStackedInline):
+    model = Lobby
+    fields = ['experiment', 'content']
+    
+    def get_queryset(self, request):
+        qs = super(LobbyTabularInline, self).get_queryset(request)
+        exps = get_allowed_exp_for_user(request)
+        return qs.filter(experiment__in=exps)
+    
+    def get_form(self, request, obj=None, **kwargs):
+        form = super(LobbyTabularInline, self).get_form(request, obj=obj, **kwargs)
         form.base_fields['experiment'].queryset = get_allowed_exp_for_user(request)
 
 
@@ -50,7 +64,7 @@ class ExperimentAdmin(TranslationAdmin):
     
     list_display = ('__str__', 'count_finished_part', 'is_active', 'compensated')
     
-    inlines = [DebriefTabularInline]
+    inlines = [DebriefTabularInline, LobbyTabularInline]
 
 
 @admin.register(Debrief)
