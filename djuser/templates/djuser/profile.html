@@ -19,7 +19,7 @@ WE ASSUME THIS TEMPLATE IS UNREACHABLE BY USERS THAT ARE NOT LOGGED IN
 <h3>{% trans "Completed experiments:" %}</h3>
 <ul>
 {% for participation in participations %}
-	<li> {{participation.experiment.label}} </li>
+	<li> {{participation.experiment.verbose_name}}&nbsp | &nbsp {{ participation.finished|date}} </li>
 {% empty %}
 	<li> {% trans "You have not completed any experiments! Get started:  "%}<a href="{% url "webexp:home" %}">{% trans "here" %}</a> </li>
 {% endfor %}

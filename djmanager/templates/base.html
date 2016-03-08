@@ -45,8 +45,8 @@ content	Well, the content of the page
 				
 				{% if user.is_authenticated %}
 				<p>{% trans "Welcome, " %} {{ user.username }}</p>
-				<a href="{% url "account_logout" %}" class="button">{% trans "logout" %}</a>
-				
+				<a href="{% url "account_logout" %}" class="button">{% trans "logout" %}</a> &nbsp | &nbsp
+				<a href="{% url "webexp:profiles:personal" %}" class="button"> {%trans "Go to Profile" %} </a>
 				{% else %}
 				<p>
 				<a id="sign-in-popup" href="/" class="button">{% trans "Sign in" %}</a>

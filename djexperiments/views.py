@@ -9,6 +9,7 @@ from django.utils.translation import ugettext as _
 from djPsych.utils import get_all_js_files_in_exp
 from django.contrib.auth.models import Group
 from djexperiments.forms import SandboxForm
+from djcollect.models import Participation
 
 # Create your views here.
 def lobby(request, exp_label):
@@ -60,9 +61,19 @@ def sandbox(request, exp_label):
         'version': 'test'
     }
     
-    
     return render(request, 'djexperiments/launch.html', context)
     pass
+    
+@login_required
+def debrief(request, exp_label):
+    
+    exp = Experiment.objects.prefetch_related('participation_set', 'debrief').get(label=exp_label)
+    if exp.participation_set.filter(subject=request.user.subject, complete=True).exists(): # TODO: allow more refined test than: if at least one complete part
+        done=True
+    else:
+        done=False
+    
+    return render(request, 'djexperiments/debrief.html', {'debrief': exp.debrief.render(), 'done':done, 'explabel': exp_label})
     
     
     

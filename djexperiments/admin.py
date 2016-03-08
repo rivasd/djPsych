@@ -1,11 +1,31 @@
 from django.contrib import admin
 from .models import Experiment
-from djmanager.utils import get_subclass_ct_pk
+from djmanager.utils import get_subclass_ct_pk, get_allowed_exp_for_user
 from djsend.models import BaseGlobalSetting, BaseSettingBlock
 from django.contrib.contenttypes.models import ContentType
-from modeltranslation.admin import TranslationAdmin
+from modeltranslation.admin import TranslationAdmin,\
+    TranslationGenericStackedInline, TranslationTabularInline,\
+    TranslationStackedInline
+from djexperiments.models import Debrief
+from django_markdown.models import MarkdownField
+from django_markdown.widgets import AdminMarkdownWidget
 
 # Register your models here.
+
+class DebriefTabularInline(TranslationStackedInline):
+    
+    model = Debrief
+    fields = ['experiment', 'content']
+    
+    def get_queryset(self, request):
+        qs = super(DebriefTabularInline, self).get_queryset(request)
+        exps = get_allowed_exp_for_user(request)
+        return qs.filter(experiment__in=exps)
+    
+    def get_form(self, request, obj=None, **kwargs):
+        form = super(DebriefTabularInline, self).get_form(request, obj=obj, **kwargs)
+        form.base_fields['experiment'].queryset = get_allowed_exp_for_user(request)
+
 
 @admin.register(Experiment)
 class ExperimentAdmin(TranslationAdmin):
@@ -30,5 +50,24 @@ class ExperimentAdmin(TranslationAdmin):
     
     list_display = ('__str__', 'count_finished_part', 'is_active', 'compensated')
     
+    inlines = [DebriefTabularInline]
+
+
+@admin.register(Debrief)
+class DebriefAdmin(TranslationAdmin):
+    
+    fields = ['experiment', 'content']
+    
+    def get_queryset(self, request):
+        qs = super(DebriefAdmin, self).get_queryset(request)
+        exps = get_allowed_exp_for_user(request)
+        return qs.filter(experiment__in=exps)
+    
+    def get_form(self, request, obj=None, **kwargs):
+        form = super(DebriefAdmin, self).get_form(request, obj=obj, **kwargs)
+        form.base_fields['experiment'].queryset = get_allowed_exp_for_user(request)
+        
+
+
     
     

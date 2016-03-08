@@ -41,11 +41,6 @@ header {
 	min-height:140px;
 	}
 
-header fieldset{
-    border: none;
-    padding: 1px;
-}
-
 #hidden-login{
 	display: none;
 	background-color:#EAEAEA;
@@ -157,10 +152,15 @@ button:hover{
 	display:inline;
 }
 
+header a{
+	color: white;
+	text-decoration: none;
+}
+
 .full-width {
 	width: 100%;
 }
-	
+
 #datadump{
 	min-height:300px;
 }
@@ -340,6 +340,7 @@ header button{
     margin-bottom: 0px;
     font-size: x-small;
     padding: 1px;
+    color:white;
 }
 
 /*

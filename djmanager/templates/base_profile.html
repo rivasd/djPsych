@@ -8,7 +8,7 @@
 <h2>{% trans "Completed experiments:" %}</h2>
 <ul>
 {% for participation in participations %}
-	<li> {{participation.experiment.label}} </li>
+	<li> {{participation.experiment.verbose_name}}&nbsp | &nbsp {{ participation.finished|date }}</li>
 {% empty %}
 	<li> {% trans "You have not completed any experiments! Get started:  "%}<a href="{% url "homepage" %}">{% trans "here" %}</a> </li>
 {% endfor %}

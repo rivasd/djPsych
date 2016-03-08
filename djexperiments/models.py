@@ -5,6 +5,8 @@ from djPsych.exceptions import SettingException, ParticipationRefused
 from djuser.models import Subject
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import Group, Permission
+from django_markdown.models import MarkdownField
+import markdown
 
 # Create your models here.
 
@@ -119,9 +121,17 @@ class BaseExperiment(models.Model):
     
 class Experiment(BaseExperiment):
     participations = models.ManyToManyField(Subject, through='djcollect.Participation')
-    
-    
     pass
         
+class Debrief(models.Model):
+    
+    experiment = models.OneToOneField(Experiment)
+    content = MarkdownField(help_text=l_("write the debrief content you'd like to show to subjects after the experiment."))
+    
+    def render(self):
+        if self.content is not None:
+            return markdown.markdown(self.content)
+        else:
+            return l_("No debrief information has been set by the experimenters")
 
     
