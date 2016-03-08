@@ -77,6 +77,9 @@ def debrief(request, exp_label):
     exp = Experiment.objects.prefetch_related('participation_set', 'debrief').get(label=exp_label)
     if exp.participation_set.filter(subject=request.user.subject, complete=True).exists(): # TODO: allow more refined test than: if at least one complete part
         done=True
+        
+    elif exp.research_group in request.user.groups.all():
+        done=True
     else:
         done=False
     
