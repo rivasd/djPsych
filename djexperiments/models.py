@@ -133,6 +133,9 @@ class Debrief(models.Model):
             return markdown.markdown(self.content)
         else:
             return l_("No debrief information has been set by the experimenters")
+        
+    def __str__(self):
+        return l_("Debrief for %s") % self.experiment.verbose_name
 
 class Lobby(models.Model):
     
@@ -144,5 +147,8 @@ class Lobby(models.Model):
             return markdown.markdown(self.content)
         else:
             return l_("No homepage information has been set by the experimenters")
+        
+    def __str__(self):
+        return l_("Welcome page for %s") % self.experiment.verbose_name
         
         
