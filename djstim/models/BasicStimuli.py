@@ -10,6 +10,27 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 import json
 
+
+class LinkedStimulus(models.Model):
+    """
+    Model used to implemented Generic many to many relations between a setting object and a stimuli object
+    
+    
+    """
+    # First the link to the setting object
+    setting_type = models.ForeignKey(ContentType)
+    setting_id = models.PositiveIntegerField()
+    setting = GenericForeignKey('setting_type', 'setting_id')
+    
+    # now the link to the simuli object
+    stim_type = models.ForeignKey(ContentType)
+    stim_id = models.PositiveIntegerField()
+    stimulus = GenericForeignKey()
+    
+    
+    
+
+
 class BaseStimuli(models.Model):
     
     class Meta: 
