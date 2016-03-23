@@ -19,15 +19,25 @@ class LinkedStimulus(models.Model):
     Both librairies adressing generic m2m relationships that I found are poor and, critically, offer no admin integration.
     """
     # First the link to the setting object
-    setting_type = models.ForeignKey(ContentType)
+    setting_type = models.ForeignKey(ContentType, related_name="stimlinks")
     setting_id = models.PositiveIntegerField()
     setting = GenericForeignKey('setting_type', 'setting_id')
     
     # now the link to the simuli object
-    stim_type = models.ForeignKey(ContentType)
+    stim_type = models.ForeignKey(ContentType, related_name='blocklinks')
     stim_id = models.PositiveIntegerField()
     stimulus = GenericForeignKey('stim_type', 'stim_id')
+    #TODO: maybe use grappelli's inline ordering feature instead of asking users to directly enter an index number... someone (not me!) should look into that
+    index = models.PositiveSmallIntegerField(blank=True, null=True, help_text=l_("Youn can give a number to indicate the order among the pairs that point to the same block. They will be given in asceding order."))
+    is_practice = models.BooleanField(default=False, help_text=l_("Check this if this stimuli should be in the practice set"))
+    # TODO: There is a redundance between setting stimuli as practice and the ability to set blocks as practice blocks. What to do?
     
+    
+    def get_experiment(self):
+        if hasattr(self.setting, 'experiment'):
+            return self.setting.experiment
+        else:
+            return self.setting.part_of.experiment
     
     
 
@@ -39,7 +49,7 @@ class BaseStimuli(models.Model):
         
     
     name = models.CharField(max_length=26, help_text=l_("A simple name for this particular stimuli pair"))
-    index = models.PositiveSmallIntegerField(blank=True, null=True, help_text=l_("Youn can give a number to indicate the order among the pairs that point to the same block. They will be given in asceding order."))
+    #TODO: change the stim to be an actual fileField so that users can upload real images instead of a path.
     stimulus = models.CharField(max_length=256, help_text=l_("The path to your stimuli file inside the static files folder we provided. Or it can be a short HTML string"))
     
     def to_Dict(self):

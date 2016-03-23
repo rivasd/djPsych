@@ -8,6 +8,7 @@ from .BasicGeneral import BaseGlobalSetting
 from django.utils.translation import ugettext_lazy as l_
 
 
+
 class SimCatGlobalSetting(BaseGlobalSetting):
     sample_table_height = models.IntegerField(help_text='In the table of sample stimuli shown at the beginning, how many images hight should the table be.' )
     sample_table_width = models.IntegerField(help_text="In the table of sample stimuli shown at the beginning, how many images across should the table be.")
@@ -17,17 +18,30 @@ class SimCatGlobalSetting(BaseGlobalSetting):
     size = models.PositiveIntegerField(help_text=l_("The size of the square stimuli in pixels (length of its sides)"))
     number_of_pauses = models.PositiveSmallIntegerField(default=0, help_text=l_("how many pauses with questionnaire should we insert"))
     
+    microcomponent_pairs = models.ManyToManyField('djstim.MicroComponentPair', related_name='settings')
+    practice_pairs = models.ManyToManyField('djstim.MicroComponentPair', related_name='practice_settings')
+    
     def toDict(self):
         super_dict = super(SimCatGlobalSetting, self).toDict()
         # we should add the categories and microcomponent pairs for our experiment
         microcomponents = {}
         prefix = '/static/djexperiments/'+self.experiment.label+'/attributes/'
-        for pair in self.microcomponentpair_set.all():
+        for pair in self.microcomponent_pairs.all():
             microcomponents[pair.index] = {
                 '0': prefix+pair.first,
                 '1': prefix+pair.second
             }
+        
         super_dict['microcomponents'] = microcomponents
+        
+        practice = {}
+        for pair in self.practice_pairs.all():
+            practice[pair.index] = {
+                '0': prefix+pair.first,
+                '1': prefix+pair.second
+            }
+        
+        super_dict['practice_components'] = practice
         
         categories = {}
         for cat in self.category_set.all():

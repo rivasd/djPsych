@@ -15,6 +15,7 @@ from django.contrib.contenttypes.admin import GenericTabularInline,\
 from modeltranslation.admin import TranslationAdmin, TranslationGenericStackedInline
 from djstim.models import Category, MicroComponentPair
 from djreceive.models.CustomTrials import CogComSimilarityTrial
+from djstim.admin import LinkedStimulusInline
 
 
 class InstructionInline(TranslationGenericStackedInline):
@@ -78,6 +79,8 @@ class GenericGlobalSettingAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
         qs = super(GenericGlobalSettingAdmin, self).get_queryset(request)
         return qs.filter(experiment__in=get_allowed_exp_for_user(request))
+    
+    inlines = [ LinkedStimulusInline, ]
     
     
 # ModelAdmins for the more targeted config models
@@ -152,8 +155,13 @@ class SimCatSettingAdmin(GenericGlobalSettingAdmin):
             'levels',
             'density',
             'size',
-            'number_of_pauses'
+            'number_of_pauses',
+            'microcomponent_pairs'
         )}),
     )
     
-    inlines = [CategoryInline, MCPairInline]
+    filter_horizontal = ['microcomponent_pairs']
+    
+    inlines = [CategoryInline]
+    
+    
