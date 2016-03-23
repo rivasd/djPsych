@@ -156,11 +156,12 @@ class SimCatSettingAdmin(GenericGlobalSettingAdmin):
             'density',
             'size',
             'number_of_pauses',
-            'microcomponent_pairs'
+            'microcomponent_pairs',
+            'practice_pairs',
         )}),
     )
     
-    filter_horizontal = ['microcomponent_pairs']
+    filter_horizontal = ['microcomponent_pairs', 'practice_pairs']
     
     inlines = [CategoryInline]
     
