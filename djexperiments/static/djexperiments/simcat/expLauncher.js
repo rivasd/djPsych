@@ -292,6 +292,19 @@ function ExpLauncher(opts, canvas){
 	 * @property	{Integer}	reprise		The index inside a {@link ServerSetting.timeline} of the block that is meant to be identically repeated here. If defined, do not define any other attribute.
 	 */
 	
+	
+	function chooseDiff(attNumber, levels){
+		if(levels > attNumber){
+			throw "requested more possible difficulties than there are attribute pairs";
+		}
+		var diffPool = [];
+		for(var d=attNumber; d>=(attNumber - levels); d--){
+			diffPool.push(d); //zero-index fix, ugh...
+		}
+		return diffPool[Math.floor(Math.random()*diffPool.length)]; //among the possible difficulties, take one at random
+	}
+	
+	
 	/**
 	 * Main method, creates a fully usable jsPsych timeline according to the given settings, creating stimuli on-the-fly from micro-components with my awesome {@link stimEngine} object
 	 * @method
@@ -302,25 +315,8 @@ function ExpLauncher(opts, canvas){
 	 */
 	module.createStandardExperiment = function(settings, atEach, opts){
 		
-		var numberOfCat = Object.keys(settings.categories).length;
-		var attNumber = Object.keys(settings.microcomponents).length;
-		if(settings.levels > attNumber){
-			throw "requested more possible difficulties than there are attribute pairs";
-		}
-		var diffPool = [];
-		for(var d=attNumber; d>=(attNumber - settings.levels); d--){
-			diffPool.push(d); //zero-index fix, ugh...
-		}
-		var difficulty = diffPool[Math.floor(Math.random()*diffPool.length)]; //among the possible difficulties, take one at random
-		var categories = module.createOrthogonalDefs(numberOfCat, attNumber, difficulty);
-		var definitions = {};
-		var idx =0;
-		for (cat in settings.categories){
-			if(settings.categories.hasOwnProperty(cat)){
-				definitions[cat] = categories[idx];
-			}
-			idx++;
-		}
+		var stimWrap = module.makeStim(false, atEach);
+		var practiceStimWrap = module.makeStim(true);
 		var timeline =[];
 		var meta = {parameters: {difficulty: difficulty, definitions: definitions}};
 		var stimuli;
@@ -390,6 +386,53 @@ function ExpLauncher(opts, canvas){
 	function collectQuestionnaire(jsPsychTarget, inputDict){
 		return inputDict;
 	}
+	
+	
+	/**
+	 * @typedef StimuliWrapper
+	 * @type Object
+	 * @property {Object}	components	Each entry in this object represents holds the mc pairs and the url to the microcomponent
+	 * @property {Array}	definitions	Vectorial description of the invariants as returned by {@link expLauncher#createOrthogonalDefs}
+	 * @property {Integer}	difficulty	The difficulty level that has been chosen for these stimuli.
+	 * @property {Array[]}	stimuli		Array of arrays. Inner arrays are a pair of img DOM elements, ready to be used as stimuli
+	 */
+	
+	
+	/**
+	 * Creates the array of image pairs from the settings passed at creation time.
+	 * images are created with the engine provided and given as dataURIs. Use them to give stimuli to your jsPsych trials.
+	 * Each call will give different images each time, so beware.
+	 * 
+	 * @param {boolean} 	practice	If true, uses the "practice_components" instead of the "microcomponents" attribute of the setting object.
+	 * @param {function}	atEach		Function to execute each time a stim pair is created. Useful to update a progress bar.
+	 * @returns {StimuliWrapper}		
+	 */
+	module.makeStim = function makeStim(practice, atEach){
+		practice = practice || false;
+		atEach = atEach || (function(){});
+		
+		var components = practice ? opts.practice_components : opts.microcomponents;
+		var numberOfCat = Object.keys(opts.categories).length;
+		var attNumber = Object.keys(components).length;
+		
+		var diff = chooseDiff(attNumber, opts.levels);
+		var defs = module.createOrthogonalDefs(numberOfCat, Object.keys(components).length, diff);
+		var distances = getDistancesArray(diff, attNumber);
+		var rawTimeline = module.createRawSimilarityTimeline([Object.keys(defs)[0], Object.keys(defs)[1]], distances, block.length)
+		var vectorTimeline = module.createVectorialSimilarityTimeline(rawTimeline, defs);
+		vectorTimeline.forEach(function(elt, i, array) {
+			elt.data.distance = elt.data.kind == 'same' ? elt.data.distance : elt.data.distance+difficulty;
+		});
+		
+		module.replaceVectorsWithImage(vectorTimeline, atEach);
+		return {
+			components: components,
+			definitions: defs,
+			difficulty: diff,
+			stimuli: vectorTimeline
+		};
+	};
+	
 	
 	/**
 	 * Allows you to set the {@link StimEngine} object used to create the stimuli
