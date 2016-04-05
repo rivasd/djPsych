@@ -390,35 +390,24 @@ function ExpLauncher(opts, canvas){
 			if(block.reprise != undefined){
 				timeline.push(timeline[block.reprise]);
 			}
-			else{
+			else if(block.type == 'similarity'){
 				//TODO handle cases where block could be a trial to use as is, or an actual bloc where we have to simply repeat or generate
 				//for now let's assume all ServerBlocks will ask us to generate a series of trials that are not all identical
-				if(block.type == 'similarity'){
-					block.timeline = vectorTimeline;
-					if(opts.reuseStim){
-						stimuli = vectorTimeline;
-					}
-				}
-				else if(block.type == 'categorize'){
-					//I moved the key codes to the main object because i needed the names of the categories there to build them, pull them back here
-					var choices = [];
-					for(var key in settings.categories){
-						if(settings.categories.hasOwnProperty(key)){
-							choices.push(settings.categories[key]);
-						}
-					}
-					block.choices = choices;
-					if(opts.reuseStim){
-						block.timeline = module.getCategorizationTimelineFromSim(stimuli, settings.categories, block.length);
-						insertPauses(block.timeline, settings.number_of_pauses, 'questionnaire.html', collectQuestionnaire)
-					}
-					else{
-						//I dont have code to create a categorization task from scratch but it would simple to do. Ill do this if i have time
-					}
-				}
-				block.return_stim = false;
-				timeline.push(block);
+				block.timeline = block.is_practice ? practiceStimuli : stimuli;
 			}
+			else if(block.type == 'categorize'){
+				//I moved the key codes to the main object because i needed the names of the categories there to build them, pull them back here
+				var choices = [];
+				for(var key in settings.categories){
+					if(settings.categories.hasOwnProperty(key)){
+						choices.push(settings.categories[key]);
+					}
+				}
+				block.choices = choices;
+				block.timeline = module.getCategorizationTimelineFromSim(stimuli, settings.categories, block.length);
+				insertPauses(block.timeline, settings.number_of_pauses, 'questionnaire.html', collectQuestionnaire);
+			}
+			timeline.push(block);
 		}
 		//We should end by adding some stuff to the meta object here
 		var browser = get_browser_info();
@@ -435,12 +424,6 @@ function ExpLauncher(opts, canvas){
 	function collectQuestionnaire(jsPsychTarget, inputDict){
 		return inputDict;
 	}
-	
-	
-	
-	
-	
-	
 	
 	/**
 	 * Allows you to set the {@link StimEngine} object used to create the stimuli

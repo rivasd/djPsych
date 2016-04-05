@@ -156,6 +156,8 @@ class SimCatSettingAdmin(GenericGlobalSettingAdmin):
             'density',
             'size',
             'number_of_pauses',
+            'length',
+            'practices',
             'microcomponent_pairs',
             'practice_pairs',
         )}),

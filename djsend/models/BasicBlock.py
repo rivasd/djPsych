@@ -14,7 +14,6 @@ from gfklookupwidget.fields import GfkLookupField
 from pip.cmdoptions import verbose
 
 
-
 class BaseSettingBlock(models.Model):
     
     class Meta:

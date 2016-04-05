@@ -76,7 +76,8 @@ def sendSettings(request, exp_label):
     save_dict= {}
     # save a mapping of 'type' attribute to content type id so that later we know with which model to save data-objects of each type
     for block in final_settings['timeline']:
-        save_dict[block['type']] = block['save_with_id']
+        if hasattr(block, 'save_with_id'):
+            save_dict[block['type']] = block['save_with_id']
     request.session['data_mapping'] = json.dumps(save_dict)
     # Good luck :)
     return JsonResponse(final_settings)
