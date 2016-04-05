@@ -14,6 +14,13 @@ var djPsych = (function djPsych($){
 	var meta = "";
 	var sandbox = false;
 	
+	/**
+	 * Maps trial-types to a function that should take a block from the server-returned timeline and output the same block but ready to be used
+	 * as is inside a jsPsych timeline.
+	 * @private
+	 * 
+	 */
+	var adapters={};
 	
 	function get_browser_info(){
 	    var ua=navigator.userAgent,tem,M=ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || []; 
@@ -95,6 +102,11 @@ var djPsych = (function djPsych($){
 		})
 		return newTimeline;
 	}
+	
+	function prepare(block){
+		
+	};
+	
 	
 	/**
 	 * Requests a setting object from the server in order to start an experiment. 

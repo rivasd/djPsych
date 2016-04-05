@@ -17,6 +17,8 @@ class SimCatGlobalSetting(BaseGlobalSetting):
     density = models.IntegerField(help_text="how many micro components should fit along the height and width of the finished stimulus, controls how dense is the stimulus")
     size = models.PositiveIntegerField(help_text=l_("The size of the square stimuli in pixels (length of its sides)"))
     number_of_pauses = models.PositiveSmallIntegerField(default=0, help_text=l_("how many pauses with questionnaire should we insert"))
+    length = models.PositiveIntegerField(help_text=l_("How many stimuli pairs should be created"), default=40)
+    practices = models.PositiveIntegerField(help_text=l_("How many practice trials should be run before starting the real task"), default=5)
     
     microcomponent_pairs = models.ManyToManyField('djstim.MicroComponentPair', related_name='settings')
     practice_pairs = models.ManyToManyField('djstim.MicroComponentPair', related_name='practice_settings')

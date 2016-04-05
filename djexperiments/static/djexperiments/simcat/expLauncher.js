@@ -304,6 +304,68 @@ function ExpLauncher(opts, canvas){
 		return diffPool[Math.floor(Math.random()*diffPool.length)]; //among the possible difficulties, take one at random
 	}
 	
+	/**
+	 * @typedef StimuliWrapper
+	 * @type Object
+	 * @property {Object}	components	Each entry in this object represents holds the mc pairs and the url to the microcomponent
+	 * @property {Array}	definitions	Vectorial description of the invariants as returned by {@link expLauncher#createOrthogonalDefs}
+	 * @property {Integer}	difficulty	The difficulty level that has been chosen for these stimuli.
+	 * @property {Array[]}	stimuli		Array of arrays. Inner arrays are a pair of img DOM elements, ready to be used as stimuli
+	 */
+	
+	
+	/**
+	 * Creates the array of image pairs from the settings passed at creation time.
+	 * images are created with the engine provided and given as dataURIs. Use them to give stimuli to your jsPsych trials.
+	 * Each call will give different images each time, so beware.
+	 * 
+	 * @param {boolean} 	practice	If true, uses the "practice_components" instead of the "microcomponents" attribute of the setting object.
+	 * @param {function}	atEach		Function to execute each time a stim pair is created. Useful to update a progress bar.
+	 * @returns {StimuliWrapper}		
+	 */
+	module.makeStimDescription = function makeStimDescription(practice){
+		practice = practice || false;
+		atEach = atEach || (function(){});
+		
+		var components = practice ? opts.practice_components : opts.microcomponents;
+		var numberOfCat = Object.keys(opts.categories).length;
+		
+		var diff = chooseDiff(attNumber, opts.levels);
+		var defs = module.createOrthogonalDefs(numberOfCat, Object.keys(components).length, diff);
+		var definitions ={};
+		Objects.keys(opts.categories).forEach(function(elt, idx){
+			definitions[elt] = defs[idx];
+		});
+		
+		return {
+			components: components,
+			definitions: definitions,
+			difficulty: diff
+		};
+	};
+	
+	
+	/**
+	 * Final step before creating an actual array of images.
+	 * @param	{StimuliWrapper}	wrapper	Description of the chosen MCs and the invariants.
+	 * @param	{Integer}			length	How many stimuli pairs you wish to create.
+	 * @param	{function}			atEach	function that will be called after each pair is drawn and saved. useful to update a progress bar.
+	 * @returns	{Array[]}					Array of img DOM element pairs.
+	 */
+	module.makeStimuli = function makeStimuli(wrapper, length, atEach){
+		
+		var attNumber = Object.keys(wrapper.components).length;
+		var distances = getDistancesArray(wrapper.difficulty, attNumber);
+		var rawTimeline = module.createRawSimilarityTimeline([Object.keys(wrapper.definitions)[0], Object.keys(wrapper.definitions)[1]], distances, length)
+		var vectorTimeline = module.createVectorialSimilarityTimeline(rawTimeline, wrapper.definitions);
+		vectorTimeline.forEach(function(elt, i, array) {
+			elt.data.distance = elt.data.kind == 'same' ? elt.data.distance : elt.data.distance+difficulty;
+		});
+		
+		module.replaceVectorsWithImage(vectorTimeline, atEach);
+		return vectorTimeline;
+	};
+	
 	
 	/**
 	 * Main method, creates a fully usable jsPsych timeline according to the given settings, creating stimuli on-the-fly from micro-components with my awesome {@link stimEngine} object
@@ -315,11 +377,12 @@ function ExpLauncher(opts, canvas){
 	 */
 	module.createStandardExperiment = function(settings, atEach, opts){
 		
-		var stimWrap = module.makeStim(false, atEach);
-		var practiceStimWrap = module.makeStim(true);
+		var stimWrap = module.makeStimDescription(false, atEach);
+		var practiceStimWrap = module.makeStimDescription(true);
 		var timeline =[];
-		var meta = {parameters: {difficulty: difficulty, definitions: definitions}};
-		var stimuli;
+		var meta = {parameters: {difficulty: stimWrap.difficulty, definitions: stimWrap.definitions}};
+		var stimuli = module.makeStimuli(stimWrap, settings.length, atEach);
+		var practiceStimuli = module.makeStimuli(practiceStimWrap, settings.practices);
 		// ok so now we should have all we need to create stuff, lets iterate through the given timeline
 		for(var step=0; step<settings.timeline.length; step++){
 			var block = settings.timeline[step];
@@ -328,23 +391,9 @@ function ExpLauncher(opts, canvas){
 				timeline.push(timeline[block.reprise]);
 			}
 			else{
-				//Ugh, we have to create an actual trial
 				//TODO handle cases where block could be a trial to use as is, or an actual bloc where we have to simply repeat or generate
 				//for now let's assume all ServerBlocks will ask us to generate a series of trials that are not all identical
 				if(block.type == 'similarity'){
-					//oh god we have to figure out the distances...
-					var distances = getDistancesArray(difficulty, attNumber);
-					var rawTimeline = module.createRawSimilarityTimeline([Object.keys(definitions)[0], Object.keys(definitions)[1]], distances, block.length)
-					var vectorTimeline = module.createVectorialSimilarityTimeline(rawTimeline, definitions);
-					//set the correct final distance in the trial meta data
-					vectorTimeline.forEach(function(elt, i, array) {
-						elt.data.distance = elt.data.kind == 'same' ? elt.data.distance : elt.data.distance+difficulty;
-					});
-					if(opts.saveDescription){
-						meta.description = rawTimeline;
-					}
-					//draw the stimuli!
-					module.replaceVectorsWithImage(vectorTimeline, atEach);
 					block.timeline = vectorTimeline;
 					if(opts.reuseStim){
 						stimuli = vectorTimeline;
@@ -388,50 +437,9 @@ function ExpLauncher(opts, canvas){
 	}
 	
 	
-	/**
-	 * @typedef StimuliWrapper
-	 * @type Object
-	 * @property {Object}	components	Each entry in this object represents holds the mc pairs and the url to the microcomponent
-	 * @property {Array}	definitions	Vectorial description of the invariants as returned by {@link expLauncher#createOrthogonalDefs}
-	 * @property {Integer}	difficulty	The difficulty level that has been chosen for these stimuli.
-	 * @property {Array[]}	stimuli		Array of arrays. Inner arrays are a pair of img DOM elements, ready to be used as stimuli
-	 */
 	
 	
-	/**
-	 * Creates the array of image pairs from the settings passed at creation time.
-	 * images are created with the engine provided and given as dataURIs. Use them to give stimuli to your jsPsych trials.
-	 * Each call will give different images each time, so beware.
-	 * 
-	 * @param {boolean} 	practice	If true, uses the "practice_components" instead of the "microcomponents" attribute of the setting object.
-	 * @param {function}	atEach		Function to execute each time a stim pair is created. Useful to update a progress bar.
-	 * @returns {StimuliWrapper}		
-	 */
-	module.makeStim = function makeStim(practice, atEach){
-		practice = practice || false;
-		atEach = atEach || (function(){});
-		
-		var components = practice ? opts.practice_components : opts.microcomponents;
-		var numberOfCat = Object.keys(opts.categories).length;
-		var attNumber = Object.keys(components).length;
-		
-		var diff = chooseDiff(attNumber, opts.levels);
-		var defs = module.createOrthogonalDefs(numberOfCat, Object.keys(components).length, diff);
-		var distances = getDistancesArray(diff, attNumber);
-		var rawTimeline = module.createRawSimilarityTimeline([Object.keys(defs)[0], Object.keys(defs)[1]], distances, block.length)
-		var vectorTimeline = module.createVectorialSimilarityTimeline(rawTimeline, defs);
-		vectorTimeline.forEach(function(elt, i, array) {
-			elt.data.distance = elt.data.kind == 'same' ? elt.data.distance : elt.data.distance+difficulty;
-		});
-		
-		module.replaceVectorsWithImage(vectorTimeline, atEach);
-		return {
-			components: components,
-			definitions: defs,
-			difficulty: diff,
-			stimuli: vectorTimeline
-		};
-	};
+	
 	
 	
 	/**
