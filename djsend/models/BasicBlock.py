@@ -33,7 +33,7 @@ class BaseSettingBlock(models.Model):
     type = models.CharField(max_length=26, help_text=l_("This will be passed as the 'type' parameter to jsPsych. It tells it which plugin to use to render these trials."))
     save_with = models.ForeignKey(ContentType, related_name='created_%(class)ss', help_text=l_("Choose the data model that will be used to save all trials that have their 'type' parameter equal to what you wrote above.\
      If You have different block-setting objects (like this one) that have the same 'type' but different 'save_with', then there is no guarantee which data-model will be used. This is because I think there is no real reason why two different 'categorization' blocks should be saved with different data-models: even if they have wildly different stimuli or timing settings, they should return the same kind of data."))
-    is_practice = models.BooleanField()
+    has_practice = models.BooleanField(help_text=l_("Check if you want to mark this block to need a practice block before, useful to guide client-side JS code."), default=False)
     instructions = GenericRelation(Instruction)
     # magic field for dynamically added settings. Be careful the keys of this JSON object do not clash with the name of a field on the model, or they will get replaced
     extra_params = JSONField(null=True, blank=True)

@@ -103,8 +103,15 @@ var djPsych = (function djPsych($){
 		return newTimeline;
 	}
 	
-	function prepare(block){
-		
+	/**
+	 * 
+	 */
+	function unpack(timeline, handler){
+		var newTimeline =[];
+		timeline.forEach(function(elt, i, arr){
+			
+		});
+		return newTimeline;
 	};
 	
 	
@@ -151,16 +158,15 @@ var djPsych = (function djPsych($){
 	 * @param	{*=}			local		the lastChance function will be called with this as second parameter if given
 	 */
 	core.save = function save(data, complete, lastChance, local){
-		if(meta == "" || meta==undefined){
+		if(meta == "" || meta == undefined){
 			alert("metadata was not set by a previous call to djPsych.request");
-		}
-		
+		} 
 		
 		payload = {};
 		payload.data = data;
 		metadata = {};
 		metadata.browser = get_browser_info();
-		metadata.name= meta.name;
+		metadata.name = meta.name;
 		metadata.subject = meta.subject;
 		metadata.current_exp = meta.current_exp;
 		metadata.exp_id = meta.exp_id;
