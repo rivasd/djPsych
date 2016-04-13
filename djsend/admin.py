@@ -41,7 +41,7 @@ class GenericBlockAdmin(TranslationAdmin):
     formfield_overrides = {MarkdownField: {'widget': AdminMarkdownWidget}}
     fieldsets=(
         (l_("Experimental structure options"), {'fields': (('global_settings_type', 'global_settings_id'), 'position_in_timeline', 'reprise')}),
-        (l_("General parameters"), {'fields':('name', 'length', 'is_practice', 'extra_params')}),
+        (l_("General parameters"), {'fields':('name', 'length', 'has_practice', 'extra_params')}),
         (l_("Saving & processing options"), {'fields':(('type', 'save_with'),)})
     )
     
@@ -49,7 +49,7 @@ class GenericBlockAdmin(TranslationAdmin):
         'generic' :[['global_settings_type', 'global_settings_id']]
     }
     
-    list_display = ('name', 'get_parent_name', 'position_in_timeline', 'type', 'is_practice')
+    list_display = ('name', 'get_parent_name', 'position_in_timeline', 'type', 'has_practice')
     
     inlines = [ InstructionInline,]
     

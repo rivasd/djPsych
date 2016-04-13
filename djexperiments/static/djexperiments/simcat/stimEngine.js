@@ -164,7 +164,9 @@ function StimEngine(opts, canvas){
 	 * @return	{DataURI}			The stimulus as a data URI string ready to be used in-browser
 	 * @method
 	 */
-	module.singleDraw = function singleDraw(def){
+	module.singleDraw = function singleDraw(def, components){
+		
+		var pieces = components || microComponents;
 		var struct = [];
 		for(var i=0; i<width; i++){
 			struct[i]=[];
@@ -208,7 +210,7 @@ function StimEngine(opts, canvas){
 				//now that we kept only the allowed MCs, choose one at random
 				var chosen = remaining[Math.floor(Math.random() * remaining.length)];
 				//Actually draw it on the <canvas>
-				canvasContext.drawImage(microComponents[chosen][def[chosen]], x*size, y*size);
+				canvasContext.drawImage(pieces[chosen][def[chosen]], x*size, y*size);
 				//mark that location as done
 				struct[x][y] = 'done';
 				//mark nearby locations not to allow that same MC that we just drew
@@ -236,6 +238,12 @@ function StimEngine(opts, canvas){
 	
 	module.setComponents = function setComponents(comps){
 		microComponents = comps;
+		if(typeof microComponents[0][0] == 'string'){
+			//need to convert the raw base64 string to an DOM img object
+			
+		}
+		
+		
 		var size = microComponents[0][0].width //take the first MC and check its width, assume all MC are squares of this size
 		pool = [];
 		for(var i=0;i<Object.keys(microComponents).length; i++){

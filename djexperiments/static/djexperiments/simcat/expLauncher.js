@@ -74,7 +74,7 @@ function ExpLauncher(opts, canvas){
 	
 	module.loadMicroComponents = function(settings, callback){
 		var count = 0
-		var done = Object.keys(settings.microcomponents).length * 2;
+		var done = (Object.keys(settings.microcomponents).length+Object.keys(settings.practice_components).length) * 2;
 		
 		function check(){
 			if(count == done){
@@ -156,7 +156,10 @@ function ExpLauncher(opts, canvas){
 	 * @param	{Object[]}	vectorTimeline	An array of objects like that returned by {@link ExpLauncher#createVectorialTimeline}. must have a 'stimuli' property containing a vectorial def or an array of vectorial defs
 	 * @param	{Function}	callback		a function to be called after every call to the engine rendering function. provided with two positional arguments: the index of the trial being currently processed, and the total number of trials to be processed.	
 	 */
-	module.replaceVectorsWithImage = function(vectorTimeline, callback){
+	module.replaceVectorsWithImage = function(vectorTimeline, callback, components){
+		if(components){
+			engine.setComponents(components);
+		}
 		vectorTimeline.forEach(function(raw, i, array) {
 			var multiple = raw.stimuli.length == undefined ? false : true;
 			if(!multiple){
@@ -325,15 +328,15 @@ function ExpLauncher(opts, canvas){
 	 */
 	module.makeStimDescription = function makeStimDescription(practice){
 		practice = practice || false;
-		atEach = atEach || (function(){});
-		
+	
 		var components = practice ? opts.practice_components : opts.microcomponents;
+		var attNumber = Object.keys(components).length;
 		var numberOfCat = Object.keys(opts.categories).length;
 		
 		var diff = chooseDiff(attNumber, opts.levels);
 		var defs = module.createOrthogonalDefs(numberOfCat, Object.keys(components).length, diff);
 		var definitions ={};
-		Objects.keys(opts.categories).forEach(function(elt, idx){
+		Object.keys(opts.categories).forEach(function(elt, idx){
 			definitions[elt] = defs[idx];
 		});
 		
@@ -352,17 +355,17 @@ function ExpLauncher(opts, canvas){
 	 * @param	{function}			atEach	function that will be called after each pair is drawn and saved. useful to update a progress bar.
 	 * @returns	{Array[]}					Array of img DOM element pairs.
 	 */
-	module.makeStimuli = function makeStimuli(wrapper, length, atEach){
+	module.makeStimuli = function makeStimuli(wrapper, length, atEach, components){
 		
 		var attNumber = Object.keys(wrapper.components).length;
 		var distances = getDistancesArray(wrapper.difficulty, attNumber);
 		var rawTimeline = module.createRawSimilarityTimeline([Object.keys(wrapper.definitions)[0], Object.keys(wrapper.definitions)[1]], distances, length)
 		var vectorTimeline = module.createVectorialSimilarityTimeline(rawTimeline, wrapper.definitions);
 		vectorTimeline.forEach(function(elt, i, array) {
-			elt.data.distance = elt.data.kind == 'same' ? elt.data.distance : elt.data.distance+difficulty;
+			elt.data.distance = elt.data.kind == 'same' ? elt.data.distance : elt.data.distance + wrapper.difficulty;
 		});
 		
-		module.replaceVectorsWithImage(vectorTimeline, atEach);
+		module.replaceVectorsWithImage(vectorTimeline, atEach, components);
 		return vectorTimeline;
 	};
 	
@@ -382,7 +385,8 @@ function ExpLauncher(opts, canvas){
 		var timeline =[];
 		var meta = {parameters: {difficulty: stimWrap.difficulty, definitions: stimWrap.definitions}};
 		var stimuli = module.makeStimuli(stimWrap, settings.length, atEach);
-		var practiceStimuli = module.makeStimuli(practiceStimWrap, settings.practices);
+		var practiceStimuli = module.makeStimuli(practiceStimWrap, settings.practices, null, settings.practice_components);
+		
 		// ok so now we should have all we need to create stuff, lets iterate through the given timeline
 		for(var step=0; step<settings.timeline.length; step++){
 			var block = settings.timeline[step];
@@ -404,7 +408,12 @@ function ExpLauncher(opts, canvas){
 					}
 				}
 				block.choices = choices;
-				block.timeline = module.getCategorizationTimelineFromSim(stimuli, settings.categories, block.length);
+				if(block.is_practice){
+					block.timeline = module.getCategorizationTimelineFromSim(practiceStimuli, settings.categories, settings.practices);
+				}
+				else{
+					block.timeline = module.getCategorizationTimelineFromSim(stimuli, settings.categories, block.length);
+				}
 				insertPauses(block.timeline, settings.number_of_pauses, 'questionnaire.html', collectQuestionnaire);
 			}
 			timeline.push(block);

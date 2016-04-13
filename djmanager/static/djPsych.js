@@ -104,15 +104,36 @@ var djPsych = (function djPsych($){
 	}
 	
 	/**
-	 * 
+	 * Goes through the timeline provided by the server and produces a new timeline while doing a few things:
+	 * If a block was marked as has_practice, it creates a practice block using the given handler, and puts it before the actual block
+	 * If the block has instructions, it creates jsPsych instruction blocks before and/or after the practice block (or the actual block if it was not marked as has_practice)
 	 */
-	function unpack(timeline, handler){
+	core.unpack = function unpack(timeline, handler){
 		var newTimeline =[];
 		timeline.forEach(function(elt, i, arr){
-			
+			var block = $.extend({}, elt);
+			if(block.instructions && block.instructions.before){
+				newTimeline.push(elt.instructions.before);
+			}
+			if(block.has_practice){
+				var practice = $.extend(true, {}, block);
+				//practice.is_practice = true;
+				newTimeline.push(handler(practice));
+				if(block.instructions && block.instructions.after){
+					newTimeline.push(elt.after);
+				}
+				newTimeline.push(block);
+			}
+			else{
+				newTimeline.push(block);
+				if(elt.instructions && elt.instructions.after){
+					newTimeline.push(elt.instructions.after);
+				}
+			}
 		});
 		return newTimeline;
 	};
+	
 	
 	
 	/**
@@ -142,7 +163,7 @@ var djPsych = (function djPsych($){
 				}
 				else{
 					meta = resp;
-					resp.timeline = unpackInstructions(resp.timeline);
+					// resp.timeline = unpackInstructions(resp.timeline);
 					callback(resp)
 				}
 			},
