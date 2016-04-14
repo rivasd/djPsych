@@ -117,7 +117,7 @@ var djPsych = (function djPsych($){
 			}
 			if(block.has_practice){
 				var practice = $.extend(true, {}, block);
-				//practice.is_practice = true;
+				practice.is_practice = true;
 				newTimeline.push(handler(practice));
 				if(block.instructions && block.instructions.after){
 					newTimeline.push(elt.after);

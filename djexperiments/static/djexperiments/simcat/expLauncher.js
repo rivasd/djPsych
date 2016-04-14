@@ -86,20 +86,28 @@ function ExpLauncher(opts, canvas){
 			count++;
 			check();
 		}
-		for(var pair in settings.microcomponents){
-			if(settings.microcomponents.hasOwnProperty(pair)){
-				var pair = settings.microcomponents[pair];
-				for(var attr in pair){
-					if(pair.hasOwnProperty(attr)){
-						var url = pair[attr];
-						var mc = new Image();
-						mc.onload = load;
-						mc.src= url;
-						pair[attr] = mc;
+		
+		function makeImg(str){
+			var mc = new Image();
+			mc.onload = load;
+			mc.src = str;
+			return mc;
+		}
+		
+		function cyclePairs(components){
+			for(var pair in components){
+				if(components.hasOwnProperty(pair)){
+					var pair = components[pair];
+					for(var attr in pair){
+						if(pair.hasOwnProperty(attr)){
+							pair[attr] = makeImg(pair[attr]);
+						}
 					}
 				}
 			}
 		}
+		cyclePairs(settings.microcomponents);
+		cyclePairs(settings.practice_components);
 	}
 	
 	/**
@@ -413,8 +421,8 @@ function ExpLauncher(opts, canvas){
 				}
 				else{
 					block.timeline = module.getCategorizationTimelineFromSim(stimuli, settings.categories, block.length);
+					insertPauses(block.timeline, settings.number_of_pauses, 'questionnaire.html', collectQuestionnaire);
 				}
-				insertPauses(block.timeline, settings.number_of_pauses, 'questionnaire.html', collectQuestionnaire);
 			}
 			timeline.push(block);
 		}
