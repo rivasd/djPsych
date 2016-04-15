@@ -120,7 +120,7 @@ var djPsych = (function djPsych($){
 				practice.is_practice = true;
 				newTimeline.push(handler(practice));
 				if(block.instructions && block.instructions.after){
-					newTimeline.push(elt.after);
+					newTimeline.push(elt.instructions.after);
 				}
 				newTimeline.push(block);
 			}
