@@ -112,25 +112,24 @@ li	{
 	}
 	
 button {
-	
-	display:inline-block;
-	margin-left: auto;
-	margin-right:auto;
-	position:relative;
-	background:#283947;
-	color:#BBBEC1;
-	text-decoration:none;/style/
+	display:inline-block;
+	/* margin-left: auto; */
+	/* margin-right:auto; */
+	/* position:relative; */
+	background:#283947;
+	color:#BBBEC1;
+	text-decoration:none;/
+	style/
 	margin:10px;
-	padding:10px;
-	border-radius:6px;
-	text-shadow: 1px 1px 1px rgba(255,255,255, .22);
-	box-shadow: 2px 2px 2px #252525;
-	min-width: 85px;
-	
-	background: -webkit-linear-gradient(#283947, #243B4F); /* For Safari 5.1 to 6.0 */
-	background: -o-linear-gradient(#283947, #243B4F); /* For Opera 11.1 to 12.0 */
-	background: -moz-linear-gradient(#283947, #243B4F); /* For Firefox 3.6 to 15 */
-	background: linear-gradient(#283947, #243B4F); /* Standard syntax */
+	padding:10px;
+	border-radius:6px;
+	text-shadow: 1px 1px 1px rgba(255,255,255, .22);
+	box-shadow: 2px 2px 2px #252525;
+	min-width: 85px;
+	background: -webkit-linear-gradient(#283947, #243B4F); /* For Safari 5.1 to 6.0 */
+	background: -o-linear-gradient(#283947, #243B4F); /* For Opera 11.1 to 12.0 */
+	background: -moz-linear-gradient(#283947, #243B4F); /* For Firefox 3.6 to 15 */
+	background: linear-gradient(#283947, #243B4F); /* Standard syntax */
 	}
 
 button a{
@@ -142,12 +141,27 @@ button:hover{
 	}
 
 #jsPsychTarget{
-	text-align: left;
+	/* text-align: left; */
 	min-height:500px;
 	padding: 10px;
-	text-align: center;
+	/* text-align: center; */
+	display: block;
 }
 	
+#jsPsychTarget img{
+	display:block;
+	margin: 0 auto;
+}
+
+#jsPsychTarget button{
+	display: block;
+	margin: 0 auto;
+}
+
+.prompt, .feedback{
+	text-align: center;
+}
+
 .horizontal-li{
 	display:inline;
 }
@@ -183,7 +197,9 @@ header a{
 
 #jspsych-sim-stim{
 	height: 310px;
-    width:  310px;
+	width:  310px;
+	margin: auto;
+	display: block;
 }
 	
 #fixationCross{

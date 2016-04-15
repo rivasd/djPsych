@@ -24,10 +24,10 @@ class CategorizationBlock(BaseSettingBlock):
     
     def toDict(self):
         initial = super(CategorizationBlock, self).toDict()
-        initial['correct_text'] = "<p class=\"feeback success\">{} </p>".format(self.correct_text)
-        initial['incorrect_text'] = "<p class=\"feeback error\">{} </p>".format(self.incorrect_text)
+        initial['correct_text'] = "<p class=\"feedback success\">{} </p>".format(self.correct_text)
+        initial['incorrect_text'] = "<p class=\"feedback error\">{} </p>".format(self.incorrect_text)
         initial['prompt'] = "<p class=\"prompt\">{} </p>".format(self.prompt)
-        initial['timeout_message'] = "<p class=\"feeback error\">{} </p>".format(self.timeout_message)
+        initial['timeout_message'] = "<p class=\"feedback error\">{} </p>".format(self.timeout_message)
         return initial
         
 class SimilarityBlock(BaseSettingBlock):
@@ -52,4 +52,13 @@ class SimilarityBlock(BaseSettingBlock):
         initial = super(SimilarityBlock, self).toDict()
         initial['prompt'] = "<p class=\"prompt\"> {} </p>".format(self.prompt)
         return initial
+    
+class HTMLBlock(BaseSettingBlock):
+    
+    url = models.URLField()
+    
+    
+    
+    
+    
     

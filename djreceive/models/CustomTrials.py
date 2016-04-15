@@ -11,3 +11,10 @@ class CogComSimilarityTrial(BaseTrial):
     secondStim = models.CharField(max_length=24)
     kind = models.CharField(max_length=10)
     distance = models.IntegerField()
+    
+class CogComHTMLTrial(BaseTrial):
+    handles = 'html'
+    difficulty = models.PositiveIntegerField()
+    ruleFound = models.BooleanField()
+    ruleDescription = models.TextField(null=True)
+    stratDescription = models.TextField(null=True)

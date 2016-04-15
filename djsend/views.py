@@ -11,6 +11,8 @@ import string
 import datetime
 import json
 from django.shortcuts import render
+from django.contrib.contenttypes.models import ContentType
+from djreceive.models.CustomTrials import CogComHTMLTrial
 
 
 # Create your views here.
@@ -76,8 +78,10 @@ def sendSettings(request, exp_label):
     save_dict= {}
     # save a mapping of 'type' attribute to content type id so that later we know with which model to save data-objects of each type
     for block in final_settings['timeline']:
-        if hasattr(block, 'save_with_id'):
+        if 'save_with_id' in block:
             save_dict[block['type']] = block['save_with_id']
+    #TODO: find a better way to handle our html auto insertion...
+    save_dict['html'] = ContentType.objects.get_for_model(CogComHTMLTrial).pk
     request.session['data_mapping'] = json.dumps(save_dict)
     # Good luck :)
     return JsonResponse(final_settings)

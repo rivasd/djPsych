@@ -24,6 +24,7 @@ jsPsych.plugins.categorize = (function() {
     trial.prompt = (typeof trial.prompt === 'undefined') ? '' : trial.prompt;
     trial.show_feedback_on_timeout = (typeof trial.show_feedback_on_timeout === 'undefined') ? false : trial.show_feedback_on_timeout;
     trial.timeout_message = trial.timeout_message || "<p>Please respond faster.</p>";
+    trial.is_practice = trial.is_practice || false;
     // timing params
     trial.timing_stim = trial.timing_stim || -1; // default is to show image until response
     trial.timing_response = trial.timing_response || -1; // default is no max response time
@@ -90,7 +91,8 @@ jsPsych.plugins.categorize = (function() {
         "rt": info.rt,
         "correct": correct,
         //"stimulus": trial.stimulus,
-        "key_press": info.key
+        "key_press": info.key,
+        "is_practice": trial.is_practice
       };
       if(trial.return_stim){
     	  trial_data.stimulus = trial.stimulus;

@@ -214,9 +214,9 @@ function ExpLauncher(opts, canvas){
 			for(var i=0;i<multiplier;i++){
 				timeline = timeline.concat(fulltimeline);
 			}
-			timeline = timeline.slice(0, length);
 		}
 		shuffle(timeline);
+		timeline = timeline.slice(0, length);
 		return timeline;
 	}
 	
@@ -398,6 +398,7 @@ function ExpLauncher(opts, canvas){
 		// ok so now we should have all we need to create stuff, lets iterate through the given timeline
 		for(var step=0; step<settings.timeline.length; step++){
 			var block = settings.timeline[step];
+			block.return_stim = false;
 			//Let's start with an easy case: a reprise of a previous block
 			if(block.reprise != undefined){
 				timeline.push(timeline[block.reprise]);
