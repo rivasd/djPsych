@@ -279,7 +279,7 @@ function ExpLauncher(opts, canvas){
 		else{
 			var interval = Math.floor(timeline.length/(howMany+1));
 			// now actually proceed to insert
-			for(cursor=interval; cursor<timeline.length; cursor += interval+1){
+			for(cursor=interval; cursor<timeline.length-1; cursor += interval+1){
 				timeline.splice(cursor, 0, pauseTrial);
 			}
 		}
