@@ -40,16 +40,32 @@ function run(settings){
 	settings.timeline = djPsych.unpack(settings.timeline, function(t){return t;});
 	var launcher = ExpLauncher(settings, document.getElementById("stimCanvas")); //initialize a launcher and drawer 
 	var $bar = $("#progressBar");
+	var $progressLabel = $("<div></div>")
 	$bar.progressbar({
-		max : settings.timeline[0].length
+		max : (settings.length) + (settings.practices),
+		value :0
 	});
+	var createdStim =0;
 	function increment(idx, total){
-		$bar.progressbar("value", idx);
+		createdStim++;
+		//$bar.progressbar("value", createdStim);
 	};
+	
+	var handle;
+	function update(){
+		$bar.progressbar("value", createdStim);
+		if(createdStim < settings.length+settings.practices){
+			handle = setTimeout(function(){update();}, 700);
+		}
+	}
+	
+	update();
+	
 	launcher.loadMicroComponents(settings, function(){
 		var exp = launcher.createStandardExperiment(settings, increment, {reuseStim: true, saveDescription: true});
 		exp.meta.startTime = new Date().toISOString();
-		$bar.progressbar("destroy");
+		//$bar.progressbar("destroy");
+		
 		$("#stimCanvas").remove();
 		//HERE IS WHERE THE EXPERIMENT BEGINS
 		// Test code to test for unexpected
@@ -59,7 +75,7 @@ function run(settings){
 			display_element: $("#jsPsychTarget"),
 			timeline: exp.timeline,
 			on_finish: function(data){
-				jsPsych.data.displayData("json");
+				//jsPsych.data.displayData("json");
 				djPsych.save(data, true);
 			},
 			on_trial_finish: (function(){

@@ -8,3 +8,4 @@ django-debug-toolbar
 django-modeltranslation
 django-genericadmin
 jsonfield
+paypalrestsdk

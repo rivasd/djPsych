@@ -388,12 +388,12 @@ function ExpLauncher(opts, canvas){
 	 */
 	module.createStandardExperiment = function(settings, atEach, opts){
 		
-		var stimWrap = module.makeStimDescription(false, atEach);
+		var stimWrap = module.makeStimDescription(false);
 		var practiceStimWrap = module.makeStimDescription(true);
 		var timeline =[];
 		var meta = {parameters: {difficulty: stimWrap.difficulty, definitions: stimWrap.definitions}};
 		var stimuli = module.makeStimuli(stimWrap, settings.length, atEach);
-		var practiceStimuli = module.makeStimuli(practiceStimWrap, settings.practices, null, settings.practice_components);
+		var practiceStimuli = module.makeStimuli(practiceStimWrap, settings.practices, atEach, settings.practice_components);
 		
 		// ok so now we should have all we need to create stuff, lets iterate through the given timeline
 		for(var step=0; step<settings.timeline.length; step++){
