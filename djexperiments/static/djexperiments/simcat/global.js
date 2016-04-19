@@ -59,10 +59,24 @@ function run(settings){
 		}
 	}
 	
-	update();
+	//update();
+	
+	//Let's try to solve this progress bar bug
+	
+	function testProgress(){
+		for(var i=0; i< settings.length+settings.practices; i++){
+			$bar.progressbar("value", i);
+		}
+	}
+	testProgress();
+	
+	
+	
+	
+	
 	
 	launcher.loadMicroComponents(settings, function(){
-		var exp = launcher.createStandardExperiment(settings, increment, {reuseStim: true, saveDescription: true});
+		var exp = launcher.createStandardExperiment(settings, testProgress, {reuseStim: true, saveDescription: true});
 		exp.meta.startTime = new Date().toISOString();
 		//$bar.progressbar("destroy");
 		
