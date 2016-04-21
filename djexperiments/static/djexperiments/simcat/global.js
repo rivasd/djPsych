@@ -51,7 +51,12 @@ function run(settings){
 		//$bar.progressbar("value", createdStim);
 	};
 	
-	var handle;
+	var handle = $.Deferred();
+	handle.progress(function(){
+		createdStim++;
+		$bar.progressbar("value", createdStim);
+	});
+	
 	function update(){
 		$bar.progressbar("value", createdStim);
 		if(createdStim < settings.length+settings.practices){
@@ -62,21 +67,8 @@ function run(settings){
 	//update();
 	
 	//Let's try to solve this progress bar bug
-	
-	function testProgress(){
-		for(var i=0; i< settings.length+settings.practices; i++){
-			$bar.progressbar("value", i);
-		}
-	}
-	testProgress();
-	
-	
-	
-	
-	
-	
 	launcher.loadMicroComponents(settings, function(){
-		var exp = launcher.createStandardExperiment(settings, testProgress, {reuseStim: true, saveDescription: true});
+		var exp = launcher.createStandardExperiment(settings, handle, {reuseStim: true, saveDescription: true});
 		exp.meta.startTime = new Date().toISOString();
 		//$bar.progressbar("destroy");
 		

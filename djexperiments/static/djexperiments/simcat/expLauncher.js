@@ -164,20 +164,21 @@ function ExpLauncher(opts, canvas){
 	 * @param	{Object[]}	vectorTimeline	An array of objects like that returned by {@link ExpLauncher#createVectorialTimeline}. must have a 'stimuli' property containing a vectorial def or an array of vectorial defs
 	 * @param	{Function}	callback		a function to be called after every call to the engine rendering function. provided with two positional arguments: the index of the trial being currently processed, and the total number of trials to be processed.	
 	 */
-	module.replaceVectorsWithImage = function(vectorTimeline, callback, components){
+	module.replaceVectorsWithImage = function(vectorTimeline, promise, components){
 		if(components){
 			engine.setComponents(components);
 		}
 		vectorTimeline.forEach(function(raw, i, array) {
 			var multiple = raw.stimuli.length == undefined ? false : true;
 			if(!multiple){
-				raw.stimulus = engine.singleDraw(raw.stimulus)
+				//raw.stimulus = engine.singleDraw(raw.stimulus);
+				
 			}
 			else{
-				raw.stimuli[0] = engine.singleDraw(raw.stimuli[0]);
-				raw.stimuli[1] = engine.singleDraw(raw.stimuli[1]);
+				//raw.stimuli[0] = engine.singleDraw(raw.stimuli[0]);
+				//raw.stimuli[1] = engine.singleDraw(raw.stimuli[1]);
 			}
-			if(callback) callback(i, array.length);
+			if(promise) promise.notify();
 		});
 	};
 	
