@@ -171,12 +171,12 @@ function ExpLauncher(opts, canvas){
 		vectorTimeline.forEach(function(raw, i, array) {
 			var multiple = raw.stimuli.length == undefined ? false : true;
 			if(!multiple){
-				//raw.stimulus = engine.singleDraw(raw.stimulus);
+				raw.stimulus = engine.singleDraw(raw.stimulus);
 				
 			}
 			else{
-				//raw.stimuli[0] = engine.singleDraw(raw.stimuli[0]);
-				//raw.stimuli[1] = engine.singleDraw(raw.stimuli[1]);
+				raw.stimuli[0] = engine.singleDraw(raw.stimuli[0]);
+				raw.stimuli[1] = engine.singleDraw(raw.stimuli[1]);
 			}
 			if(promise) promise.notify();
 		});
