@@ -110,10 +110,13 @@ function runExperiment() {
 	var $feedback = $("<div></div>", {id: 'retroaction'});
 	$("#content").prepend($feedback);
 	$("#jsPsychTarget").append($progressbar).append($stimCanvas);
-    djPsych.request(run, 'test');
+    djPsych.request(run, 'final');
 }
 
 function showWinnings(trial_data){
 	
 }
+
+//TODO: make sure that you cannot advance past questionnaire trial without filling appropriate fields
+
 
