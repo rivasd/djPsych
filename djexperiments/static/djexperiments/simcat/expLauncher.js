@@ -151,6 +151,7 @@ function ExpLauncher(opts, canvas){
 			var vectors = engine.generateVectorPair(definitions[rawTrial.pairLabel[0]], definitions[rawTrial.pairLabel[1]], rawTrial.distance)
 			trial.stimuli = vectors;
 			trial.data = rawTrial.data;
+			trial.
 			timeline.push(trial);
 		});
 		return timeline;
