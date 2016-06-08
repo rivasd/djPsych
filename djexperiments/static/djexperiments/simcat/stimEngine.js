@@ -176,12 +176,14 @@ function StimEngine(opts, canvas){
 		var innerHeight = height;
 		var innerWidth = width;		
 		if(density){ //we must resize the micro-components
-			for(var m = 0 ; m < pieces.lenght; m++){
+			Object.keys(pieces).forEach(function(pair){
+				
 				for(var n = 0; n < 2; n++){
-					pieces[m][n].width = canevas.width/density;
-					pieces[m][n].height = canevas.height/density;
+					pair[n].width = canevas.width/density;
+					pair[n].height = canevas.height/density;
 				}
-			}
+			})
+			
 			innerWidth = density;
 			innerHeight = density;
 		}
