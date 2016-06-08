@@ -166,7 +166,7 @@ function ExpLauncher(opts, canvas){
 	 * @param	{Object[]}	vectorTimeline	An array of objects like that returned by {@link ExpLauncher#createVectorialTimeline}. must have a 'stimuli' property containing a vectorial def or an array of vectorial defs
 	 * @param	{Function}	callback		a function to be called after every call to the engine rendering function. provided with two positional arguments: the index of the trial being currently processed, and the total number of trials to be processed.	
 	 */
-	module.replaceVectorsWithImage = function(vectorTimeline, promise, components){
+	module.replaceVectorsWithImage = function(vectorTimeline, promise, components, density){
 		if(components){
 			engine.setComponents(components);
 		}
@@ -177,8 +177,8 @@ function ExpLauncher(opts, canvas){
 				
 			}
 			else{
-				raw.stimuli[0] = engine.singleDraw(raw.stimuli[0]);
-				raw.stimuli[1] = engine.singleDraw(raw.stimuli[1]);
+				raw.stimuli[0] = engine.singleDraw(raw.stimuli[0], components, density);
+				raw.stimuli[1] = engine.singleDraw(raw.stimuli[1], components, density);
 			}
 			if(promise) promise.notify();
 		});
@@ -366,7 +366,7 @@ function ExpLauncher(opts, canvas){
 	 * @param	{function}			atEach	function that will be called after each pair is drawn and saved. useful to update a progress bar.
 	 * @returns	{Array[]}					Array of img DOM element pairs.
 	 */
-	module.makeStimuli = function makeStimuli(wrapper, length, atEach, components){
+	module.makeStimuli = function makeStimuli(wrapper, length, atEach, components, density){
 		
 		var attNumber = Object.keys(wrapper.components).length;
 		var distances = getDistancesArray(wrapper.difficulty, attNumber);
@@ -376,7 +376,7 @@ function ExpLauncher(opts, canvas){
 			elt.data.distance = elt.data.kind == 'same' ? elt.data.distance : elt.data.distance + wrapper.difficulty;
 		});
 		
-		module.replaceVectorsWithImage(vectorTimeline, atEach, components);
+		module.replaceVectorsWithImage(vectorTimeline, atEach, components, density);
 		return vectorTimeline;
 	};
 	
@@ -396,7 +396,7 @@ function ExpLauncher(opts, canvas){
 		var timeline =[];
 		var meta = {parameters: {difficulty: stimWrap.difficulty, definitions: stimWrap.definitions}};
 		var stimuli = module.makeStimuli(stimWrap, settings.length, atEach);
-		var practiceStimuli = module.makeStimuli(practiceStimWrap, settings.practices, atEach, settings.practice_components);
+		var practiceStimuli = module.makeStimuli(practiceStimWrap, settings.practices, atEach, settings.practice_components, 10);
 		
 		// ok so now we should have all we need to create stuff, lets iterate through the given timeline
 		for(var step=0; step<settings.timeline.length; step++){
