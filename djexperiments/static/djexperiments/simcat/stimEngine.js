@@ -179,8 +179,8 @@ function StimEngine(opts, canvas){
 			Object.keys(pieces).forEach(function(pair){
 				
 				for(var n = 0; n < 2; n++){
-					pair[n].width = canevas.width/density;
-					pair[n].height = canevas.height/density;
+					pair[n].width = canvas.width/density;
+					pair[n].height = canvas.height/density;
 				}
 			})
 			
