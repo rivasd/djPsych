@@ -168,8 +168,8 @@ function StimEngine(opts, canvas){
 		
 		var pieces = components || microComponents;
 		var struct = [];
-		var oldHeight;
-		var oldWidth;
+		var oldHeight = canvas.height;
+		var oldWidth = canvas.width;
 		for(var i=0; i<width; i++){
 			struct[i]=[];
 		}		
