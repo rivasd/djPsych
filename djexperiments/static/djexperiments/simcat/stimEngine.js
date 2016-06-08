@@ -168,6 +168,8 @@ function StimEngine(opts, canvas){
 		
 		var pieces = components || microComponents;
 		var struct = [];
+		var oldHeight;
+		var oldWidth;
 		for(var i=0; i<width; i++){
 			struct[i]=[];
 		}		
@@ -175,14 +177,12 @@ function StimEngine(opts, canvas){
 		var pool = Object.keys(def);
 		var innerHeight = height;
 		var innerWidth = width;		
-		if(density){ //we must resize the micro-components
-			Object.keys(pieces).forEach(function(pair){
-				
-				for(var n = 0; n < 2; n++){
-					pieces[pair][n].style.width = (canvas.width/density).toString();
-					pieces[pair][n].style.height = (canvas.height/density).toString();
-				}
-			})
+		if(density){ //resizing canvas
+			oldHeight = canvas.height;
+			oldWidth = canvas.width;
+			
+			canvas.height = size * density;
+			canvas.width = size * density;
 			
 			innerWidth = density;
 			innerHeight = density;
@@ -240,7 +240,11 @@ function StimEngine(opts, canvas){
 			}
 		}
 		var image = canvas.toDataURL();
-		canvasContext.clearRect(0, 0, width*size, height*size);
+		canvasContext.clearRect(0, 0, innerWidth*size, innerHeight*size);
+		
+		canvas.height = oldHeight;
+		canvas.width = oldWidth;
+		
 		return image;
 	}
 	
