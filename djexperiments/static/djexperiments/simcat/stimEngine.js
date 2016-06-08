@@ -164,7 +164,7 @@ function StimEngine(opts, canvas){
 	 * @return	{DataURI}			The stimulus as a data URI string ready to be used in-browser
 	 * @method
 	 */
-	module.singleDraw = function singleDraw(def, components){
+	module.singleDraw = function singleDraw(def, components, density){
 		
 		var pieces = components || microComponents;
 		var struct = [];
@@ -173,7 +173,19 @@ function StimEngine(opts, canvas){
 		}		
 		//since I have decided to support different stimulus complexities, the pool of drawable MCs could change. Let's populate it
 		var pool = Object.keys(def);
-			
+		var innerHeight = height;
+		var innerWidth = width;		
+		if(density){ //we must resize the micro-components
+			for(var m = 0 ; m < pieces.lenght; m++){
+				for(var n = 0; n < 2; n++){
+					pieces[m][n].width = canevas.width/density;
+					pieces[m][n].height = canevas.height/density;
+				}
+			}
+			innerWidth = density;
+			innerHeight = density;
+		}
+		
 		function isDrawable(x, y){
 			if(x<0 || y<0 || x>= width || y>= height){
 				return false;
@@ -220,8 +232,8 @@ function StimEngine(opts, canvas){
 				return;
 			}
 		}
-		for(var i=0; i< width; i++){
-			for(var j=0; j< height; j++){
+		for(var i=0; i< innerWidth; i++){
+			for(var j=0; j< innerHeight; j++){
 				drawSingleMC(i, j);
 			}
 		}
