@@ -406,8 +406,14 @@ function ExpLauncher(opts, canvas){
 			if(block.reprise != undefined){
 				timeline.push(timeline[block.reprise]);
 			}
-			else if(block.type === 'single-stim'){
-				
+			else if(block.type === 'html'){
+				var tablestring = createSampleTable(5, 5, stimuli)[0].outerHTML;
+				var block = {
+					type: 'single-stim',
+					is_html: true,
+					stimulus: tablestring,
+					prompt: block.message
+				};
 			}
 			else if(block.type == 'similarity'){
 				//TODO handle cases where block could be a trial to use as is, or an actual bloc where we have to simply repeat or generate
@@ -450,11 +456,27 @@ function ExpLauncher(opts, canvas){
 	}
 	
 	//Stims is an array of objects, with only one member: stimuli, an array of two images
-	function createSampleTable(row, col, stims){
-		var imageNb = rwo*col;
+	function createSampleTable(rows, cols, stims){
+		var imageNb = rows*cols;
+		var niaiseries = jsPsych.randomization.sample(stims, imageNb, false);
+		var images = [];
+		niaiseries.forEach(function(obj){
+			images.push(obj.stimuli[0]);
+		});
 		
-		
+		var $table = $("<table>", {'class':'stim-table'});
+		for(var i=0; i< rows; i++){
+			var $row = $("<tr>");
+			for(var j=0; j< cols;j++){
+				var $td = $("<td>");
+				$td.append(images.pop());
+				$row.append($td);
+			}
+			$table.append($row);
+		}
+		return $table;
 	}
+	
 	/**
 	 * Allows you to set the {@link StimEngine} object used to create the stimuli
 	 * 
