@@ -406,6 +406,9 @@ function ExpLauncher(opts, canvas){
 			if(block.reprise != undefined){
 				timeline.push(timeline[block.reprise]);
 			}
+			else if(block.type === 'single-stim'){
+				
+			}
 			else if(block.type == 'similarity'){
 				//TODO handle cases where block could be a trial to use as is, or an actual bloc where we have to simply repeat or generate
 				//for now let's assume all ServerBlocks will ask us to generate a series of trials that are not all identical
@@ -446,6 +449,12 @@ function ExpLauncher(opts, canvas){
 		return inputDict;
 	}
 	
+	//Stims is an array of objects, with only one member: stimuli, an array of two images
+	function createSampleTable(row, col, stims){
+		var imageNb = rwo*col;
+		
+		
+	}
 	/**
 	 * Allows you to set the {@link StimEngine} object used to create the stimuli
 	 * 
