@@ -373,7 +373,7 @@ function ExpLauncher(opts, canvas){
 		var rawTimeline = module.createRawSimilarityTimeline([Object.keys(wrapper.definitions)[0], Object.keys(wrapper.definitions)[1]], distances, length)
 		var vectorTimeline = module.createVectorialSimilarityTimeline(rawTimeline, wrapper.definitions);
 		vectorTimeline.forEach(function(elt, i, array) {
-			elt.data.distance = elt.data.kind == 'same' ? elt.data.distance : (elt.stimuli[0].length - wrapper.difficulty) - elt.data.distance;
+			elt.data.distance = elt.data.kind == 'same' ? elt.data.distance : (Objects.keys(elt.stimuli[0]).length - wrapper.difficulty) - elt.data.distance;
 		});
 		
 		module.replaceVectorsWithImage(vectorTimeline, atEach, components, density);
