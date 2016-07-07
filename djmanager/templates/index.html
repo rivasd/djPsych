@@ -1,15 +1,56 @@
 {% extends 'base.html' %}
 {% load i18n %}
+{% load static %}
+
+{% block head %}
+	<style>
+		header{
+			opacity: 0.75;
+		}
+	</style>
+{% endblock %}
 
 {% block content %}
-<h1>{% trans "Welcome to the Cognition and Communication lab at UQAM" %}</h1>
-<p>
+<div id="main-banner">
+	<div id="main-image"> 
+		
+	</div>
+	<div id="taglines">
 
-{% trans "super-awesome web platform for psych experiments" as exp_link %}
-{% url "webexp:home" as exp_href%}
-{% blocktrans %}
-We are currently building this site, but it will be ready anytime soon! Especially our <a href="{{ exp_href }}">{{ exp_link }} </a>
-{% endblocktrans %}
-</p>
+		<ul>
+
+			<li>
+				{% trans "cognition" %}
+			</li>
+			<li>
+				{% trans "modeling" %}
+			</li>
+			<li>
+				{% trans "electrophysiology" %}
+			</li>
+		</ul>
+	</div>
+</div>
+<div id="below">
+	<div class="halfhalf" id="welcome">
+		<h1>
+			{% trans "We are the Cognition & Communication Lab @ UQAM" %}
+		</h1>
+	</div>
+	<div class="halfhalf" id="description">
+		<p>
+			{% trans "We investigate cognition in humans and machines" %}
+		</p>
+	</div>
+</div>
+<div id="rest">
+		<p>
+			{% trans "online platform for web experiments" as exp_link %}
+			{% url "webexp:home" as exp_href%}
+			{% blocktrans %}
+			We are currently building this site, but it will be ready anytime soon! Especially our <a href="{{ exp_href }}">{{ exp_link }} </a>
+			{% endblocktrans %}
+		</p>
+</div>
 
 {% endblock %}

@@ -19,12 +19,14 @@ author: Daniel Rivas
     src: url('Jura/Jura-DemiBold.ttf');
 }
 
+/************************* General styles ****************************/
+
 *{
 	/* margin:0px; */
 	line-height: 1.2em;
 	font-family: "Titillium-Web", "sans-serif";
 	/* width: 100%; */
-	color: black;
+	/* color: black; */
 	}
 
 body {
@@ -37,14 +39,125 @@ body {
 	/* padding: 0 30px; */
 	box-sizing: border-box;
 	}
-	
+
+.halfhalf{
+	width:50%;
+	display: inline-block;
+	box-sizing: border-box;
+	height: 100%;
+	padding: 50px 30px;
+}
+
+.halfhalf p{
+    font-size: 16pt;
+}
+
+#rest{
+	padding: 30px 60px;
+	min-height: 600px;
+}
+
+img.tiny{
+	height: 38px;
+	vertical-align: middle;
+	-webkit-filter: grayscale(60%);
+}
+
+footer li {
+	color:white;
+	font-size: 9pt;
+	margin: 0 15px;
+}
+
+ul.horizontal li{
+	display: inline-block;
+}
+
+#links{
+	margin: 0px;
+	text-align: center;
+	padding: 0;
+	/* vertical-align: bottom; */
+	/* display: inline; */
+	align-self: flex-end;
+}
+
+.content-pad{
+	padding: 30px;
+	width:100%;
+}
+/********************************** Home Page styles **********************************/
+
+h1{
+	margin:0;
+}
+
+#taglines{
+	position:relative;
+	/* text-align: center; */
+	color: rgba(210,75,61,1);
+	/* background-color: rgba(245, 245, 220, 0.7); */
+	text-transform: uppercase;
+	display: inline-block;
+	/* margin: 0 auto; */
+	height: 100px;
+}
+
+#taglines ul{
+	/* display: inline; */
+	margin: auto 0;
+	/* text-align: center; */
+	margin-top: 40px;
+	/* height: 100%; */
+	/* width: 100%; */
+	padding: 10px;
+	background-color: rgba(222, 184, 135, 0.4);
+}
+
+#taglines li{
+	/* display:inline-block; */
+	font-size: 19pt;
+	font-weight: 800;
+	text-align: left;
+}
+
+#main-banner{
+	text-align:center;
+	height: 100px;
+}
+
+#brain-icon{
+	height: 40px;
+	fill: aquamarine;
+}
+
+#welcome{
+	font-size: 24pt;
+	width: 50%;
+	/* display: inline-block; */
+	/* padding: 60px; */
+	text-align: right;
+}
+
+#description{
+	/* width:50%; */
+	/* display: flex; */
+	/* align-items: center; */
+	/* justify-content: flex-start; */
+	vertical-align: center;
+	/* padding: 60px; */
+	font-size: 16pt;
+}
+
+/***************************** Basic Template *****************************/
+
 header {
 	background-image: linear-gradient();
 	/* border-radius: 8px 8px 0px 0px; */
-	color:#e2e2e2;
+	color: #e0e0e0;
 	font-family: "Titillium-Web", "Lucida Grande", sans-serif;
 	/* min-height:140px; */
-	background-color: rgb(247, 247, 247);
+	background-color: rgba(247, 247, 247, 1);
 	display: table;
 	width: 100%;
 	vertical-align: bottom;
@@ -52,7 +165,24 @@ header {
 	position: relative;
 	text-align: inherit;
 	padding-top: 80px;
+	z-index: 2;
+	min-width: 1000px;
+	/* opacity: 0.6; */
 	}
+#main-image{
+	background-image: url("labstaff.jpg");
+	background-position: -70px -80px;
+	height: 700px;
+	position: absolute;
+	top: 0px;
+	width: 100%;
+	left: 0px;
+	/* z-index: 1; */
+	-webkit-filter: saturate(70%);
+}
+
+
+
 
 #hidden-login{
 	display: none;
@@ -73,6 +203,8 @@ header {
     /* margin-top: 40px; */
     display: inline;
     vertical-align: bottom;
+    padding-left: 10px;
+    -webkit-filter: saturate(170%) contrast(130%);
 }
 
 #top{
@@ -104,31 +236,63 @@ header:after{
 	content : "";
 	position: absolute;
 	left    : 0;
-	bottom  : 0;
-	height  : 1px;
+	bottom: 0px;
+	/* height: 10px; */
 	width: 80%;  /* or 100px */
-	border-bottom:1px solid black;
+	border-bottom: 1px solid #5d5c5c;
 	display: block;
-	margin: 0 -20px;
+	/* margin: 0 -20px; */
+	background-color: #9a9999;
 }
 
 
 #content{
 	background-color:#EAEAEA;
 	vertical-align:top;
-	padding: 35px 25px 25px 25px;
-    min-height: 500px;
+	/* padding: 35px 25px 25px 25px; */
+	min-height: 500px;
 	}
 	
+#below{
+	position: relative;
+	/* top: 350px; */
+	margin-top: 450px;
+	/* height: 200px; */
+	background-color: #6d6d6d;
+	color: white;
+	font-family: "Titillium-Web";
+	display: flex;
+	align-items: center;
+}
+	
 footer	{
-	background-image: url('txture.png');
-	border-radius: 0px 0px 8px 8px;
-	color:#e2e2e2;
+	/* background-image: url('txture.png'); */
+	/* border-radius: 0px 0px 8px 8px; */
+	color: white;
 	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 	padding: 6px;
-	min-height:30px;
+	min-height: 80px;
 	vertical-align:bottom;
+	/* margin-top: 30px; */
+	background-color: #bdbdbd;
+	/* position: relative; */
+	display: flex;
+	justify-content: center;
 	}
+		
+footer:before{
+	/* content : ""; */
+	position: relative;
+	right: 0px;
+	top: 0px;
+	/* height: 1px; */
+	width: 80%;  /* or 100px */
+	border-bottom: 1px solid #5d5c5c;
+	display: block;
+	/* margin: 0 -20px; */
+	background-color: #9a9999;
+	z-index: 3;
+}
 		
 p, a, h3	{
 	font-family: "Titillium-Web", "Lucida Grande", sans-serif;
@@ -232,7 +396,7 @@ button:hover{
 }
 
 header a{
-	color: #939393;
+	color: #2d2d2d;
 	text-decoration: none;
 }
 
