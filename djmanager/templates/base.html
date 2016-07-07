@@ -41,20 +41,8 @@ content	Well, the content of the page
 	<div id="page">
 		<header>
 			<img src="{% static 'style/Banner.png'%}" alt="Cognition - Communication" id="banner"/>
-			<form class="login" name="login" id="login" data-logged="">
-				
-				{% if user.is_authenticated %}
-				<p>{% trans "Welcome, " %} {{ user.username }}</p>
-				<a href="{% url "account_logout" %}" class="button">{% trans "logout" %}</a> &nbsp | &nbsp
-				<a href="{% url "webexp:profiles:personal" %}" class="button"> {%trans "Go to Profile" %} </a>
-				{% else %}
-				<p>
-				<a id="sign-in-popup" href="/" class="button">{% trans "Sign in" %}</a>
-				</p>
-				{% endif %}
-			</form>
+			{%include "includes/navbar.html" %}
 			<a id='top'></a>
-			<p id="subtitle">Canada Research Chair in Cognitive Science</p>
 		</header>
 		<div id="hidden-login">
 			
