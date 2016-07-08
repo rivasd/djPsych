@@ -446,7 +446,7 @@ function ExpLauncher(opts, canvas){
 		//Add the stimuli sample page by hand here, make it pretty later
 		var sampleBlock = {
 				type: 'text',
-				text: "<p> Here is an example of the textures you will use</p>"+createSampleTable(5, 5, stimuli)[0].outerHTML
+				text: "<p> Here is an example of the textures you will use</p>"+createSampleTable(3, 3, stimuli)[0].outerHTML
 		};
 		
 		timeline.splice(1, 0, sampleBlock);
