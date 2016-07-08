@@ -642,13 +642,23 @@ form#login p{
 
 #consent li{
 	margin-bottom: 5px;
+	list-style: disc;
 }
 
 #consent ul{
 	list-style: disc;
-	padding-left: initial;
+	padding-left: 40px;
 }
 
+#accept{
+    margin: 0 auto;
+    height:20px;
+    width:20px;
+    vertical-align: middle;
+}
+
+
+/******************************************* WebExp styles *********************************/
 div.entry{
     margin-top: 8px;
     margin-bottom: 8px;
@@ -696,11 +706,7 @@ div.entry{
   box-shadow: -1px 2px 5px 2px black;
 }
 
-#accept{
-    margin: 0 auto;
-    height:20px;
-    width:20px;
-}
+
 
 body #page #content div.login-popup{
 	padding: 0;
