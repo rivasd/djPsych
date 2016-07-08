@@ -478,7 +478,9 @@ function ExpLauncher(opts, canvas){
 		var niaiseries = jsPsych.randomization.sample(stims, imageNb, false);
 		var images = [];
 		niaiseries.forEach(function(obj){
-			images.push(obj.stimuli[0]);
+			var img = new Image();
+			img.src = obj.stimuli[0];
+			images.push(img);
 		});
 		
 		var $table = $("<table>", {'class':'stim-table'});
