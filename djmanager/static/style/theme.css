@@ -34,6 +34,10 @@ a{
 .ownline{
 	display: block;
 }
+
+body, html{
+	height:100%;
+}
 /************************* General styles ****************************/
 
 *{
@@ -249,6 +253,7 @@ header {
 	height: 100%;
 	/* margin: 0 10px; */
 	/* box-sizing: content-box; */
+	position: relative;
 	}
 	
 header h1, h3 {
@@ -274,7 +279,7 @@ header:after{
 	background-color:#EAEAEA;
 	vertical-align:top;
 	padding: 35px 5%;
-	min-height: 500px;
+	min-height: -webkit-calc(100% - 150px);
 	font-family: "PT Sans", sans-serif;
 	}
 	
