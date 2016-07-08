@@ -170,6 +170,8 @@ function ExpLauncher(opts, canvas){
 		if(components){
 			engine.setComponents(components);
 		}
+		// I think this is where we should batch up our canvas draws so that it is non blocking
+		
 		vectorTimeline.forEach(function(raw, i, array) {
 			var multiple = raw.stimuli.length == undefined ? false : true;
 			if(!multiple){

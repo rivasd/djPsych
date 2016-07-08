@@ -40,37 +40,17 @@ function run(settings){
 	settings.timeline = djPsych.unpack(settings.timeline, function(t){return t;});
 	var launcher = ExpLauncher(settings, document.getElementById("stimCanvas")); //initialize a launcher and drawer 
 	var $bar = $("#progressBar");
-	var $progressLabel = $("<div></div>")
+	var $progressLabel = $("<div></div>");
+	$progressLabel.html(loading);
+	
 	$bar.progressbar({
-		max : (settings.length) + (settings.practices),
 		value :false
 	});
-	var createdStim =0;
-	function increment(idx, total){
-		createdStim++;
-		//$bar.progressbar("value", createdStim);
-	};
-	
-	var handle = $.Deferred();
-	handle.progress(function(){
-		createdStim++;
-		$bar.progressbar("value", createdStim);
-	});
-	
-	function update(){
-		$bar.progressbar("value", createdStim);
-		if(createdStim < settings.length+settings.practices){
-			handle = setTimeout(function(){update();}, 700);
-		}
-	}
-	
-	//update();
-	
-	//Let's try to solve this progress bar bug
+
 	launcher.loadMicroComponents(settings, function(){
 		var exp = launcher.createStandardExperiment(settings, null, {reuseStim: true, saveDescription: true});
 		exp.meta.startTime = new Date().toISOString();
-		//$bar.progressbar("destroy");
+		$bar.progressbar("destroy");
 		
 		$("#stimCanvas").remove();
 		//HERE IS WHERE THE EXPERIMENT BEGINS
@@ -109,7 +89,7 @@ function runExperiment() {
 	var $stimCanvas = $("<canvas></canvas>", {id: 'stimCanvas', height: 300, width: 300});
 	var $feedback = $("<div></div>", {id: 'retroaction'});
 	$("#content").prepend($feedback);
-	$("#jsPsychTarget").append($progressbar).append($stimCanvas);
+	$("#jsPsychTarget").append($progressbar).append($progressLabel).append($stimCanvas);
     djPsych.request(run, 'final');
 }
 
