@@ -169,6 +169,7 @@ h1{
 	/* padding: 60px; */
 	text-align: right;
 	font-family: "Titillium-Web", sans-serif;
+	padding-left: 10%;
 }
 
 #description{
@@ -182,6 +183,31 @@ h1{
 	font-family: "Titillium-Web";
 }
 
+#main-image{
+	background-image: url("labstaff.jpg");
+	background-size: cover;
+	background-position: 50% 10%;
+	height: 700px;
+	position: absolute;
+	top: 0px;
+	width: 100%;
+	left: 0px;
+	/* z-index: 1; */
+	-webkit-filter: saturate(70%);
+}
+
+#below{
+	position: relative;
+	/* top: 350px; */
+	margin-top: 450px;
+	/* height: 200px; */
+	background-color: #6d6d6d;
+	color: white;
+	font-family: "Titillium-Web";
+	display: flex;
+	align-items: center;
+	min-height: 400px;
+}
 /***************************** Basic Template *****************************/
 
 header {
@@ -202,17 +228,7 @@ header {
 	min-width: 1000px;
 	/* opacity: 0.6; */
 	}
-#main-image{
-	background-image: url("labstaff.jpg");
-	background-size: cover;
-	height: 700px;
-	position: absolute;
-	top: 0px;
-	width: 100%;
-	left: 0px;
-	/* z-index: 1; */
-	-webkit-filter: saturate(70%);
-}
+
 
 
 
@@ -288,17 +304,7 @@ header:after{
 	font-family: "PT Sans", sans-serif;
 	}
 	
-#below{
-	position: relative;
-	/* top: 350px; */
-	margin-top: 450px;
-	/* height: 200px; */
-	background-color: #6d6d6d;
-	color: white;
-	font-family: "Titillium-Web";
-	display: flex;
-	align-items: center;
-}
+
 	
 footer	{
 	/* background-image: url('txture.png'); */
