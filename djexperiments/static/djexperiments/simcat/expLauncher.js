@@ -441,6 +441,17 @@ function ExpLauncher(opts, canvas){
 			}
 			timeline.push(block);
 		}
+		
+		//TODO: make this less cringe-worthy
+		//Add the stimuli sample page by hand here, make it pretty later
+		var sampleBlock = {
+				type: 'text',
+				text: "<p> Here is an example of the textures you will use</p>"+createSampleTable(5, 5, stimuli)[0].outerHTML
+		};
+		
+		timeline.splice(1, 0, sampleBlock);
+		
+		
 		//We should end by adding some stuff to the meta object here
 		var browser = get_browser_info();
 		meta.browser = browser.name;
@@ -451,6 +462,10 @@ function ExpLauncher(opts, canvas){
 		meta.exp_id = settings.exp_id;
 		meta.current_exp = settings.current_exp;
 		return {meta: meta, timeline: timeline};
+		
+		
+		
+		
 	}
 	
 	function collectQuestionnaire(jsPsychTarget, inputDict){
