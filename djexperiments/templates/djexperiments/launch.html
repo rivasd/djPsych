@@ -77,7 +77,10 @@ $(function(){
 	            {% trans "I understand that my participation to this study is completely voluntary and that I can retire from the experiment at any time, without any form of penalty or justification to provide." %}
 	            </li>
 	        </ul>
-	        <div id="checkbox"><input type="checkbox" name="accept" id="accept" value="yes">{% trans "Accept" %}</input></div>
+	        <div class="center">
+	        	<label for="accept">{% trans "Accept" %}</label>
+	        	<input type="checkbox" name="accept" id="accept" value="yes" />
+	        </div>
 	    </fieldset>
 	</form>
 </div>

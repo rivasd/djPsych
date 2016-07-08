@@ -112,6 +112,10 @@ ul{
 	padding: 30px;
 	width:100%;
 }
+
+.center{
+	text-align:center;
+}
 /********************************** Home Page styles **********************************/
 
 h1{
@@ -631,9 +635,16 @@ form#login p{
 	margin-left: 20px;
 }
 
+/******************************** consent forms styles **********************************/
 #consent{
     margin-top: 25px;
 }
+
+#consent li{
+	list-style:circle;
+	margin-bottom: 5px;
+}
+
 div.entry{
     margin-top: 8px;
     margin-bottom: 8px;
