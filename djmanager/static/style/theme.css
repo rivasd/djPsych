@@ -57,6 +57,7 @@ body {
 	margin: 0;
 	/* padding: 0 30px; */
 	box-sizing: border-box;
+	min-width: 1280px;
 	}
 
 .halfhalf{
@@ -203,7 +204,7 @@ header {
 	}
 #main-image{
 	background-image: url("labstaff.jpg");
-	background-position: -70px -80px;
+	background-size: cover;
 	height: 700px;
 	position: absolute;
 	top: 0px;
