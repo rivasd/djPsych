@@ -641,8 +641,12 @@ form#login p{
 }
 
 #consent li{
-	list-style:circle;
 	margin-bottom: 5px;
+}
+
+#consent ul{
+	list-style: disc;
+	padding-left: initial;
 }
 
 div.entry{
