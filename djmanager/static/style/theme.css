@@ -394,7 +394,6 @@ button:hover{
 	
 #jsPsychTarget img{
 	display:block;
-	margin: 0 auto;
 }
 
 #jsPsychTarget button{
@@ -753,8 +752,8 @@ a:hover, a.button:hover, #hidden-login a:hover{
 }
 
 .stim-table img{
-	width:45px;
-	height:45px;
+	width:185px;
+	margin: 5px;
 }
 
 /************************************ Login/sign up styles *********************************/
