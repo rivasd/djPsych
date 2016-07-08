@@ -19,6 +19,21 @@ author: Daniel Rivas
     src: url('Jura/Jura-DemiBold.ttf');
 }
 
+p{
+	font-family: inherit;
+	font-size: medium;
+}
+:focus{outline: none;}
+
+a{
+	color: inherit;
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+.ownline{
+	display: block;
+}
 /************************* General styles ****************************/
 
 *{
@@ -50,11 +65,13 @@ body {
 
 .halfhalf p{
     font-size: 16pt;
+    font-family: "Titillium-Web", sans-serif;
 }
 
 #rest{
 	padding: 30px 60px;
 	min-height: 600px;
+	font-family: "PT Sans", sans-serif;
 }
 
 img.tiny{
@@ -71,6 +88,11 @@ footer li {
 
 ul.horizontal li{
 	display: inline-block;
+}
+
+ul{
+	padding-left:0;
+	margin: 0;
 }
 
 #links{
@@ -137,6 +159,7 @@ h1{
 	/* display: inline-block; */
 	/* padding: 60px; */
 	text-align: right;
+	font-family: "Titillium-Web", sans-serif;
 }
 
 #description{
@@ -147,6 +170,7 @@ h1{
 	vertical-align: center;
 	/* padding: 60px; */
 	font-size: 16pt;
+	font-family: "Titillium-Web";
 }
 
 /***************************** Basic Template *****************************/
@@ -204,7 +228,7 @@ header {
     display: inline;
     vertical-align: bottom;
     padding-left: 10px;
-    -webkit-filter: saturate(170%) contrast(130%);
+    /* -webkit-filter: saturate(170%) contrast(130%); */
 }
 
 #top{
@@ -249,8 +273,9 @@ header:after{
 #content{
 	background-color:#EAEAEA;
 	vertical-align:top;
-	/* padding: 35px 25px 25px 25px; */
+	padding: 35px 5%;
 	min-height: 500px;
+	font-family: "PT Sans", sans-serif;
 	}
 	
 #below{
@@ -295,16 +320,16 @@ footer:before{
 }
 		
 p, a, h3	{
-	font-family: "Titillium-Web", "Lucida Grande", sans-serif;
+	font-family: "PT Sans", "Lucida Grande", sans-serif;
 	font-size: 11pt;
-	margin-top:15px;
+	/* margin-top:15px; */
 	margin-bottom:15px;
 	}
 	
 li	{
-	margin-top:5px;
-	margin-bottom: 5px;
-	font-family: "Titillium-Web", "Lucida Grande", sans-serif;
+	/* margin-top:5px; */
+	/* margin-bottom: 5px; */
+	/* font-family: "Titillium-Web", "Lucida Grande", sans-serif; */
 	font-size: 12pt;
 	color: inherit;
 	}
@@ -314,7 +339,7 @@ li	{
 nav{
 	padding-bottom: 7px;
 	/* background: #000000; */
-	color: #939393;
+	color: #eaeaea;
 	/* padding-left: 30px; */
 	display: table-cell;
 	vertical-align: bottom;
@@ -334,32 +359,6 @@ ul.navbar{
 	/* min-height: 25px; */
 	text-align: right;
 }
-
-
-
-
-
-
-button {
-	display:inline-block;
-	/* margin-left: auto; */
-	/* margin-right:auto; */
-	/* position:relative; */
-	background:#283947;
-	color:#BBBEC1;
-	text-decoration:none;/
-	style/
-	margin:10px;
-	padding:10px;
-	border-radius:6px;
-	text-shadow: 1px 1px 1px rgba(255,255,255, .22);
-	box-shadow: 2px 2px 2px #252525;
-	min-width: 85px;
-	background: -webkit-linear-gradient(#283947, #243B4F); /* For Safari 5.1 to 6.0 */
-	background: -o-linear-gradient(#283947, #243B4F); /* For Opera 11.1 to 12.0 */
-	background: -moz-linear-gradient(#283947, #243B4F); /* For Firefox 3.6 to 15 */
-	background: linear-gradient(#283947, #243B4F); /* Standard syntax */
-	}
 
 button a{
     text-decoration: none;
@@ -396,8 +395,9 @@ button:hover{
 }
 
 header a{
-	color: #2d2d2d;
+	color: #757575;
 	text-decoration: none;
+	font-weight: normal;
 }
 
 .full-width {
@@ -710,6 +710,8 @@ a:hover, a.button:hover, #hidden-login a:hover{
 	color: #EC4409;
 }
 
+/************************************ Login/sign up styles *********************************/
+
 #provider-img-Facebook{
 	height: 50px;
 	width: 310px;
@@ -718,7 +720,7 @@ a:hover, a.button:hover, #hidden-login a:hover{
 	height: 55px;
 	width: 240px;
 }
-img.login-btn {
+.login-btn {
    -webkit-transition: all 0.4s ease;
    -moz-transition: all 0.4s ease;
    -o-transition: all 0.4s ease;
@@ -726,9 +728,10 @@ img.login-btn {
    transition: all 0.4s ease;
    margin: 0 auto;
    display: block;
+   width: 300px;
 }
 
-img.login-btn:hover {
+.login-btn:hover {
    -webkit-filter: brightness(85%);
    filter: brightness(80%);
 }
@@ -740,4 +743,106 @@ input[type=text], input[type=password], input[type=select]{
 #login-error{
 	color: red;
 	font-weight: bold;
+}
+img.fb-login{
+	display: inline-block;
+	width: 250px;
+}
+
+img.google-login{
+	display: inline-block;
+	width: 261px;
+	margin-left: -5px;
+}
+
+.btn, button, input[type=submit] {
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: #939393;
+  color: #ffffff;
+}
+a.socialaccount_provider {
+    min-width: 140px;
+}
+
+.login{
+	display: inline-block;
+	/* padding: 10px; */
+	box-sizing: border-box;
+	margin: 0 auto;
+	text-align: left;
+}
+
+.login input, .login label{
+	display:block;
+	/* width: 50%; */
+	font-weight: bold;
+}
+
+.login input[type=text], .login input[type=password], .login input[type=email]{
+	width: 300px;
+	height: 30px;
+	padding: 5px 20px;
+	font-size: 13pt;
+}
+
+.login label{
+	margin-bottom: 5px;
+	padding-left: 15px;
+	/* font-weight: 700; */
+	display: inline-block;
+	/* width: 110px; */
+	box-sizing: border-box;
+}
+.login input[type=checkbox]{
+	display:inline;
+	width: auto;
+	vertical-align: middle;
+}
+
+.login p{
+	margin-bottom:5px;
+	margin-top:0;
+}
+
+.login-or{
+	margin-top: 20px;
+	text-align: center;
+	font-style: italic;
+	font-size: 16pt;
+	font-weight: bold;
+}
+
+#login-form{
+	border: 1px solid black;
+	border-radius: 5px;
+	width: 400px;
+	padding: 20px;
+	text-align: center;
+}
+.socialaccount_providers{
+	text-align: center;
+}
+
+#forgotpass{
+	font-weight: bold;
+	text-decoration: none;
+	font-size: small;
 }
