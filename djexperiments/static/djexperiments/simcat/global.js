@@ -42,6 +42,7 @@ function run(settings){
 	var $bar = $("#progressBar");
 	var $progressLabel = $("<div></div>");
 	$progressLabel.html(loading);
+	$("#jsPsychTarget").append($progressLabel);
 	
 	$bar.progressbar({
 		value :false
@@ -89,7 +90,7 @@ function runExperiment() {
 	var $stimCanvas = $("<canvas></canvas>", {id: 'stimCanvas', height: 300, width: 300});
 	var $feedback = $("<div></div>", {id: 'retroaction'});
 	$("#content").prepend($feedback);
-	$("#jsPsychTarget").append($progressbar).append($progressLabel).append($stimCanvas);
+	$("#jsPsychTarget").append($progressbar).append($stimCanvas);
     djPsych.request(run, 'final');
 }
 
