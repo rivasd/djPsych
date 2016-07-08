@@ -694,6 +694,8 @@ div.entry{
 
 #accept{
     margin: 0 auto;
+    height:20px;
+    width:20px;
 }
 
 body #page #content div.login-popup{
