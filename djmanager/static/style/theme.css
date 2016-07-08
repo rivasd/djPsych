@@ -752,6 +752,11 @@ a:hover, a.button:hover, #hidden-login a:hover{
 	color: #EC4409;
 }
 
+.stim-table img{
+	width:45px;
+	height:45px;
+}
+
 /************************************ Login/sign up styles *********************************/
 
 #provider-img-Facebook{
