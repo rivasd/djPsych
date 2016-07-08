@@ -22,7 +22,7 @@ $(function(){
 	function serverSideBegin(e){
         var top = document.getElementById("top").offsetTop;
         window.scrollTo(0, top);
-        $("#jsPsychtarget").empty();
+        $("#jsPsychTarget").empty();
         $('#start').remove();
             
         //this is the function that must be defined by all experiments
@@ -84,7 +84,7 @@ $(function(){
 	    </fieldset>
 	</form>
 </div>
-<a href="#top" class="btn" id="start">{% trans "Start the experiment!" %}</a>
+<button href="#top" class="btn" id="start">{% trans "Start the experiment!" %}</a>
 {% else %}
 {# This is shown if the experiment is requested by a researcher #}
 <div id="sandbox" class="full-width">

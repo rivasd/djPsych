@@ -657,6 +657,13 @@ form#login p{
     vertical-align: middle;
 }
 
+#consent .center{
+	margin-top:10px;
+}
+
+#consent label{
+	font-weight: bold;
+}
 
 /******************************************* WebExp styles *********************************/
 div.entry{
