@@ -43,7 +43,7 @@ function run(settings){
 	var $progressLabel = $("<div></div>")
 	$bar.progressbar({
 		max : (settings.length) + (settings.practices),
-		value :0
+		value :false
 	});
 	var createdStim =0;
 	function increment(idx, total){
@@ -68,7 +68,7 @@ function run(settings){
 	
 	//Let's try to solve this progress bar bug
 	launcher.loadMicroComponents(settings, function(){
-		var exp = launcher.createStandardExperiment(settings, handle, {reuseStim: true, saveDescription: true});
+		var exp = launcher.createStandardExperiment(settings, null, {reuseStim: true, saveDescription: true});
 		exp.meta.startTime = new Date().toISOString();
 		//$bar.progressbar("destroy");
 		
