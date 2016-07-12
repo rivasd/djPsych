@@ -63,7 +63,7 @@ function run(settings){
 			timeline: exp.timeline,
 			on_finish: function(data){
 				//jsPsych.data.displayData("json");
-				djPsych.save(data, true, exp.meta);
+				djPsych.save(data, true, exp.meta.parameters);
 			},
 			on_trial_start:function(){
 				jsPsych.getDisplayElement()[0].scrollIntoView();
