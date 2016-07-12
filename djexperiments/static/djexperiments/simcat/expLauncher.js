@@ -453,9 +453,6 @@ function ExpLauncher(opts, canvas){
 		
 		
 		//We should end by adding some stuff to the meta object here
-		var browser = get_browser_info();
-		meta.browser = browser.name;
-		meta.browser_version = browser.version;
 		meta.subject = settings.subject;
 		meta.previous = settings.previous;
 		meta.complete = true;
