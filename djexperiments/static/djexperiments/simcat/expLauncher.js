@@ -458,7 +458,14 @@ function ExpLauncher(opts, canvas){
 	//Stims is an array of objects, with only one member: stimuli, an array of two images
 	function createSampleTable(rows, cols, stims){
 		var imageNb = rows*cols;
-		var niaiseries = jsPsych.randomization.sample(stims, imageNb, false);
+		var exploded = [];
+		
+		for(var i=0;i<stims.length; i++){
+			exploded.push(stims[i].stimuli[0]);
+			exploded.push(stims[i].stimuli[1]);
+		}
+		
+		var niaiseries = jsPsych.randomization.sample(exploded, imageNb, false);
 		var images = [];
 		niaiseries.forEach(function(obj){
 			images.push(obj.stimuli[0]);
