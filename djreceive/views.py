@@ -48,7 +48,11 @@ def save(request, exp_label):
     
     exp = Experiment.objects.get(label=exp_label)
     if previous == False:
-        participation = exp.create_participation(subject=request.user.subject, started=request.session['start_time'], complete=finished)
+        if 'globalparams' in meta:
+            globalparams = meta['globalparams']
+        else:
+            globalparams = {}
+        participation = exp.create_participation(subject=request.user.subject, started=request.session['start_time'], complete=finished, parameters=globalparams)
     else:
         participation = exp.participation_model.objects.get(pk=previous)
     
@@ -63,7 +67,7 @@ def save(request, exp_label):
     sortings = sort_trials(data)
     for trial_type, trial_batch in sortings.items():
         # TODO: maybe find a better way to handle practice and instruction trials
-        if trial_type == 'instructions':
+        if trial_type == 'instructions' or trial_type == 'text':
             continue
         try:
             trial_content_type = ContentType.objects.get(pk=mapping[trial_type])

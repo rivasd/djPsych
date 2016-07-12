@@ -92,9 +92,9 @@ class BaseExperiment(models.Model):
             new_group.save()
         super(BaseExperiment, self).save()
         
-    def create_participation(self, subject, started, complete=False):
+    def create_participation(self, subject, started, complete=False, parameters={}):
         
-        part = self.participation_model(subject=subject, experiment=self, started=started, complete=complete)
+        part = self.participation_model(subject=subject, experiment=self, started=started, complete=complete, parameters=parameters)
         part.save()
         return part
         

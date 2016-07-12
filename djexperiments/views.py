@@ -35,7 +35,7 @@ def launch(request, exp_label):
     exp = Experiment.objects.get(label=exp_label)
     js_modules = get_all_js_files_in_exp(exp_label=exp_label)
     consentfile = 'djexperiments/'+exp_label+'/consent.html'
-    plugins = [os.path.basename(file) for file in glob.glob('./djmanager/static/jspsych-plugins/*.js')]
+    plugins = [os.path.basename(file) for file in glob.glob(os.path.join(os.path.dirname(__file__), '../djmanager/static/jspsych-plugins/')+'*.js')]
     return render(request, 'djexperiments/launch.html', {'scripts': js_modules, 'exp': exp, 
                                                          'consent':consentfile, 'plugins':plugins, 'static_url': settings.STATIC_URL})
 

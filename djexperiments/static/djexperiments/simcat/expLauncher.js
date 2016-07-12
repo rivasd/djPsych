@@ -396,7 +396,7 @@ function ExpLauncher(opts, canvas){
 		var stimWrap = module.makeStimDescription(false);
 		var practiceStimWrap = module.makeStimDescription(true);
 		var timeline =[];
-		var meta = {parameters: {difficulty: stimWrap.difficulty, definitions: stimWrap.definitions}};
+		var meta = {globalparams: {difficulty: stimWrap.difficulty, definitions: stimWrap.definitions}};
 		var stimuli = module.makeStimuli(stimWrap, settings.length, atEach);
 		var practiceStimuli = module.makeStimuli(practiceStimWrap, settings.practices, atEach, settings.practice_components, 10);
 		
