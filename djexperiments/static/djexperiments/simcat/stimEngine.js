@@ -137,14 +137,13 @@ function StimEngine(opts, canvas){
 					against[elt] = Math.floor(Math.random() * 2);
 				}
 				if(distance > 0){
-					settable[elt] = other == 0? 1:0;
+					settable[elt] = against[elt] == 0 ? 1 : 0;
 					distance--;
 				}
 				else{
-					settable[elt] = other;
+					settable[elt] = against[elt];
 				}
 			}
-			
 		});
 		
 		if(distance > 0){

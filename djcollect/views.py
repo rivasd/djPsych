@@ -27,7 +27,7 @@ def collect_all(request, exp_label):
     main_zipfile = zipfile.ZipFile(the_zip, mode='w', compression = zipfile.ZIP_DEFLATED)
     main_zipfile.debug = 3
     for participation in exp.participation_set.all():
-        name = "subject_"+str(participation.subject.id)+str(participation.started).replace(' ', '_').replace(':', '-')+"diff"+participation.parameters["difficulty"][:19]
+        name = "subject_"+str(participation.subject.id)+str(participation.started).replace(' ', '_').replace(':', '-')+"diff"+ str(participation.parameters["difficulty"])
         data_as_string_io = get_csv_iostring_from_participation(participation)
         main_zipfile.writestr(name+'.csv', data_as_string_io.getvalue())
         data_as_string_io.close() # Better close it, you never know
