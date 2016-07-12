@@ -175,7 +175,7 @@ var djPsych = (function djPsych($){
 	 * Sends collected data back to the server to be saved, taking care of filling the meta object based on what was received by the previous .request() call.
 	 * Displays a jquery-ui dialog box to indicate the result of the operation with a link towards the profile page.
 	 * @param	{jsPsych-data}	data		An array of objects as returned by a call to jsPsych.data.getData() or like the sole argument to the on_finish callback that can be passed to jsPsych.init()
-	 * @param	{function=}		lastChance	Optional function that can be called on the full payload (e.g. containing both data and meta) just before sending it away. Must do changes in-place, return value will be ignored
+	 * @param	{Object}		lastChance	Optional object to be merged with the metadata, allows to pass additional metadata. shallow merge!
 	 * @param	{*=}			local		the lastChance function will be called with this as second parameter if given
 	 */
 	core.save = function save(data, complete, lastChance, local){
@@ -185,7 +185,7 @@ var djPsych = (function djPsych($){
 		
 		payload = {};
 		payload.data = data;
-		metadata = {};
+		var metadata = {};
 		metadata.browser = get_browser_info();
 		metadata.name = meta.name;
 		metadata.subject = meta.subject;
@@ -195,7 +195,7 @@ var djPsych = (function djPsych($){
 		metadata.completed = complete;
 		payload.meta = metadata;
 		if(typeof lastChance != "undefined"){
-			lastChance(payload, local);
+			$.extend(payload.meta, lastChance);
 		}
 		
 		if(!sandbox){

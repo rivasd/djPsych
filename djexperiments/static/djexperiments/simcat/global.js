@@ -63,20 +63,8 @@ function run(settings){
 			timeline: exp.timeline,
 			on_finish: function(data){
 				//jsPsych.data.displayData("json");
-				djPsych.save(data, true);
+				djPsych.save(data, true, exp.meta);
 			},
-			on_trial_finish: (function(){
-				var score=0; //Classic example of using closures to remember private data across executions of a function
-				var $feedback = $("#retroaction");
-				return function(trial_data){
-					if(trial_data.trial_type == 'categorize' && !trial_data.is_practice){
-						if(trial_data.correct){
-							score++;
-						}
-						$feedback.text((score*0.05)+" $");
-					}
-				}
-			})(),
 			on_trial_start:function(){
 				jsPsych.getDisplayElement()[0].scrollIntoView();
 			}
