@@ -27,6 +27,9 @@ jsPsych.plugins.similarity = (function() {
     trial.timing_first_stim = trial.timing_first_stim || 1000; // default 1000ms
     trial.timing_second_stim = trial.timing_second_stim || -1; // -1 = inf time; positive numbers = msec to display second image.
     trial.timing_image_gap = trial.timing_image_gap || 1000; // default 1000ms
+    trial.timing_fixation_cross = trial.timing_fixation_cross||1500;
+    trial.timeout = trial.timeout || 3000 //amount of time the response slider will be showing
+
 
     trial.is_html = (typeof trial.is_html === 'undefined') ? false : trial.is_html;
     trial.prompt = (typeof trial.prompt === 'undefined') ? '' : trial.prompt;
@@ -37,6 +40,7 @@ jsPsych.plugins.similarity = (function() {
     trial = jsPsych.pluginAPI.evaluateFunctionParameters(trial);
     
     //Adding new parameters 
+    plugin.sample_page = plugin.sample_page || true;
     
     
     
@@ -54,33 +58,61 @@ jsPsych.plugins.similarity = (function() {
     // this array holds handlers from setTimeout calls
     // that need to be cleared if the trial ends early
     trial.setTimeoutHandlers = [];
-
-    // show the images
-    if (!trial.is_html) {
-      display_element.append($('<img>', {
-        "src": trial.stimuli[0],
-        "id": 'jspsych-sim-stim'
-      }));
-    } else {
-      display_element.append($('<div>', {
-        "html": trial.stimuli[0],
-        "id": 'jspsych-sim-stim'
-      }));
+    
+    function showFixationCross(){
+    	display_element.empty();
+    
+    	if(display_element.css("position")==="static"){
+    		display_element.css("position", "relative");
+    	}
+    	
+        var $paragraph = $("<p>+</p>");
+        display_element.append($paragraph);
+        $paragraph.css({
+        	"font-size":"350%",
+    	    "position":"absolute",
+    	    "left": "50%",
+    	    "top": "50%",
+    	    "transform": "translate(-50%, -50%)"   
+        });  	
     }
     
-    //first stimuli has been shown, send first trigger
-    if(trial.hardware_first_stim && jsPsych.pluginAPI.hardwareConnected){
-    	jsPsych.pluginAPI.hardware(trial.hardware_first_stim);
+    
+    showFixationCross();
+    
+    setTimeout(function(){
+    	display_element.empty();
+    	showFirstImage();  	
+    }, trial.timing_fixation_cross);
+   
+    
+    function showFirstImage(){
+    // show the images
+	    if (!trial.is_html) {
+	      display_element.append($('<img>', {
+	        "src": trial.stimuli[0],
+	        "id": 'jspsych-sim-stim'
+	      }));
+	    } else {
+	      display_element.append($('<div>', {
+	        "html": trial.stimuli[0],
+	        "id": 'jspsych-sim-stim'
+	      }));
+	    }
+	    
+	    //first stimuli has been shown, send first trigger
+	    if(trial.hardware_first_stim && jsPsych.pluginAPI.hardwareConnected){
+	    	jsPsych.pluginAPI.hardware(trial.hardware_first_stim);
+	    }
+	
+	    if (trial.show_response == "FIRST_STIMULUS") {
+	      show_response_slider(display_element, trial);
+	    }
+	
+	    trial.setTimeoutHandlers.push(setTimeout(function() {
+	      showBlankScreen();
+	    }, trial.timing_first_stim));
     }
-
-    if (trial.show_response == "FIRST_STIMULUS") {
-      show_response_slider(display_element, trial);
-    }
-
-    trial.setTimeoutHandlers.push(setTimeout(function() {
-      showBlankScreen();
-    }, trial.timing_first_stim));
-
 
     function showBlankScreen() {
 
@@ -107,10 +139,11 @@ jsPsych.plugins.similarity = (function() {
       	jsPsych.pluginAPI.hardware(trial.hardware_second_stim);
       }
       
-      if (trial.show_response == "SECOND_STIMULUS") {
-        show_response_slider(display_element, trial);
+      
+      if(trial.show_response == "SECOND_STIMULUS") {
+          show_response_slider(display_element, trial);
       }
-
+      
       if (trial.timing_second_stim > 0) {
         trial.setTimeoutHandlers.push(setTimeout(function() {
           $("#jspsych-sim-stim").css('visibility', 'hidden');
@@ -120,6 +153,36 @@ jsPsych.plugins.similarity = (function() {
         }, trial.timing_second_stim));
       }
     }
+    
+    
+    function endTrial(data){
+        
+
+        // kill any remaining setTimeout handler
+	        for (var i = 0; i < trial.setTimeoutHandlers.length; i++) {
+	          clearTimeout(trial.setTimeoutHandlers[i]);
+	        }
+
+	    var score = undefined;
+        
+	    if(data.rt === -1){
+	    	score = 0;
+	    }
+	    else score = $("#slider").slider("value");
+	    
+        var trial_data = {
+          "sim_score": score,
+          "rt": data.rt
+          //"stimulus": JSON.stringify([trial.stimuli[0], trial.stimuli[1]])
+        };
+        trial_data.timeout = false; //quick hack for something I need right now
+        if(trial.return_stim){
+        	trial_data.stimulus = JSON.stringify([trial.stimuli[0], trial.stimuli[1]]);
+        }
+        // goto next trial in block
+        display_element.html('');
+        jsPsych.finishTrial(trial_data);
+     }
 
 
     function show_response_slider(display_element, trial) {
@@ -199,36 +262,20 @@ jsPsych.plugins.similarity = (function() {
         'class': 'sim',
         'html': 'Submit Answer'
       }));
-
+       
       // if prompt is set, show prompt
       if (trial.prompt !== "") {
         display_element.append(trial.prompt);
-      }
-
-      $("#next").click(function() {
-        var endTime = (new Date()).getTime();
-        var response_time = endTime - startTime;
-
-        // kill any remaining setTimeout handlers
-        for (var i = 0; i < trial.setTimeoutHandlers.length; i++) {
-          clearTimeout(trial.setTimeoutHandlers[i]);
-        }
-
-        var score = $("#slider").slider("value");
-        var trial_data = {
-          "sim_score": score,
-          "rt": response_time,
-          //"stimulus": JSON.stringify([trial.stimuli[0], trial.stimuli[1]])
-        };
-        trial_data.timeout = false; //quick hack for something I need right now
-        if(trial.return_stim){
-        	trial_data.stimulus = JSON.stringify([trial.stimuli[0], trial.stimuli[1]]);
-        }
-        // goto next trial in block
-        display_element.html('');
-        jsPsych.finishTrial(trial_data);
+      }   
+      trial.setTimeoutHandlers.push(setTimeout(function(){
+    	  endTrial({rt:-1})
+    	  }, trial.timeout));
+      var endTime = (new Date()).getTime();
+      var response_time = endTime - startTime;
+      $("#next").click(function(){
+    	  endTrial({rt: response_time});
       });
     }
   };
   return plugin;
-})();
+  })();

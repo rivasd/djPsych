@@ -170,6 +170,8 @@ function ExpLauncher(opts, canvas){
 		if(components){
 			engine.setComponents(components);
 		}
+		// I think this is where we should batch up our canvas draws so that it is non blocking
+		
 		vectorTimeline.forEach(function(raw, i, array) {
 			var multiple = raw.stimuli.length == undefined ? false : true;
 			if(!multiple){
@@ -373,7 +375,7 @@ function ExpLauncher(opts, canvas){
 		var rawTimeline = module.createRawSimilarityTimeline([Object.keys(wrapper.definitions)[0], Object.keys(wrapper.definitions)[1]], distances, length)
 		var vectorTimeline = module.createVectorialSimilarityTimeline(rawTimeline, wrapper.definitions);
 		vectorTimeline.forEach(function(elt, i, array) {
-			elt.data.distance = elt.data.kind == 'same' ? elt.data.distance : (Objects.keys(elt.stimuli[0]).length - wrapper.difficulty) - elt.data.distance;
+			elt.data.distance = elt.data.kind == 'same' ? elt.data.distance : (Object.keys(elt.stimuli[0]).length - wrapper.difficulty) - elt.data.distance;
 		});
 		
 		module.replaceVectorsWithImage(vectorTimeline, atEach, components, density);
@@ -439,6 +441,17 @@ function ExpLauncher(opts, canvas){
 			}
 			timeline.push(block);
 		}
+		
+		//TODO: make this less cringe-worthy
+		//Add the stimuli sample page by hand here, make it pretty later
+		var sampleBlock = {
+				type: 'text',
+				text: "<p> Here is an example of the textures you will use</p>"+createSampleTable(3, 3, stimuli)[0].outerHTML
+		};
+		
+		timeline.splice(1, 0, sampleBlock);
+		
+		
 		//We should end by adding some stuff to the meta object here
 		var browser = get_browser_info();
 		meta.browser = browser.name;
@@ -449,6 +462,10 @@ function ExpLauncher(opts, canvas){
 		meta.exp_id = settings.exp_id;
 		meta.current_exp = settings.current_exp;
 		return {meta: meta, timeline: timeline};
+		
+		
+		
+		
 	}
 	
 	function collectQuestionnaire(jsPsychTarget, inputDict){
@@ -465,10 +482,12 @@ function ExpLauncher(opts, canvas){
 			exploded.push(stims[i].stimuli[1]);
 		}
 		
-		var niaiseries = jsPsych.randomization.sample(exploded, imageNb, false);
+		exploded = jsPsych.randomization.sample(exploded, imageNb, false);
 		var images = [];
-		niaiseries.forEach(function(obj){
-			images.push(obj.stimuli[0]);
+		exploded.forEach(function(imgstr){
+			var img = new Image();
+			img.src = imgstr;
+			images.push(img);
 		});
 		
 		var $table = $("<table>", {'class':'stim-table'});

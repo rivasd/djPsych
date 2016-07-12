@@ -19,12 +19,33 @@ author: Daniel Rivas
     src: url('Jura/Jura-DemiBold.ttf');
 }
 
+p{
+	font-family: inherit;
+	font-size: medium;
+}
+:focus{outline: none;}
+
+a{
+	color: inherit;
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+.ownline{
+	display: block;
+}
+
+body, html{
+	height:100%;
+}
+/************************* General styles ****************************/
+
 *{
 	/* margin:0px; */
 	line-height: 1.2em;
 	font-family: "Titillium-Web", "sans-serif";
 	/* width: 100%; */
-	color: black;
+	/* color: black; */
 	}
 
 body {
@@ -36,15 +57,166 @@ body {
 	margin: 0;
 	/* padding: 0 30px; */
 	box-sizing: border-box;
+	min-width: 1280px;
 	}
-	
+
+.halfhalf{
+	width:50%;
+	display: inline-block;
+	box-sizing: border-box;
+	height: 100%;
+	padding: 50px 30px;
+}
+
+.halfhalf p{
+    font-size: 16pt;
+    font-family: "Titillium-Web", sans-serif;
+}
+
+#rest{
+	padding: 30px 60px;
+	min-height: 600px;
+	font-family: "PT Sans", sans-serif;
+}
+
+img.tiny{
+	height: 38px;
+	vertical-align: middle;
+	-webkit-filter: grayscale(60%);
+}
+
+footer li {
+	color:white;
+	font-size: 9pt;
+	margin: 0 15px;
+}
+
+ul.horizontal li{
+	display: inline-block;
+}
+
+ul{
+	padding-left:0;
+	margin: 0;
+}
+
+#links{
+	margin: 0px;
+	text-align: center;
+	padding: 0;
+	/* vertical-align: bottom; */
+	/* display: inline; */
+	align-self: flex-end;
+}
+
+.content-pad{
+	padding: 30px;
+	width:100%;
+}
+
+.center{
+	text-align:center;
+}
+/********************************** Home Page styles **********************************/
+
+h1{
+	margin:0;
+}
+
+#taglines{
+	position:relative;
+	/* text-align: center; */
+	color: rgba(210,75,61,1);
+	/* background-color: rgba(245, 245, 220, 0.7); */
+	text-transform: uppercase;
+	display: inline-block;
+	/* margin: 0 auto; */
+	height: 100px;
+}
+
+#taglines ul{
+	/* display: inline; */
+	margin: auto 0;
+	/* text-align: center; */
+	margin-top: 40px;
+	/* height: 100%; */
+	/* width: 100%; */
+	padding: 10px;
+	background-color: rgba(222, 184, 135, 0.4);
+}
+
+#taglines li{
+	/* display:inline-block; */
+	font-size: 19pt;
+	font-weight: 800;
+	text-align: left;
+}
+
+#main-banner{
+	text-align:center;
+	height: 100px;
+}
+
+#brain-icon{
+	height: 40px;
+	fill: aquamarine;
+}
+
+#welcome{
+	font-size: 24pt;
+	width: 50%;
+	/* display: inline-block; */
+	/* padding: 60px; */
+	text-align: right;
+	font-family: "Titillium-Web", sans-serif;
+	padding-left: 10%;
+}
+
+#description{
+	/* width:50%; */
+	/* display: flex; */
+	/* align-items: center; */
+	/* justify-content: flex-start; */
+	vertical-align: center;
+	/* padding: 60px; */
+	font-size: 16pt;
+	font-family: "Titillium-Web";
+}
+
+#main-image{
+	background-image: url("labstaff.jpg");
+	background-size: cover;
+	background-position: 50% 10%;
+	height: 700px;
+	position: absolute;
+	top: 0px;
+	width: 100%;
+	left: 0px;
+	/* z-index: 1; */
+	-webkit-filter: saturate(70%);
+}
+
+#below{
+	position: relative;
+	/* top: 350px; */
+	margin-top: 450px;
+	/* height: 200px; */
+	background-color: #6d6d6d;
+	color: white;
+	font-family: "Titillium-Web";
+	display: flex;
+	align-items: center;
+	min-height: 400px;
+}
+/***************************** Basic Template *****************************/
+
 header {
 	background-image: linear-gradient();
 	/* border-radius: 8px 8px 0px 0px; */
-	color:#e2e2e2;
+	color: #e0e0e0;
 	font-family: "Titillium-Web", "Lucida Grande", sans-serif;
 	/* min-height:140px; */
-	background-color: rgb(247, 247, 247);
+	background-color: rgba(247, 247, 247, 1);
 	display: table;
 	width: 100%;
 	vertical-align: bottom;
@@ -52,7 +224,14 @@ header {
 	position: relative;
 	text-align: inherit;
 	padding-top: 80px;
+	z-index: 2;
+	min-width: 1000px;
+	/* opacity: 0.6; */
 	}
+
+
+
+
 
 #hidden-login{
 	display: none;
@@ -74,6 +253,7 @@ header {
     display: inline;
     vertical-align: bottom;
     padding-left: 10px;
+    /* -webkit-filter: saturate(170%) contrast(130%); */
 }
 
 #top{
@@ -94,6 +274,7 @@ header {
 	height: 100%;
 	/* margin: 0 10px; */
 	/* box-sizing: content-box; */
+	position: relative;
 	}
 	
 header h1, h3 {
@@ -105,43 +286,66 @@ header:after{
 	content : "";
 	position: absolute;
 	left    : 0;
-	bottom  : 0;
-	height  : 1px;
+	bottom: 0px;
+	/* height: 10px; */
 	width: 80%;  /* or 100px */
-	border-bottom:1px solid black;
+	border-bottom: 1px solid #5d5c5c;
 	display: block;
-	margin: 0 -20px;
+	/* margin: 0 -20px; */
+	background-color: #9a9999;
 }
 
 
 #content{
 	background-color:#EAEAEA;
 	vertical-align:top;
-	padding: 35px 25px 25px 25px;
-    min-height: 500px;
+	padding: 35px 5%;
+	min-height: -webkit-calc(100% - 150px);
+	font-family: "PT Sans", sans-serif;
 	}
 	
+
+	
 footer	{
-	background-image: url('txture.png');
-	border-radius: 0px 0px 8px 8px;
-	color:#e2e2e2;
+	/* background-image: url('txture.png'); */
+	/* border-radius: 0px 0px 8px 8px; */
+	color: white;
 	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 	padding: 6px;
-	min-height:30px;
+	min-height: 80px;
 	vertical-align:bottom;
+	/* margin-top: 30px; */
+	background-color: #bdbdbd;
+	/* position: relative; */
+	display: flex;
+	justify-content: center;
 	}
 		
+footer:before{
+	/* content : ""; */
+	position: relative;
+	right: 0px;
+	top: 0px;
+	/* height: 1px; */
+	width: 80%;  /* or 100px */
+	border-bottom: 1px solid #5d5c5c;
+	display: block;
+	/* margin: 0 -20px; */
+	background-color: #9a9999;
+	z-index: 3;
+}
+		
 p, a, h3	{
-	font-family: "Titillium-Web", "Lucida Grande", sans-serif;
+	font-family: "PT Sans", "Lucida Grande", sans-serif;
 	font-size: 11pt;
-	margin-top:15px;
+	/* margin-top:15px; */
 	margin-bottom:15px;
 	}
 	
 li	{
-	margin-top:5px;
-	margin-bottom: 5px;
-	font-family: "Titillium-Web", "Lucida Grande", sans-serif;
+	/* margin-top:5px; */
+	/* margin-bottom: 5px; */
+	/* font-family: "Titillium-Web", "Lucida Grande", sans-serif; */
 	font-size: 12pt;
 	color: inherit;
 	}
@@ -151,7 +355,7 @@ li	{
 nav{
 	padding-bottom: 7px;
 	/* background: #000000; */
-	color: #939393;
+	color: #eaeaea;
 	/* padding-left: 30px; */
 	display: table-cell;
 	vertical-align: bottom;
@@ -172,32 +376,6 @@ ul.navbar{
 	text-align: right;
 }
 
-
-
-
-
-
-button {
-	display:inline-block;
-	/* margin-left: auto; */
-	/* margin-right:auto; */
-	/* position:relative; */
-	background:#283947;
-	color:#BBBEC1;
-	text-decoration:none;/
-	style/
-	margin:10px;
-	padding:10px;
-	border-radius:6px;
-	text-shadow: 1px 1px 1px rgba(255,255,255, .22);
-	box-shadow: 2px 2px 2px #252525;
-	min-width: 85px;
-	background: -webkit-linear-gradient(#283947, #243B4F); /* For Safari 5.1 to 6.0 */
-	background: -o-linear-gradient(#283947, #243B4F); /* For Opera 11.1 to 12.0 */
-	background: -moz-linear-gradient(#283947, #243B4F); /* For Firefox 3.6 to 15 */
-	background: linear-gradient(#283947, #243B4F); /* Standard syntax */
-	}
-
 button a{
     text-decoration: none;
     color: #EAEAEA;
@@ -216,7 +394,6 @@ button:hover{
 	
 #jsPsychTarget img{
 	display:block;
-	margin: 0 auto;
 }
 
 #jsPsychTarget button{
@@ -233,8 +410,9 @@ button:hover{
 }
 
 header a{
-	color: #939393;
+	color: #757575;
 	text-decoration: none;
+	font-weight: normal;
 }
 
 .full-width {
@@ -463,9 +641,37 @@ form#login p{
 	margin-left: 20px;
 }
 
+/******************************** consent forms styles **********************************/
 #consent{
     margin-top: 25px;
 }
+
+#consent li{
+	margin-bottom: 5px;
+	list-style: disc;
+}
+
+#consent ul{
+	list-style: disc;
+	padding-left: 40px;
+}
+
+#accept{
+    margin: 0 auto;
+    height:20px;
+    width:20px;
+    vertical-align: middle;
+}
+
+#consent .center{
+	margin-top:10px;
+}
+
+#consent label{
+	font-weight: bold;
+}
+
+/******************************************* WebExp styles *********************************/
 div.entry{
     margin-top: 8px;
     margin-bottom: 8px;
@@ -513,9 +719,7 @@ div.entry{
   box-shadow: -1px 2px 5px 2px black;
 }
 
-#accept{
-    margin: 0 auto;
-}
+
 
 body #page #content div.login-popup{
 	padding: 0;
@@ -547,6 +751,13 @@ a:hover, a.button:hover, #hidden-login a:hover{
 	color: #EC4409;
 }
 
+.stim-table img{
+	width:185px;
+	margin: 5px;
+}
+
+/************************************ Login/sign up styles *********************************/
+
 #provider-img-Facebook{
 	height: 50px;
 	width: 310px;
@@ -555,7 +766,7 @@ a:hover, a.button:hover, #hidden-login a:hover{
 	height: 55px;
 	width: 240px;
 }
-img.login-btn {
+.login-btn {
    -webkit-transition: all 0.4s ease;
    -moz-transition: all 0.4s ease;
    -o-transition: all 0.4s ease;
@@ -563,9 +774,10 @@ img.login-btn {
    transition: all 0.4s ease;
    margin: 0 auto;
    display: block;
+   width: 300px;
 }
 
-img.login-btn:hover {
+.login-btn:hover {
    -webkit-filter: brightness(85%);
    filter: brightness(80%);
 }
@@ -577,4 +789,106 @@ input[type=text], input[type=password], input[type=select]{
 #login-error{
 	color: red;
 	font-weight: bold;
+}
+img.fb-login{
+	display: inline-block;
+	width: 250px;
+}
+
+img.google-login{
+	display: inline-block;
+	width: 261px;
+	margin-left: -5px;
+}
+
+.btn, button, input[type=submit] {
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: #939393;
+  color: #ffffff;
+}
+a.socialaccount_provider {
+    min-width: 140px;
+}
+
+.login{
+	display: inline-block;
+	/* padding: 10px; */
+	box-sizing: border-box;
+	margin: 0 auto;
+	text-align: left;
+}
+
+.login input, .login label{
+	display:block;
+	/* width: 50%; */
+	font-weight: bold;
+}
+
+.login input[type=text], .login input[type=password], .login input[type=email]{
+	width: 300px;
+	height: 30px;
+	padding: 5px 20px;
+	font-size: 13pt;
+}
+
+.login label{
+	margin-bottom: 5px;
+	padding-left: 15px;
+	/* font-weight: 700; */
+	display: inline-block;
+	/* width: 110px; */
+	box-sizing: border-box;
+}
+.login input[type=checkbox]{
+	display:inline;
+	width: auto;
+	vertical-align: middle;
+}
+
+.login p{
+	margin-bottom:5px;
+	margin-top:0;
+}
+
+.login-or{
+	margin-top: 20px;
+	text-align: center;
+	font-style: italic;
+	font-size: 16pt;
+	font-weight: bold;
+}
+
+#login-form{
+	border: 1px solid black;
+	border-radius: 5px;
+	width: 400px;
+	padding: 20px;
+	text-align: center;
+}
+.socialaccount_providers{
+	text-align: center;
+}
+
+#forgotpass{
+	font-weight: bold;
+	text-decoration: none;
+	font-size: small;
 }

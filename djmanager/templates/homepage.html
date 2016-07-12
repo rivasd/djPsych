@@ -14,25 +14,27 @@ manips	an array of arrays, each top level array representing an experiment as se
 {% endblock %}
 
 {% block content %}
-<h1>Nos projets de recherche sur le Web</h1>
-<p>
-	Dans notre labo, nous menons non seulement des expériences combinant des données behaviorales et des potentiels evoqués,
-	mais aussi des simulations sur des réseaux de neurones artificiels. Cependant ce n'est pas tout le monde qui a le goût de se déplacer
-	au labo et de se faire placer un <a href="http://www.biosemi.com/pics/apply_cap2_large.jpg">chapeau EEG rempli de gel!</a>
-</p>
-<p>
-	C'est pourquoi nous avons développé des expériences de psychologie cognitive sur le web. En participant, vous nous aidez à atteindre nos 
-	objectifs de recherche, vous découvrerez peut-être des choses sur votre fonctionnement cognitif, et vous pouvez même être rémunéré(e) par
-	<a href="http://paypal.com"> Paypal </a>!
-</p>
-<p>
-	Voyez ci-dessous une liste des expériences actuellement disponibles. Cliquez pour en savoir plus ou participer!
-</p>
-<ul id="available-exp">
-	{% for manip in manips %}
-	<li>
-		<a href="{% url 'webexp:lobby' manip.label%}"> {{ manip.verbose_name }} </a>	
-	</li>
-	{% endfor %}
-</ul>
+
+	<h1>Nos projets de recherche sur le Web</h1>
+	<p>
+		Dans notre labo, nous menons non seulement des expériences combinant des données behaviorales et des potentiels evoqués,
+		mais aussi des simulations sur des réseaux de neurones artificiels. Cependant ce n'est pas tout le monde qui a le goût de se déplacer
+		au labo et de se faire placer un <a href="http://www.biosemi.com/pics/apply_cap2_large.jpg">chapeau EEG rempli de gel!</a>
+	</p>
+	<p>
+		C'est pourquoi nous avons développé des expériences de psychologie cognitive sur le web. En participant, vous nous aidez à atteindre nos 
+		objectifs de recherche, vous découvrerez peut-être des choses sur votre fonctionnement cognitif, et vous pouvez même être rémunéré(e) par
+		<a href="http://paypal.com"> Paypal </a>!
+	</p>
+	<p>
+		Voyez ci-dessous une liste des expériences actuellement disponibles. Cliquez pour en savoir plus ou participer!
+	</p>
+	<ul id="available-exp">
+		{% for manip in manips %}
+		<li>
+			<a href="{% url 'webexp:lobby' manip.label%}"> {{ manip.verbose_name }} </a>	
+		</li>
+		{% endfor %}
+	</ul>
+
 {% endblock %}
