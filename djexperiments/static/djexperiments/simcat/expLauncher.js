@@ -271,6 +271,9 @@ function ExpLauncher(opts, canvas){
 		if(howMany <= 0 ){
 			return;
 		}
+		
+		var beforeLength = timeline.length;
+		
 		var pauseTrial = {
 			type: 'html',
 			url: '/webexp/'+djPsych.getLabel()+'/request/snippet/'+url,
@@ -282,11 +285,16 @@ function ExpLauncher(opts, canvas){
 			throw "you want more pauses than trials??? wtf"
 		}
 		else{
-			var interval = Math.floor(timeline.length/(howMany+1));
-			// now actually proceed to insert
-			for(cursor=interval; cursor<timeline.length-1; cursor += interval+1){
-				timeline.splice(cursor, 0, pauseTrial);
+			timeline.push(pauseTrial);
+			howMany--;
+			if(howMany > 0){
+				var interval = Math.floor(timeline.length/(howMany+1));
+				// now actually proceed to insert
+				for(cursor=interval; cursor<beforeLength; cursor += interval+1){
+					timeline.splice(cursor, 0, pauseTrial);
+				}
 			}
+			
 		}
 	}
 	
