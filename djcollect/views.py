@@ -8,6 +8,7 @@ import io
 import zipfile
 import datetime
 from djcollect.utils import get_csv_iostring_from_participation
+from _overlapped import NULL
 
 # Create your views here.
 # All of this is meant to be used via fake AJAX downloads using this super plugin: https://github.com/johnculviner/jquery.fileDownload
@@ -26,8 +27,18 @@ def collect_all(request, exp_label):
     the_zip = io.BytesIO()
     main_zipfile = zipfile.ZipFile(the_zip, mode='w', compression = zipfile.ZIP_DEFLATED)
     main_zipfile.debug = 3
+    
+    
+    
+    
     for participation in exp.participation_set.all():
-        name = "subject_"+str(participation.subject.id)+str(participation.started).replace(' ', '_').replace(':', '-')+"diff"+ str(participation.parameters["difficulty"])
+        
+        
+        
+        name = "subject_"+str(participation.subject.id)+str(participation.started).replace(' ', '_').replace(':', '-')+"diff"
+        if participation.parameters is not None:
+            name = name+ + str(participation.parameters["difficulty"])
+        
         data_as_string_io = get_csv_iostring_from_participation(participation)
         main_zipfile.writestr(name+'.csv', data_as_string_io.getvalue())
         data_as_string_io.close() # Better close it, you never know
