@@ -8,7 +8,7 @@ import io
 import zipfile
 import datetime
 from djcollect.utils import get_csv_iostring_from_participation
-from _overlapped import NULL
+
 
 # Create your views here.
 # All of this is meant to be used via fake AJAX downloads using this super plugin: https://github.com/johnculviner/jquery.fileDownload
