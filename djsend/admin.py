@@ -126,6 +126,8 @@ class SimilarityBlockAdmin(GenericBlockAdmin):
             'timing_second_stim',
             'timing_image_gap',
             'timing_post_trial',
+            'timeout',
+            'timeout_message',
             'prompt'
         )}),                               
     )

@@ -22,4 +22,4 @@ class GenericSettingblockOptions(TranslationOptions):
 
 @register(SimilarityBlock)
 class SimilarityBlockOptions(TranslationOptions):
-    fields=('prompt', 'labels')
+    fields=('prompt', 'labels', 'timeout_message')
