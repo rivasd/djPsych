@@ -8,10 +8,13 @@ from djcollect.models import Participation
 from djexperiments.models import Experiment
 from djsend.models import SimCatGlobalSetting
 
-class MyParticipation(Participation):
+class MyParticipation():
     
-    class Meta:
-        proxy=True
+    @classmethod
+    def calculate_payment(cls, trials=None):
+         
+        return 5.00
+        
         
 class MyExperiment(Experiment):
     
