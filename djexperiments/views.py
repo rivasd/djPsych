@@ -50,7 +50,7 @@ def sandbox(request, exp_label):
     if not exp.research_group in request.user.groups.all():
         raise Http404(_("You do not have permission to access the sandbox"))
     
-    plugins = [os.path.basename(file) for file in glob.glob('./djmanager/static/jspsych-plugins/*.js')]
+    plugins = [os.path.basename(file) for file in glob.glob(os.path.join(os.path.dirname(__file__), '../djmanager/static/jspsych-plugins/')+'*.js')]
     js_modules = get_all_js_files_in_exp(exp_label)
     configs = exp.get_all_configurations()
     choices = []
