@@ -45,6 +45,9 @@ class SimilarityBlock(BaseSettingBlock):
     timing_second_stim = models.IntegerField(help_text=l_("How long to show the second stimulus for in milliseconds. -1 will show the stimulus until a response is made by the subject."))
     timing_image_gap = models.IntegerField(help_text=l_("How long to show a blank screen in between the two stimuli."))
     timing_post_trial = models.IntegerField(help_text=l_("Sets the time, in milliseconds, between the current trial and the next trial."))
+    timeout = models.IntegerField(help_text=l_("How long before trial automatically times out"), default=-1)
+    timeout_message = models.CharField(max_length=128, null=True, blank=True)
+    
     prompt = models.CharField(max_length=32, blank=True, help_text=l_("Any content here will be displayed below the stimulus, as a reminder to the participant"))
     labels = JSONCharField(max_length=64, help_text=l_('An array of tags to label the slider. must be eclosed in square brackets. Each label must be enclosed in double quotation marks. Labels must be separated by a single comma.'))
     
