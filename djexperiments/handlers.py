@@ -32,10 +32,11 @@ def loadCustomModels(sender, instance, **kwargs):
     except ImportError:
         raise BackendConfigException(_("Each experiment must have a python module present in the djexperiment.experiments package"))
     try:
-        participation_proxy = custom_models.PARTICIPATION_PROXY
+        custom_calculate = custom_models.PARTICIPATION_CALCULATE
+        Participation.calculate_payment = custom_calculate
     except AttributeError:
-        participation_proxy = Participation
-    setattr(instance, 'participation_model', participation_proxy)
+        pass
+    setattr(instance, 'participation_model', Participation)
     
     if hasattr(custom_models, 'GEN_SETTINGS_MODEL'):
         gen_set_mod = custom_models.GEN_SETTINGS_MODEL

@@ -31,7 +31,7 @@ class Run(models.Model):
     def get_trials(self):
         trials = []
         for trial_ct in self.used_trials.all():
-            for trial in trial_ct.model_class().objects.filter(run=self):
+            for trial in trial_ct.model_class().objects.filter(run=self).order_by("trial_index"):
                 trials.append(trial)
         return trials
             
