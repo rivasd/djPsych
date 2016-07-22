@@ -20,3 +20,6 @@ INSTALLED_APPS.extend(prod_only_apps)
 DATABASES = {
     'default': get_secret("MYSQL_CREDS")
 }
+
+# change to live when we go live!
+PAYPAL_MODE = 'live'
