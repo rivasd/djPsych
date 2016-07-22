@@ -11,10 +11,3 @@ class Migration(migrations.Migration):
         ('djsend', '0012_auto_20160414_2205'),
     ]
 
-    operations = [
-        migrations.AddField(
-            model_name='similarityblock',
-            name='timeout',
-            field=models.IntegerField(default=-1, help_text='How long before trial automatically times out'),
-        ),
-    ]
