@@ -23,9 +23,9 @@ class MyParticipation():
                 n_correct = n_correct+1
                 
         if n_correct >= 16:
-            return 25.00
+            return 15.00
         else:
-            return 20.00
+            return 10.00
         
         
 class MyExperiment(Experiment):
