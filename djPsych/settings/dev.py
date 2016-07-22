@@ -22,3 +22,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+# change to live when we go live!
+PAYPAL_MODE = 'sandbox'

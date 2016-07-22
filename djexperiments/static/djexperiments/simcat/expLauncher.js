@@ -383,7 +383,13 @@ function ExpLauncher(opts, canvas){
 		var rawTimeline = module.createRawSimilarityTimeline([Object.keys(wrapper.definitions)[0], Object.keys(wrapper.definitions)[1]], distances, length)
 		var vectorTimeline = module.createVectorialSimilarityTimeline(rawTimeline, wrapper.definitions);
 		vectorTimeline.forEach(function(elt, i, array) {
-			elt.data.distance = elt.data.kind == 'same' ? elt.data.distance :  elt.data.distance + wrapper.difficulty;
+			if(elt.data.kind ==="same"){
+				elt.data.distance = elt.data.distance;
+			}
+			else if(elt.data.kind === "different"){
+				elt.data.distance = elt.data.distance + wrapper.difficulty;
+			}
+			else throw "unsupported similarity kind, neither same or different?";
 		});
 		
 		module.replaceVectorsWithImage(vectorTimeline, atEach, components, density);

@@ -38,8 +38,12 @@ class BaseExperiment(models.Model):
     block_models = models.ManyToManyField(ContentType, related_name="experiments")
     research_group = models.OneToOneField(Group, null=True, blank=True)
     
-    paypal_client_id=models.CharField(max_length=128, null=True, blank=True, help_text=l_("If you plan on paying your subjects via Paypal, put the client id given to you when you registered your developer account. See: https://developer.paypal.com/developer/applications/"))
-    paypal_secret = models.CharField(max_length=128, null=True, blank=True, help_text=l_("The secret key given to you by PayPal"))
+    paypal_id_sandbox=models.CharField(max_length=128, null=True, blank=True, help_text=l_("Paypal client id for sandbox actions, (testing)"))
+    paypal_secret_sandbox = models.CharField(max_length=128, null=True, blank=True, help_text=l_("Paypal secret for the sandbox for your application"))
+    
+    paypal_id_live = models.CharField(max_length=128, null=True, blank=True, help_text=l_("Paypal client id for live authentication"))
+    paypal_secret_live = models.CharField(max_length=128, null=True, blank=True, help_text=l_("Paypal secret id for live authentication"))
+    
     ParticipationRefused = ParticipationRefused
     
     

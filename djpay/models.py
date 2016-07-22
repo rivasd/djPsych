@@ -93,11 +93,19 @@ class Payment(models.Model):
         if email is None:
             email = self.receiver
         
-        client_id = self.participation.experiment.paypal_client_id
-        secret = self.participation.experiment.paypal_secret
+        if settings.PAYPAL_MODE == 'sandbox':
+            client_id = self.participation.experiment.paypal_id_sandbox
+            secret = self.participation.experiment.paypal_secret_sandbox
+        elif settings.PAYPAL_MODE == 'live':
+            client_id = self.participation.experiment.paypal_client_live
+            secret = self.participation.experiment.paypal_secret_live
+        else:
+            raise PayoutException(_("Payment configuration error, sorry for the inconvience"))
+        
         if client_id is None or secret is None:
             raise PayoutException(_("The researchers of this experiment have not configured their Paypal credentials to be able to send money"))
         
+
         paypalrestsdk.configure({
             'mode': settings.PAYPAL_MODE,
             'client_id': client_id,

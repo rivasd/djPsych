@@ -179,8 +179,6 @@ EMAIL_HOST_USER = get_secret("GMAIL_ACCOUNT_NAME")
 EMAIL_HOST_PASSWORD = get_secret("GMAIL_ACCOUNT_PASSWORD")
 DEFAULT_FROM_EMAIL = get_secret("GMAIL_ACCOUNT_NAME")
 
-# change to live when we go live!
-PAYPAL_MODE = 'sandbox'
 
 # Markdown
 MARKDOWN_EDITOR_SKIN = 'simple'

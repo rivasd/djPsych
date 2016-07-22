@@ -59,7 +59,7 @@ class Participation(models.Model):
     
     def get_all_trials(self):
         trial_list = []
-        for run in self.run_set.all():
+        for run in self.run_set.all().order_by("start_time"):
             for trial in run.get_trials():
                 trial_list.append(trial)
         return trial_list
