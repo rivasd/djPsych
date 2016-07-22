@@ -14,7 +14,7 @@ class CogComSimilarityTrial(BaseTrial):
     
 class CogComHTMLTrial(BaseTrial):
     handles = 'html'
-    difficulty = models.PositiveIntegerField()
-    ruleFound = models.BooleanField()
+    difficulty = models.PositiveIntegerField(null=True)
+    ruleFound = models.BooleanField(default=False)
     ruleDescription = models.TextField(null=True)
     stratDescription = models.TextField(null=True)

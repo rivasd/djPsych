@@ -27,7 +27,7 @@ WE ASSUME THIS TEMPLATE IS UNREACHABLE BY USERS THAT ARE NOT LOGGED IN
 <h3>{% trans "Unclaimed payments: " %}</h3>
 <ul>
 {% for pay in payments %}
-	<li><a href="{% url "claim" pay.pk%}"> {% trans "payment for "%}{{ pay.participation.experiment.label }}</a></li>
+	<li><a href="{% url "webexp:claim" pay.participation.experiment.label pay.pk%}"> {% trans "payment for "%}{{ pay.participation.experiment.label }}</a></li>
 {% empty %}
 	<li>{% trans "None... for now!" %}</li>
 {% endfor %}

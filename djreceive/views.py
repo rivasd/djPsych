@@ -23,8 +23,8 @@ def save(request, exp_label):
     if not request.user.is_authenticated():
         return JsonResponse({'error': _("You must be logged in to submit data. Refused.")})
     
-    if not 'exp_id' in request.session or not 'current_exp' in request.session:
-        return JsonResponse({'error':_("Data received unexpectedly. Refused.")})
+#     if not 'exp_id' in request.session or not 'current_exp' in request.session:
+#         return JsonResponse({'error':_("Data received unexpectedly. Refused.")})
     
     try:
         meta = json.loads(request.POST['meta'])
@@ -94,7 +94,7 @@ def save(request, exp_label):
     if exp.compensated and participation.complete and not request.user.groups.filter(name=exp.research_group.name).exists(): # prevents researchers from being paid for doing their own experiment
         try:
             payment = participation.create_payment(data)
-            message = _("You have earned a payment of %f.2 %s. Go to your profile page to claim it!") % (round(payment.amount, 2), payment.currency)
+            message = _("You have earned a payment of {:.2f} {:s}. Go to your profile page to claim it!").format(round(payment.amount, 2), payment.currency)
         except PayoutException as e:
             message= _("However payment will not be issued because of the following reason: ")+str(e)
     
