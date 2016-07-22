@@ -1,3 +1,5 @@
+# Bonjour catherine!!
+# est ce que tu vois ca??
 from django.db import models
 from django.utils.translation import ugettext_lazy as l_
 from django.utils.translation import ugettext as _
