@@ -106,7 +106,7 @@ class Payment(models.Model):
             raise PayoutException(_("The researchers of this experiment have not configured their Paypal credentials to be able to send money"))
         
 
-        paypalrestsdk.configure({
+        mypaypalapi = paypalrestsdk.Api({
             'mode': settings.PAYPAL_MODE,
             'client_id': client_id,
             'client_secret': secret
@@ -130,7 +130,7 @@ class Payment(models.Model):
                     "sender_item_id": "item_"+str(self.pk+20)
                 }
             ]
-        })
+        }, api=mypaypalapi)
         
         if payout.create(sync_mode=True):
             # DONE: do stuff to mark this payment as completed
