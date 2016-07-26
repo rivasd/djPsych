@@ -1,9 +1,23 @@
 from django.contrib import admin
-
+from .models import Participation
 # Register your models here.
 from django.apps import apps
 
 app = apps.get_app_config('djcollect')
 
-for model_name, model in app.models.items():
-    admin.site.register(model)
+@admin.register(Participation)
+class ParticipationAdmin(admin.ModelAdmin):
+    
+    def experiment(self, obj):
+        return obj.experiment.verbose_name
+    
+    def subject_no(self, obj):
+        return obj.subject.id
+    
+    def paid(self, obj):
+        if obj.payment is not None:
+            return obj.payment.sent
+        else:
+            return False
+    
+    list_display = ('experiment', 'subject_no', 'started', 'complete', 'paid')
