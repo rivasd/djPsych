@@ -17,14 +17,14 @@ from django.contrib.contenttypes.models import ContentType
 
 def save(request, exp_label):
     if not request.is_ajax():
-        # raise HttpResponseBadRequest
+        raise HttpResponseBadRequest
         pass
     
     if not request.user.is_authenticated():
         return JsonResponse({'error': _("You must be logged in to submit data. Refused.")})
     
-#     if not 'exp_id' in request.session or not 'current_exp' in request.session:
-#         return JsonResponse({'error':_("Data received unexpectedly. Refused.")})
+    if not 'exp_id' in request.session or not 'current_exp' in request.session:
+        return JsonResponse({'error':_("Data received unexpectedly. Refused.")})
     
     try:
         meta = json.loads(request.POST['meta'])

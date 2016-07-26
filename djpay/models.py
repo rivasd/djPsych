@@ -5,7 +5,7 @@ from djPsych.exceptions import PayoutException
 from djcollect.models import Participation
 import paypalrestsdk
 import datetime
-
+import logging
 
 # Create your models here.
 
@@ -97,7 +97,7 @@ class Payment(models.Model):
             client_id = self.participation.experiment.paypal_id_sandbox
             secret = self.participation.experiment.paypal_secret_sandbox
         elif settings.PAYPAL_MODE == 'live':
-            client_id = self.participation.experiment.paypal_client_live
+            client_id = self.participation.experiment.paypal_id_live
             secret = self.participation.experiment.paypal_secret_live
         else:
             raise PayoutException(_("Payment configuration error, sorry for the inconvience"))
