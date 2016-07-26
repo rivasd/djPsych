@@ -7,4 +7,4 @@ from .models import Payment
 class PaymentAdmin(admin.ModelAdmin):
     
     list_display = ('amount', 'currency', 'receiver', 'time_created', 'status', 'sent')
-    list_editable = ('sent')
+    list_editable = ('sent',)
