@@ -38,6 +38,9 @@ class MyParticipation():
         cat_trials = [t.toDict() for t in self.get_all_trials() if t.trial_type == 'categorize']
         fig = matplotlib.figure.Figure()
         
+        if granularity > len(cat_trials):
+            granularity = 1
+        
         # our axes
         ord = []
         abs = []
@@ -61,6 +64,20 @@ class MyParticipation():
         
         axe = fig.add_subplot(111)
         axe.plot(ord, abs)
+        
+        # prettification
+        if self.parameters is not None and hasattr(self.parameters, 'difficulty'):
+            diff = self.parameters['difficulty']
+        else:
+            diff = 'unknown'
+            
+        axe.set_title('Percent correct during categorization task for subject ' + str(self.subject.id) + ' difficulty ' + diff)
+        axe.set_ylabel('percentage correct')
+        axe.set_xlabel('trial number')
+        
+        vals = axe.get_yticks()
+        axe.set_yticklabels(["{:3.0f}%".format(x*100) for x in vals])
+        
         canvas = FigureCanvas(fig)
         
         return canvas
