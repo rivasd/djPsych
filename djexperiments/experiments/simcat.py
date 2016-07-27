@@ -66,8 +66,8 @@ class MyParticipation():
         axe.plot(ord, abs)
         
         # prettification
-        if self.parameters is not None and hasattr(self.parameters, 'difficulty'):
-            diff = self.parameters['difficulty']
+        if self.parameters is not None and 'difficulty' in self.parameters:
+            diff = str(self.parameters['difficulty'])
         else:
             diff = 'unknown'
             
