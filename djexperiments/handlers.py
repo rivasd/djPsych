@@ -33,7 +33,9 @@ def loadCustomModels(sender, instance, **kwargs):
         raise BackendConfigException(_("Each experiment must have a python module present in the djexperiment.experiments package"))
     try:
         custom_calculate = custom_models.PARTICIPATION_CALCULATE
+        plot = custom_models.PLOTTING
         Participation.calculate_payment = custom_calculate
+        Participation.learning_curve = plot
     except AttributeError:
         pass
     setattr(instance, 'participation_model', Participation)
