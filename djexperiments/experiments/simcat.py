@@ -11,6 +11,7 @@ from djsend.models import SimCatGlobalSetting
 import matplotlib
 matplotlib.use('Agg')
 from matplotlib import pyplot as plt
+from matplotlib import ticker
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 
 
@@ -40,7 +41,6 @@ class MyParticipation():
         
         if granularity > len(cat_trials):
             granularity = 1
-        
         # our axes
         ord = []
         abs = []
@@ -63,6 +63,12 @@ class MyParticipation():
             cur = cur+granularity
         
         axe = fig.add_subplot(111)
+        
+        
+        
+        
+        loc = ticker.MultipleLocator(granularity)
+        axe.xaxis.set_major_locator(loc)
         axe.plot(ord, abs)
         
         # prettification
