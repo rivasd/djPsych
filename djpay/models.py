@@ -5,7 +5,7 @@ from djPsych.exceptions import PayoutException
 from djcollect.models import Participation
 import paypalrestsdk
 import datetime
-import logging
+import requests
 
 # Create your models here.
 
@@ -69,13 +69,10 @@ class Payment(models.Model):
     
     def pay(self, request, email=None):
         """
-        Attempts to send the funds by PayPal. Since this deals with $$$, exceptions will be thrown if
-        inconsistencies occur, make sure to catch them.
-        
-        Remaining funds are not checked on the Experiment object, they are expected to have been deducted at creation time.
-        This means that error codes like INSUFFICIENT_FUNDS returned by PayPal are no joke, it means we did not follow through our promise to pay
-        or we added funds that we did not really have.  
+        Attempts to send the funds by PayPal. Uses Adaptive Payment, since apparently paypal is too retarded to enable the simple REST API for Payouts in Canada
         """
+        
+        exp = self.participation.experiment
         
         if not request.user.is_authenticated():
             raise PayoutException(_("You must be logged in to claim a payment"))
@@ -94,45 +91,51 @@ class Payment(models.Model):
             email = self.receiver
         
         if settings.PAYPAL_MODE == 'sandbox':
-            client_id = self.participation.experiment.paypal_id_sandbox
-            secret = self.participation.experiment.paypal_secret_sandbox
+            app_id = 'APP-80W284485P519543T'
+            endpoint = 'https://svcs.sandbox.paypal.com/AdaptivePayments/Pay'
         elif settings.PAYPAL_MODE == 'live':
-            client_id = self.participation.experiment.paypal_id_live
-            secret = self.participation.experiment.paypal_secret_live
+            app_id = exp.PayPal_Live_ID
+            endpoint = 'https://svcs.paypal.com/AdaptivePayments/Pay'
         else:
             raise PayoutException(_("Payment configuration error, sorry for the inconvience"))
         
-        if client_id is None or secret is None:
+        if app_id is None or exp.PayPal_API_Signature is None:
             raise PayoutException(_("The researchers of this experiment have not configured their Paypal credentials to be able to send money"))
         
 
-        mypaypalapi = paypalrestsdk.Api({
-            'mode': settings.PAYPAL_MODE,
-            'client_id': client_id,
-            'client_secret': secret
-        })
+        headers  = {
+            'X-PAYPAL-SECURITY-USERID': exp.PayPal_API_Username,
+            'X-PAYPAL-SECURITY-PASSWORD': exp.PayPal_API_Password,
+            'X-PAYPAL-SECURITY-SIGNATURE': exp.PayPal_API_Signature,
+            'X-PAYPAL-APPLICATION-ID': app_id,
+            'X-PAYPAL-REQUEST-DATA-FORMAT': 'JSON',
+            'X-PAYPAL-RESPONSE-DATA-FORMAT': 'JSON'
+        }
+        
+        payload = {
+            "actionType": 'PAY',
+            "currencyCode": self.currency,
+            "senderEmail": "cognitionlabmtl@gmail.com",
+            "receiverList":{
+                "receiver": [{
+                    "amount": round(self.amount, 2),
+                    "email": email
+                }]
+            },
+            
+            "returnUrl": 'https://cogcommtl.ca',
+            "cancelUrl": 'https://cogcommtl.ca',
+            "requestEnvelope":{
+                "errorLanguage": "en_US",
+                "detailLevel": "ReturnAll"
+            }
+        }
         
         # attempt payout
-        payout = paypalrestsdk.Payout({
-            "sender_batch_header": {
-                "sender_batch_id": "batch_"+str(self.pk+20),
-                "email_subject": _("You have a payment from the Cognition Communication Lab at UQAM"),
-            },
-            "items": [
-                {
-                    "recipient_type": "EMAIL",
-                    "amount": {
-                        "value": round(self.amount, 2),
-                        "currency": self.currency,
-                    },
-                    "receiver": email,
-                    "note": _("Thank you for your participation in the experiment: ")+self.participation.experiment.verbose_name,
-                    "sender_item_id": "item_"+str(self.pk+20)
-                }
-            ]
-        }, api=mypaypalapi)
+        resp = requests.post(endpoint, headers=headers, data=payload)
+        payout = resp.json()
         
-        if payout.create(sync_mode=True):
+        if resp.status_code == 200:
             # DONE: do stuff to mark this payment as completed
             self.sent = True
             self.participation.experiment.deductFunds(float(payout.batch_header.fees.value)) # don't forget to deduct the paypal fees since we pay them!
