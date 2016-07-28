@@ -51,6 +51,9 @@ class BaseExperiment(models.Model):
     def __str__(self):
         return self.verbose_name
     
+
+    
+    
     def augmentFunds(self, boost):
         if boost <=0:
             raise SettingException(_("Cannot add negative funds to experiment"))
@@ -127,7 +130,13 @@ class BaseExperiment(models.Model):
     
 class Experiment(BaseExperiment):
     participations = models.ManyToManyField(Subject, through='djcollect.Participation')
-    pass
+    
+    def amount_spent(self):
+        total = 0.00
+        for part in self.participations:
+            total = total + part.payment.amount
+    
+        return total
         
 class Debrief(models.Model):
     

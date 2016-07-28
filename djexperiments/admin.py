@@ -62,7 +62,7 @@ class ExperimentAdmin(TranslationAdmin):
     
     filter_horizontal=['block_models']
     
-    list_display = ('__str__', 'count_finished_part', 'is_active', 'compensated')
+    list_display = ('__str__', 'count_finished_part', 'is_active', 'compensated', 'amount_spent')
     
     inlines = [DebriefTabularInline, LobbyTabularInline]
 
