@@ -3,11 +3,12 @@ from djexperiments.models import Experiment
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext as _
 from django.http import JsonResponse
-from django.http.response import HttpResponse
+from django.http.response import HttpResponse, Http404
 import io
 import zipfile
 import datetime
 from djcollect.utils import get_csv_iostring_from_participation
+from djcollect.models import Participation
 
 
 # Create your views here.
@@ -49,3 +50,19 @@ def collect_all(request, exp_label):
     response['Content-Disposition'] = 'attachment; filename="full_data_for_'+exp_label+'_fetched_on_'+str(datetime.date.today())+'.zip"'
     response['Content-Length'] = the_zip.tell()
     return response
+
+@login_required
+def learning_curve(request, exp_label, participation):
+    
+    if exp_label != 'simcat':
+        return Http404()
+    
+    exp = Experiment.objects.prefetch_related('participation_set').get(label=exp_label)
+    
+    part = exp.participation_set.get(pk=participation)
+    response = HttpResponse(content_type='image/png')
+    part.learning_curve(granularity=20, range=20).print_png(response)
+    return response
+    
+    
+    

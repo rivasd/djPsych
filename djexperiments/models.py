@@ -38,11 +38,10 @@ class BaseExperiment(models.Model):
     block_models = models.ManyToManyField(ContentType, related_name="experiments")
     research_group = models.OneToOneField(Group, null=True, blank=True)
     
-    paypal_id_sandbox=models.CharField(max_length=128, null=True, blank=True, help_text=l_("Paypal client id for sandbox actions, (testing)"))
-    paypal_secret_sandbox = models.CharField(max_length=128, null=True, blank=True, help_text=l_("Paypal secret for the sandbox for your application"))
-    
-    paypal_id_live = models.CharField(max_length=128, null=True, blank=True, help_text=l_("Paypal client id for live authentication"))
-    paypal_secret_live = models.CharField(max_length=128, null=True, blank=True, help_text=l_("Paypal secret id for live authentication"))
+    PayPal_API_Username = models.CharField(max_length=64, blank=True, null=True, help_text=l_("API username for your app to access the NVP/SOAP Paypal API"))
+    PayPal_API_Password = models.CharField(max_length=64, blank=True, null=True, help_text=l_("API Password for NVP/SOAP calls to Paypal"))
+    PayPal_API_Signature = models.CharField(max_length=128, blank=True, null=True, help_text=l_("API Signature for NVP/SOAP calls to Paypal"))
+    PayPal_Live_ID = models.CharField(max_length=64, blank=True, null=True, help_text=l_("The PayPAl Live AppID for your experiment"))
     
     ParticipationRefused = ParticipationRefused
     
