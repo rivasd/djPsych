@@ -9,3 +9,4 @@ django-modeltranslation
 django-genericadmin
 jsonfield
 paypalrestsdk
+django-silk

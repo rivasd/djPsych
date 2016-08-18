@@ -6,12 +6,13 @@ Created on Mar 3, 2016
 from .base import *
 
 dev_only_apps = [
-    'debug_toolbar',
+    'silk',
 ]
 
 ALLOWED_HOSTS =['www.cogcommtl.ca']
 DEBUG = True
 INSTALLED_APPS.extend(dev_only_apps)
+MIDDLEWARE_CLASSES.extend(['silk.middleware.SilkyMiddleware'])
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
@@ -25,3 +26,5 @@ DATABASES = {
 
 # change to live when we go live!
 PAYPAL_MODE = 'sandbox'
+SILKY_PYTHON_PROFILER = True
+SILKY_MAX_RESPONSE_BODY_SIZE = 1
