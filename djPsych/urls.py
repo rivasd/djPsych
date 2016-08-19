@@ -16,16 +16,20 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from djmanager.views import index
+from django.conf import settings
 import allauth.urls
+
+additional = []
+if settings.DEBUG is True:
+    additional = [url(r'^silk/', include('silk.urls', namespace='silk'))]
 
 urlpatterns = [
     url(r'^grappelli/', include('grappelli.urls')), # grappelli URLS
     url(r'^admin/', admin.site.urls),
-    url(r'^silk/', include('silk.urls', namespace='silk')),
     url(r'^webexp/', include('djmanager.urls', namespace='webexp')),
     url(r'^markdown/', include( 'django_markdown.urls')),
     url(r'^accounts/', include(allauth.urls)),
     url(r'^$', index, name='index'),
-]
+].extend(additional)
 
 
