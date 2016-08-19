@@ -30,6 +30,6 @@ urlpatterns = [
     url(r'^markdown/', include( 'django_markdown.urls')),
     url(r'^accounts/', include(allauth.urls)),
     url(r'^$', index, name='index'),
-].extend(additional)
-
+]
+urlpatterns.extend(additional)
 
