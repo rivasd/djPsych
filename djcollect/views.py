@@ -9,7 +9,6 @@ import zipfile
 import datetime
 from djcollect.utils import get_csv_iostring_from_participation
 from djcollect.models import Participation
-from silk.profiling.profiler import silk_profile
 
 
 
@@ -19,7 +18,6 @@ from silk.profiling.profiler import silk_profile
 def create_download_error_resp(error_message):
     return HttpResponse(error_message, content_type='text/html', charset='utf-8')
 
-@silk_profile(name='Collect all data')
 @login_required
 def collect_all(request, exp_label):
     exp = Experiment.objects.prefetch_related('research_group', 'participation_set', 

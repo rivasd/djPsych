@@ -9,6 +9,7 @@ dev_only_apps = [
     'silk',
 ]
 
+IS_PRODUCTION = False
 ALLOWED_HOSTS =['www.cogcommtl.ca']
 DEBUG = True
 INSTALLED_APPS.extend(dev_only_apps)

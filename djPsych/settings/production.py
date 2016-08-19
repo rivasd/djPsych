@@ -6,8 +6,9 @@ Created on Mar 3, 2016
 
 from .base import *
 
+IS_PRODUCTION = True
 DEBUG= False
-ALLOWED_HOSTS =['cogcommtl.ca', 'www.cogcommtl.ca']
+ALLOWED_HOSTS =['cogcommtl.ca', 'www.cogcommtl.ca', 'localhost']
 
 prod_only_apps = [
     

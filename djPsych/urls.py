@@ -19,9 +19,6 @@ from djmanager.views import index
 from django.conf import settings
 import allauth.urls
 
-additional = []
-if settings.DEBUG is True:
-    additional = [url(r'^silk/', include('silk.urls', namespace='silk'))]
 
 urlpatterns = [
     url(r'^grappelli/', include('grappelli.urls')), # grappelli URLS
@@ -31,5 +28,10 @@ urlpatterns = [
     url(r'^accounts/', include(allauth.urls)),
     url(r'^$', index, name='index'),
 ]
-urlpatterns.extend(additional)
+
+if settings.IS_PRODUCTION is False:
+    additional = [url(r'^silk/', include('silk.urls', namespace='silk'))]
+    urlpatterns.extend(additional)
+
+pass
 
