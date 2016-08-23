@@ -85,19 +85,23 @@ function StimUI(target, microcomponents){
 		var $cell = $("<td></td>", {class:'stimUI-cell'});
 		$cell.data('index', [row,col]);
 		
-		var mc = $("<img>", {id: 'microcomp-'+row+'-'+col, class: 'stimUI-thumbnail', width:36, heigth: 36});
-		var selector = $("<select>");
-		microcomponents.forEach(function(elt, i, array) {
-			var option = $("<option>", {label: elt, value: '/static/djexperiments/simcat/attributes/'+elt});
-			
-			option.on("focus", function(e){
-				mc.src = this.value;
-			});
-			
-			selector.append(option);
-		});
+		var mc = $("<img>", {id: 'microcomp-'+row+'-'+col, class: 'stimUI-thumbnail'});
+		
+		mc.attr('width', 36);
+		mc.attr('height', 36);
+		mc[0].src = '/static/djexperiments/simcat/attributes/Alpha.png';
+		
+		var selector = $("<select></select>");
 		$cell.append(mc).append(selector);
 		
+		microcomponents.forEach(function(elt, i, array) {
+			var option = $("<option>", {label: elt, value: '/static/djexperiments/simcat/attributes/'+elt});
+			selector.append(option);
+		});
+		selector.on("change", function(e){
+			mc[0].src = this.value;
+		});
+		return $cell;
 	}
 	
 	
@@ -135,12 +139,8 @@ function StimUI(target, microcomponents){
 		//append the overall container
 		target.append(ui);
 		loadImages(function(){
-			
+			ui.append(core.build(6));
 		});
-		
-		
-		
-		ui.append(core.build(6));
 	}
 	
 	
