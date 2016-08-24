@@ -3,7 +3,7 @@ from django.conf import settings
 from django.utils.translation import ugettext as _
 from djPsych.exceptions import PayoutException
 from djcollect.models import Participation
-import paypalrestsdk
+import json
 import datetime
 import requests
 
@@ -92,10 +92,18 @@ class Payment(models.Model):
         
         if settings.PAYPAL_MODE == 'sandbox':
             app_id = 'APP-80W284485P519543T'
+            uname = 'cognitionlabmtl-facilitator_api1.gmail.com'
+            password = 'MD6PBHCRAL4VZH9X'
+            signature = 'A2wsm0d1Grf2DPtNCD3y37yNpEx0A3sK5M8zW3I.GFkKB7Gad0bvN3bA'
             endpoint = 'https://svcs.sandbox.paypal.com/AdaptivePayments/Pay'
+            sender = "cognitionlabmtl-facilitator@gmail.com"
         elif settings.PAYPAL_MODE == 'live':
             app_id = exp.PayPal_Live_ID
+            uname = exp.PayPal_API_Username
+            password = exp.PayPal_API_Password
+            signature = exp.PayPal_API_Signature
             endpoint = 'https://svcs.paypal.com/AdaptivePayments/Pay'
+            sender = exp.PayPal_sender_email
         else:
             raise PayoutException(_("Payment configuration error, sorry for the inconvience"))
         
@@ -104,9 +112,9 @@ class Payment(models.Model):
         
 
         headers  = {
-            'X-PAYPAL-SECURITY-USERID': exp.PayPal_API_Username,
-            'X-PAYPAL-SECURITY-PASSWORD': exp.PayPal_API_Password,
-            'X-PAYPAL-SECURITY-SIGNATURE': exp.PayPal_API_Signature,
+            'X-PAYPAL-SECURITY-USERID': uname,
+            'X-PAYPAL-SECURITY-PASSWORD': password,
+            'X-PAYPAL-SECURITY-SIGNATURE': signature,
             'X-PAYPAL-APPLICATION-ID': app_id,
             'X-PAYPAL-REQUEST-DATA-FORMAT': 'JSON',
             'X-PAYPAL-RESPONSE-DATA-FORMAT': 'JSON'
@@ -115,16 +123,16 @@ class Payment(models.Model):
         payload = {
             "actionType": 'PAY',
             "currencyCode": self.currency,
-            "senderEmail": "cognitionlabmtl@gmail.com",
+            "senderEmail": sender,
             "receiverList":{
                 "receiver": [{
-                    "amount": round(self.amount, 2),
+                    "amount": str(round(self.amount, 2)),
                     "email": email
                 }]
             },
             
             "returnUrl": 'https://cogcommtl.ca',
-            "cancelUrl": 'https://cogcommtl.ca',
+            "cancelUrl": 'https://cogcommtl.ca/webexp',
             "requestEnvelope":{
                 "errorLanguage": "en_US",
                 "detailLevel": "ReturnAll"
@@ -132,20 +140,46 @@ class Payment(models.Model):
         }
         
         # attempt payout
-        resp = requests.post(endpoint, headers=headers, data=payload)
+        resp = requests.post(endpoint, headers=headers, data=json.dumps(payload))
         payout = resp.json()
         
         if resp.status_code == 200:
-            # DONE: do stuff to mark this payment as completed
-            self.sent = True
-            self.participation.experiment.deductFunds(float(payout.batch_header.fees.value)) # don't forget to deduct the paypal fees since we pay them!
-            self.time_sent = datetime.datetime.now()
-            self.payout_batch_id = payout.batch_header.payout_batch_id
-            self.status = payout.items[0].transaction_status
-            self.payout_item_id = payout.items[0].payout_item_id
-            self.transaction_id = payout.items[0].transaction_id
-            self.time_processed = payout.items[0].time_processed
-            self.save()
-            return payout
+            
+            if payout['responseEnvelope']['ack'] == 'Failure':
+                
+                raise PayoutException(_("Payment was refused by PayPal for the following reason: ") + payout['error'][0]['message'])
+                #TODO: log the error codes and correlation Id to deal with claims
+                
+                pass
+            elif payout["responseEnvelope"]['ack'] == 'Success':
+                
+                #we need to find how much we paid in fees
+                funding_payload = {
+                    'payKey': payout['payKey'],
+                    "requestEnvelope":{
+                        "errorLanguage": 'en_US',
+                        "detailLevel": 'ReturnAll'
+                    }
+                }
+                
+                if settings.PAYPAL_MODE == 'sandbox':
+                    funding_endpoint = 'https://svcs.sandbox.paypal.com/AdaptivePayments/GetFundingPlans'
+                elif settings.PAYPAL_MODE == 'live':
+                    funding_endpoint = 'https://svcs.paypal.com/AdaptivePayments/GetFundingPlans'
+                    
+                
+                funding = requests.post(funding_endpoint, headers=headers, data=json.dumps(funding_payload))
+                funding - funding.json()
+                # DONE: do stuff to mark this payment as completed
+                self.sent = True
+                self.participation.experiment.deductFunds(float(payout.batch_header.fees.value)) # don't forget to deduct the paypal fees since we pay them!
+                self.time_sent = datetime.datetime.now()
+                self.payout_batch_id = payout.batch_header.payout_batch_id
+                self.status = payout.items[0].transaction_status
+                self.payout_item_id = payout.items[0].payout_item_id
+                self.transaction_id = payout.items[0].transaction_id
+                self.time_processed = payout.items[0].time_processed
+                self.save()
+                return payout
         else:
-            raise PayoutException(payout.error)
+            raise PayoutException(_("PayPal servers did not respond. Please try again later"))

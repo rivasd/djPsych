@@ -42,6 +42,7 @@ class BaseExperiment(models.Model):
     PayPal_API_Password = models.CharField(max_length=64, blank=True, null=True, help_text=l_("API Password for NVP/SOAP calls to Paypal"))
     PayPal_API_Signature = models.CharField(max_length=128, blank=True, null=True, help_text=l_("API Signature for NVP/SOAP calls to Paypal"))
     PayPal_Live_ID = models.CharField(max_length=64, blank=True, null=True, help_text=l_("The PayPAl Live AppID for your experiment"))
+    PayPal_sender_email = models.EmailField(null=True, blank=True)
     
     ParticipationRefused = ParticipationRefused
     
@@ -119,7 +120,7 @@ class BaseExperiment(models.Model):
         """
         
         """
-        return self.participations.count()
+        return self.participation_set.count()
     
     count_finished_part.short_description = l_("#Completed participations: ")
     
@@ -132,7 +133,7 @@ class Experiment(BaseExperiment):
     
     def amount_spent(self):
         total = 0.00
-        for part in self.participations:
+        for part in self.participation_set.all():
             total = total + part.payment.amount
     
         return total

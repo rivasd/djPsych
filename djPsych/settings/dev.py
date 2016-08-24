@@ -24,4 +24,4 @@ DATABASES = {
 }
 
 # change to live when we go live!
-PAYPAL_MODE = 'sandbox'
+PAYPAL_MODE = 'live'
