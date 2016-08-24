@@ -104,25 +104,55 @@ function StimUI(target, microcomponents){
 		return $cell;
 	}
 	
+	/**
+	 * Selects all td elements that make up the requested column in the table
+	 * @private
+	 * @param 	{number} 	idx		the 0-based index of the column to select
+	 * @return	{jQuery.fn}			a jQuery selection of the td elements that make up the column
+	 */
+	function selectColumn(idx){
+		return $("#stimUI-table td").filter(function(idx, elm){
+			return $(elm).data('index')[1] === idx;
+		});
+	}
+	
 	
 	/**
 	 * Creates the table element that will hold our microcomponents and holds it in memory. DOES NOT insert it in the DOM 
 	 */
 	core.build = function(len){
-		table = $("<table></table>", {class:'stimUI-table'});
-		for(var i=0;i<2;i++){
+		table = $("<table></table>", {id:'stimUI-table'});
+		for(var i=0;i<3;i++){
 			var row = $("<tr></tr>");
 			var contRow = []
 			for(var j=0;j<len;j++){
 				
-				cell = createCell(i, j);
-				contRow.push(cell);
+				var cell;
+				if(i<2){
+					cell = createCell(i, j);
+					contRow.push(cell);
+				}
+				else{
+					cell = $("<td></td>", {'class': 'stimUI-invariant'});
+					cell.data('index', j);
+					cell.data('diagnostic', false);
+					var btn = $("<button> Random </button>", {'class': 'stimUI-btn'});
+					cell.append(btn);
+					btn.click(function(e) {
+						if(cell.data('diagnostic') === false){
+							cell.data('diagnostic', true);
+							cell.text(' Invariant ');
+							selectColumn(cell.data('index')).addClass('stimUI-chosen');
+						}
+						else{
+							cell.data('diagnostic', false);
+							cell.text(' Random ');
+							selectColumn(cell.data('index')).removeClass('stimUI-chosen');
+						}
+					});
+				}
+				
 				row.append(cell);
-				cell.on('dragover', function(evt){
-					evt.dataTransfer.dropEffect = 'move';
-					evt.preventDefault();
-				});
-				cell.on('drop', handleDrop);
 			}
 			controller[i] = contRow;
 			table.append(row)
