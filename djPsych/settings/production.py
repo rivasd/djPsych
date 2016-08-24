@@ -6,8 +6,10 @@ Created on Mar 3, 2016
 
 from .base import *
 
+IS_PRODUCTION = True
 DEBUG= True
 ALLOWED_HOSTS =['cogcommtl.ca', 'www.cogcommtl.ca', 'localhost:8000']
+DEBUG= False
 
 prod_only_apps = [
     

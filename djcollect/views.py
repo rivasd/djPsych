@@ -11,12 +11,12 @@ from djcollect.utils import get_csv_iostring_from_participation
 from djcollect.models import Participation
 
 
+
 # Create your views here.
 # All of this is meant to be used via fake AJAX downloads using this super plugin: https://github.com/johnculviner/jquery.fileDownload
 
 def create_download_error_resp(error_message):
     return HttpResponse(error_message, content_type='text/html', charset='utf-8')
-
 
 @login_required
 def collect_all(request, exp_label):

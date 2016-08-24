@@ -83,7 +83,6 @@ class BaseTrial(models.Model):
             del dictionary['extra_data']
             for key, val in my_copy.items():
                 dictionary[key]=val
-        dictionary['subject_id'] = self.get_subject_id()
         del dictionary['_state']
         del dictionary['run_id']
         del dictionary['id']

@@ -4,15 +4,17 @@ Created on Feb 23, 2016
 @author: User
 '''
 
-from djcollect.models import Participation
+from django.shortcuts import render
 from djexperiments.models import Experiment
 from djsend.models import SimCatGlobalSetting
+from djPsych.utils import fetch_files_of_type
 # settings up for server-side graphics generation
 import matplotlib
 matplotlib.use('Agg')
 from matplotlib import pyplot as plt
 from matplotlib import ticker
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+import json
 
 
 class MyParticipation():
@@ -88,11 +90,22 @@ class MyParticipation():
         
         return canvas
         
-        
+    
 class MyExperiment(Experiment):
     
     class Meta:
         proxy=True
+
+
+# some views that will be used only for our lab's purposes
+
+def texture_generator(request):
+    
+    # the generator will need a list of all available microcomponents, and sice it is javascript it cannot directly  get it form the server
+    micro_components = fetch_files_of_type('djexperiments/static/djexperiments/simcat/attributes/', 'png')
+    
+    return render(request, 'djexperiments/simcat/texture-generator.html', {'microcomponents': json.dumps(micro_components)})
+    pass
 
 EXPERIMENT_PROXY = MyExperiment
 PARTICIPATION_CALCULATE = MyParticipation.calculate_payment

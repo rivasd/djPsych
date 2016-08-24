@@ -19,3 +19,14 @@ def get_all_js_files_in_exp(exp_label, path=''):
         files.append(os.path.basename(file))
     return files
     
+def fetch_files_of_type(pathname, ext):
+    """
+    Searches the pathname relative to the root for this django project for all files that end in the given extension
+    """
+    
+    location = os.path.dirname(os.path.join(settings.BASE_DIR, '..', pathname))
+    files = []
+    for file in glob.glob(location+"/*."+ext):
+        files.append(os.path.basename(file))
+    
+    return files

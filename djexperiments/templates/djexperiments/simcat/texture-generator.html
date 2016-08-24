@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block head %}
+<script src="{% static 'djexperiments/simcat/stimUI.js' %}"> </script>
+<script>
+$(function(){
+
+	var generatorWidget = StimUI($("#content"), {{ microcomponents|safe }});
+	generatorWidget.init();
+
+});
+</script>
+{% endblock %}
+
+{% block content %}
+<h1> {% trans "Texture Generator" %}</h1>
+
+{% endblock %}

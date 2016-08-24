@@ -16,7 +16,10 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from djmanager.views import index
+from django.conf import settings
+from djexperiments.experiments.simcat import texture_generator
 import allauth.urls
+
 
 urlpatterns = [
     url(r'^grappelli/', include('grappelli.urls')), # grappelli URLS
@@ -24,7 +27,11 @@ urlpatterns = [
     url(r'^webexp/', include('djmanager.urls', namespace='webexp')),
     url(r'^markdown/', include( 'django_markdown.urls')),
     url(r'^accounts/', include(allauth.urls)),
+    url(r'^textures$', texture_generator, name="texturegenerator"),
     url(r'^$', index, name='index'),
 ]
 
+if settings.IS_PRODUCTION is False:
+    additional = [url(r'^silk/', include('silk.urls', namespace='silk'))]
+    urlpatterns.extend(additional)
 
