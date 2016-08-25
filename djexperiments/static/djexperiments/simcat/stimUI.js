@@ -17,7 +17,9 @@ function StimUI(target, microcomponents){
 	var controller = new Array(2);
 	
 	var ui = $("<div>", {id:"generator-ui"});
-	
+	var densityInput;
+	var quantityInput;
+	var renderer;
 	
 	/**
 	 * 
@@ -97,6 +99,7 @@ function StimUI(target, microcomponents){
 		microcomponents.forEach(function(elt, i, array) {
 			var option = $("<option>", {label: elt, value: '/static/djexperiments/simcat/attributes/'+elt});
 			selector.append(option);
+			
 		});
 		selector.on("change", function(e){
 			mc[0].src = this.value;
@@ -111,7 +114,7 @@ function StimUI(target, microcomponents){
 	 * @return	{jQuery.fn}			a jQuery selection of the td elements that make up the column
 	 */
 	function selectColumn(idx){
-		return $("#stimUI-table td").filter(function(idx, elm){
+		return $("#stimUI-table td").filter(function(i, elm){
 			return $(elm).data('index')[1] === idx;
 		});
 	}
@@ -139,15 +142,16 @@ function StimUI(target, microcomponents){
 					var btn = $("<button> Random </button>", {'class': 'stimUI-btn'});
 					cell.append(btn);
 					btn.click(function(e) {
-						if(cell.data('diagnostic') === false){
-							cell.data('diagnostic', true);
-							cell.text(' Invariant ');
-							selectColumn(cell.data('index')).addClass('stimUI-chosen');
+						var contcell = $(this).parent();
+						if(contcell.data('diagnostic') === false){
+							contcell.data('diagnostic', true);
+							this.textContent=' Invariant ';
+							selectColumn(contcell.data('index')).addClass('stimUI-chosen');
 						}
 						else{
-							cell.data('diagnostic', false);
-							cell.text(' Random ');
-							selectColumn(cell.data('index')).removeClass('stimUI-chosen');
+							contcell.data('diagnostic', false);
+							this.textcontent = ' Random ';
+							selectColumn(contcell.data('index')).removeClass('stimUI-chosen');
 						}
 					});
 				}
@@ -170,9 +174,60 @@ function StimUI(target, microcomponents){
 		target.append(ui);
 		loadImages(function(){
 			ui.append(core.build(6));
+			var addBtn = $("<button> Add Pair </button>", {'id': 'stimUI-addcolbtn'});
+			var rmvBtn = $("<button> Remove Pair </button>", {'id': 'stimUI-rmvcolbtn'});
+			densityInput = $("<input>", {type: 'text', id:'stimUI-density'});
+			quantityInput = $("<input>", {type:'text', id:'stimUI-quantity'});
+			var renderBtn = $("<button> Generate Textures </button>", {id:'stimUI-renderbtn'});
+			ui.append(addBtn).append(rmvBtn).append(densityInput).append(quantityInput).append(renderBtn);
+			
+			//event listeners for our UI buttons
+			renderBtn.click(function(e){
+				core.render();
+			});
+			
+			
 		});
 	}
 	
+	/**
+	 * 
+	 */
+	core.render = function(){
+		var tableLength = table.find("tr").first().find("td").length;
+		var microcomponents = {};
+		var definitions = {
+				'lakamite': {},
+				'kalamite': {}
+		};
+		
+		for(var i=0;i<tableLength;i++){
+			var pair = selectColumn(i);
+			var firstTd = pair.filter(":nth-child(1)");
+			var secndTd = pair.filter(":nth-child(2)");
+			
+			microcomponents[i] = {
+					0: firstTd.children("<img>")[0],
+					1: secndTd.children("<img>")[0]
+			};
+			
+			if(firstTd.data('diagnostic') === true){
+				definitions['lakamite'][i]=0;
+				definitions['kalamite'][i]=1;
+			}
+			else{
+				definitions['lakamite'][i]='free';
+				definitions['kalamite'][i]='free';
+			}
+		}
+		
+		renderer = StimEngine({
+			'microcomponents': microcomponents, 
+			'types': definitions,
+			'width': densityInput.val(),
+			'height': densityInput.val(),
+		}, document.getElementById("board"));
+	}
 	
 	return core;
 }

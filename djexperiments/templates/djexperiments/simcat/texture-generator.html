@@ -4,6 +4,7 @@
 
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{% static 'djexperiments/simcat/generator.css' %}">
+<script src="{% static 'djexperiments/simcat/stimEngine.js' %}"> </script>
 <script src="{% static 'djexperiments/simcat/stimUI.js' %}"> </script>
 <script>
 $(function(){
@@ -18,4 +19,5 @@ $(function(){
 {% block content %}
 <h1> {% trans "Texture Generator" %}</h1>
 
+<canvas display="none" height="400" width="400" id="board"></canvas>
 {% endblock %}
