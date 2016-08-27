@@ -317,7 +317,13 @@ function ExpLauncher(opts, canvas){
 	 */
 	
 	
+	
+	
 	function chooseDiff(attNumber, levels){
+		//TODO: remove this temporary change
+		return 4;
+		
+		
 		if(levels > attNumber){
 			throw "requested more possible difficulties than there are attribute pairs";
 		}
