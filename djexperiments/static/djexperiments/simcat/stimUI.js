@@ -16,7 +16,7 @@ function StimUI(target, microcomponents){
 	var table;
 	var controller = new Array(2);
 	
-	var ui = $("<div>", {id:"generator-ui"});
+	var ui = $("#stimUI-config");
 	var densityInput;
 	var quantityInput;
 	var renderer;
@@ -150,7 +150,7 @@ function StimUI(target, microcomponents){
 						}
 						else{
 							contcell.data('diagnostic', false);
-							this.textcontent = ' Random ';
+							this.textContent = ' Random ';
 							selectColumn(contcell.data('index')).removeClass('stimUI-chosen');
 						}
 					});
@@ -171,23 +171,22 @@ function StimUI(target, microcomponents){
 	 */
 	core.init = function(){
 		//append the overall container
-		target.append(ui);
 		loadImages(function(){
-			ui.append(core.build(6));
-			var addBtn = $("<button> Add Pair </button>", {'id': 'stimUI-addcolbtn'});
-			var rmvBtn = $("<button> Remove Pair </button>", {'id': 'stimUI-rmvcolbtn'});
-			densityInput = $("<input>", {type: 'text', id:'stimUI-density'});
-			quantityInput = $("<input>", {type:'text', id:'stimUI-quantity'});
-			var renderBtn = $("<button> Generate Textures </button>", {id:'stimUI-renderbtn'});
-			ui.append(addBtn).append(rmvBtn).append(densityInput).append(quantityInput).append(renderBtn);
-			
+			target.replaceWith(core.build(6));
+			var addBtn = $("#stimUI-addcolbtn");
+			var rmvBtn = $("#stimUI-rmvcolbtn");
+			densityInput = $("#stimUI-density");
+			quantityInput = $("#stimUI-quantity");
+			var renderBtn = $("#stimUI-renderbtn");
 			//event listeners for our UI buttons
 			renderBtn.click(function(e){
 				core.render();
 			});
-			
-			
 		});
+		ui.submit(function(evt) {
+			evt.preventDefault();
+			//return false;
+		})
 	}
 	
 	/**

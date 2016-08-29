@@ -12,7 +12,7 @@
 <script>
 $(function(){
 
-	var generatorWidget = StimUI($("#content"), {{ microcomponents|safe }});
+	var generatorWidget = StimUI($("#stimUI-table"), {{ microcomponents|safe }});
 	generatorWidget.init();
 
 });
@@ -21,6 +21,24 @@ $(function(){
 
 {% block content %}
 <h1> {% trans "Texture Generator" %}</h1>
+<form class="stimUI-form" id="stimUI-config">
+
+	<h2> {%trans "Microcomponent pairs"%} </h2>
+	<table id="stimUI-table"></table>
+	<button id="stimUI-addcolbtn"> {% trans "Add Pair" %}</button>
+	<button id="stimUI-rmvcolbtn"> {% trans "Remove Pair" %}</button>
+	<fieldset>
+		<legend> {% trans "Options" %}</legend>
+		<label for="density"> {% trans "Density" %}</label>
+		<input type="number" name="density" id="stimUI-density"></input>
+		<label for="quantity"> {% trans "# of pairs" %}</label>
+		<input type="number" name="quantity" id="stimUI-quantity"></input>
+		<button id="stimUI-renderbtn"> {% trans "Generate Textures" %}</button>
+	</fieldset>
+
+</form>
+
+
 
 <canvas display="none" height="400" width="400" id="board"></canvas>
 {% endblock %}
