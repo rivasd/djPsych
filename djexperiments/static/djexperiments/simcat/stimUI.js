@@ -89,8 +89,8 @@ function StimUI(target, microcomponents){
 		
 		var mc = $("<img>", {id: 'microcomp-'+row+'-'+col, class: 'stimUI-thumbnail'});
 		
-		mc.attr('width', 36);
-		mc.attr('height', 36);
+//		mc.attr('width', 36);
+//		mc.attr('height', 36);
 		mc[0].src = '/static/djexperiments/simcat/attributes/Alpha.png';
 		
 		var selector = $("<select></select>");
@@ -136,7 +136,7 @@ function StimUI(target, microcomponents){
 					contRow.push(cell);
 				}
 				else{
-					cell = $("<td></td>", {'class': 'stimUI-invariant'});
+					cell = $("<td></td>", {'class': 'stimUI-invariant', 'id':'stimUI-status-'+j});
 					cell.data('index', j);
 					cell.data('diagnostic', false);
 					var btn = $("<button> Random </button>", {'class': 'stimUI-btn'});
@@ -195,6 +195,8 @@ function StimUI(target, microcomponents){
 	 */
 	core.render = function(){
 		var tableLength = table.find("tr").first().find("td").length;
+		var invariants = 0;
+		
 		var microcomponents = {};
 		var definitions = {
 				'lakamite': {},
@@ -203,15 +205,17 @@ function StimUI(target, microcomponents){
 		
 		for(var i=0;i<tableLength;i++){
 			var pair = selectColumn(i);
-			var firstTd = pair.filter(":nth-child(1)");
-			var secndTd = pair.filter(":nth-child(2)");
+			var firstTd = pair.slice(0,1);
+			var secndTd = pair.slice(1);
+			var statusCell = $("#stimUI-status-"+i);
 			
 			microcomponents[i] = {
-					0: firstTd.children("<img>")[0],
-					1: secndTd.children("<img>")[0]
+					0: firstTd.children("img")[0],
+					1: secndTd.children("img")[0]
 			};
 			
-			if(firstTd.data('diagnostic') === true){
+			if(statusCell.data('diagnostic') === true){
+				invariants++;
 				definitions['lakamite'][i]=0;
 				definitions['kalamite'][i]=1;
 			}
@@ -227,6 +231,41 @@ function StimUI(target, microcomponents){
 			'width': densityInput.val(),
 			'height': densityInput.val(),
 		}, document.getElementById("board"));
+		
+		var distances = []
+		//divide the number of pairs requested evenly among the possible distances
+		for(var i=0; i <= (tableLength - invariants); i++){
+			distances[i] = Math.floor(quantityInput.val() / (tableLength-invariants + 1));
+		}
+		//there might be a remainder, just place it somewhere
+		for(var j=0; j < (quantityInput.val() % (tableLength - invariants +1)); j++){
+			distances[j] = distances[j] + 1;
+		}
+		//initialize the zip file
+		var mainZip = new JSZip();
+		
+	
+		distances.forEach(function(elt, i, array) {
+			for(var j=0;j<elt;j++){
+				//a little modulo magic to evenly-ish distribute among all possible pairs (same-different)
+				var type = j % 4;
+				var firstType = type > 1 ? 'lakamite' : 'kalamite';
+				var scndType = elt % 2 == 0 ? 'lakamite' : 'kalamite';
+				//draw the pairs and give them a "sensible" name
+				var imgVectors = renderer.generateVectorPair(definitions[firstType], definitions[scndType], i);
+				var imgPair = renderer.drawPair(imgVectors[0], imgVectors[1]);
+				var firstImgName = firstType+'-dist'+i+'-pair'+j+'-A.png';
+				var secndImgName = scndType + '-dist'+i+'-pair'+j+'-B.png';
+				
+				mainZip.folder(firstType).file(firstImgName, imgPair[0].substring(imgPair[0].indexOf(',')), {base64:true});
+				mainZip.folder(scndType).file(secndImgName, imgPair[1].substring(imgPair[1].indexOf(',')), {base64:true});
+			}
+		});
+		
+		//force download of the zip archive
+		mainZip.generateAsync({type:'blob'}).then(function(blob){
+			saveAs(blob, 'textures.zip');
+		});
 	}
 	
 	return core;

@@ -4,8 +4,11 @@
 
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{% static 'djexperiments/simcat/generator.css' %}">
+
 <script src="{% static 'djexperiments/simcat/stimEngine.js' %}"> </script>
 <script src="{% static 'djexperiments/simcat/stimUI.js' %}"> </script>
+<script src="{% static 'FileSaver.min.js' %}"></script>
+<script src="{% static 'jszip.min.js' %}"></script>
 <script>
 $(function(){
 

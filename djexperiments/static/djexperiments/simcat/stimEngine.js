@@ -250,7 +250,7 @@ function StimEngine(opts, canvas){
 	/***************************************** PUBLIC API ***************************************/
 	
 	module.drawPair = function(first, second){
-		return [singleDraw(first), singleDraw(second)];
+		return [module.singleDraw(first), module.singleDraw(second)];
 	}
 	
 	module.setComponents = function setComponents(comps){
