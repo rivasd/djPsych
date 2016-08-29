@@ -77,7 +77,7 @@ function StimUI(target, microcomponents){
 	function rmvCol(){
 		
 		var currLength = table.find("tr.stimUI-row").first().find("td").length;
-		if(currLength <= 1){
+		if(currLength <= 4){
 			return;
 		}
 		$("td.stimUI-cell").filter(function(idx, elem){
