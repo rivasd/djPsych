@@ -21,19 +21,7 @@ function StimUI(target, microcomponents){
 	var quantityInput;
 	var renderer;
 	
-	/**
-	 * 
-	 * 
-	 */
-	function handleDrop(evt){
-		var movedImg = $("#"+evt.dataTransfer.getData('text'));
-		var oldCoord = getCoord(movedImg);	
-		movedImg.detach();
-		$(this).append(movedImg);
-		var newCoord = getCoord(movedImg);
-		//TODO: finish this!
-		
-	}
+	
 	
 	/**
 	 * Event handler called on the element that is just starting to get dragged, sets up the data to be transferred,
@@ -79,6 +67,26 @@ function StimUI(target, microcomponents){
 		});
 	}
 	
+	function addCol(){
+		var currLength = table.find("tr.stimUI-row").first().find("td").length;
+		$("#stimUI-row-0").append(createCell(0, currLength));
+		$("#stimUI-row-1").append(createCell(1, currLength));
+		$("#stimUI-row-2").append(createBtnCell(currLength));
+	}
+	
+	function rmvCol(){
+		
+		var currLength = table.find("tr.stimUI-row").first().find("td").length;
+		if(currLength <= 1){
+			return;
+		}
+		$("td.stimUI-cell").filter(function(idx, elem){
+			return $(elem).data('index')[1] === currLength-1;
+		}).remove();
+		$("#stimUI-status-"+(currLength-1)).remove();
+	}
+	
+	
 	/**
 	 * Generates a table cell with all the UI needed to make it represent a settable micro-components
 	 * @private
@@ -107,6 +115,30 @@ function StimUI(target, microcomponents){
 		return $cell;
 	}
 	
+	function createBtnCell(index){
+		var cell = $("<td></td>", {'class': 'stimUI-invariant', 'id':'stimUI-status-'+index});
+		cell.data('index', index);
+		cell.data('diagnostic', false);
+		var btn = $("<button> Random </button>", {'class': 'stimUI-btn'});
+		cell.append(btn);
+		btn.click(function(e) {
+			var contcell = $(this).parent();
+			if(contcell.data('diagnostic') === false){
+				contcell.data('diagnostic', true);
+				this.textContent=' Invariant ';
+				selectColumn(contcell.data('index')).addClass('stimUI-chosen');
+			}
+			else{
+				contcell.data('diagnostic', false);
+				this.textContent = ' Random ';
+				selectColumn(contcell.data('index')).removeClass('stimUI-chosen');
+			}
+		});
+		
+		return cell;
+	}
+	
+	
 	/**
 	 * Selects all td elements that make up the requested column in the table
 	 * @private
@@ -126,7 +158,7 @@ function StimUI(target, microcomponents){
 	core.build = function(len){
 		table = $("<table></table>", {id:'stimUI-table'});
 		for(var i=0;i<3;i++){
-			var row = $("<tr></tr>");
+			var row = $("<tr></tr>", {'class': 'stimUI-row', id:'stimUI-row-'+i});
 			var contRow = []
 			for(var j=0;j<len;j++){
 				
@@ -136,24 +168,7 @@ function StimUI(target, microcomponents){
 					contRow.push(cell);
 				}
 				else{
-					cell = $("<td></td>", {'class': 'stimUI-invariant', 'id':'stimUI-status-'+j});
-					cell.data('index', j);
-					cell.data('diagnostic', false);
-					var btn = $("<button> Random </button>", {'class': 'stimUI-btn'});
-					cell.append(btn);
-					btn.click(function(e) {
-						var contcell = $(this).parent();
-						if(contcell.data('diagnostic') === false){
-							contcell.data('diagnostic', true);
-							this.textContent=' Invariant ';
-							selectColumn(contcell.data('index')).addClass('stimUI-chosen');
-						}
-						else{
-							contcell.data('diagnostic', false);
-							this.textContent = ' Random ';
-							selectColumn(contcell.data('index')).removeClass('stimUI-chosen');
-						}
-					});
+					cell = createBtnCell(j);
 				}
 				
 				row.append(cell);
@@ -179,6 +194,9 @@ function StimUI(target, microcomponents){
 			quantityInput = $("#stimUI-quantity");
 			var renderBtn = $("#stimUI-renderbtn");
 			//event listeners for our UI buttons
+			addBtn.click(addCol);
+			rmvBtn.click(rmvCol);
+			
 			renderBtn.click(function(e){
 				core.render();
 			});
