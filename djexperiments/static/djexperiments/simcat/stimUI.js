@@ -267,7 +267,7 @@ function StimUI(target, microcomponents){
 				//a little modulo magic to evenly-ish distribute among all possible pairs (same-different)
 				var type = j % 4;
 				var firstType = type > 1 ? 'lakamite' : 'kalamite';
-				var scndType = elt % 2 == 0 ? 'lakamite' : 'kalamite';
+				var scndType = type % 2 == 0 ? 'lakamite' : 'kalamite';
 				//draw the pairs and give them a "sensible" name
 				var imgVectors = renderer.generateVectorPair(definitions[firstType], definitions[scndType], i);
 				var imgPair = renderer.drawPair(imgVectors[0], imgVectors[1]);
