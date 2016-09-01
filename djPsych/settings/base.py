@@ -14,6 +14,7 @@ import os
 import json
 from django.core.exceptions import ImproperlyConfigured
 from django.utils.translation import ugettext_lazy as l_
+from django.conf.global_settings import MEDIA_URL
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -160,6 +161,8 @@ MODELTRANSLATION_DEFAULT_LANGUAGE = 'en'
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 SITE_ID = 1
+
+MEDIA_URL = '/media/'
 
 #django-allauth settings
 ACCOUNT_AUTHENTICATION_METHOD= "username_email"

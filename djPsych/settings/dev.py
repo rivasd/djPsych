@@ -30,3 +30,6 @@ PAYPAL_MODE = 'live'
 PAYPAL_MODE = 'sandbox'
 SILKY_PYTHON_PROFILER = True
 SILKY_MAX_RESPONSE_BODY_SIZE = 1
+
+# MEDIA_ROOT for development only
+MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'media')
