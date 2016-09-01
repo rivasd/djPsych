@@ -32,4 +32,4 @@ SILKY_PYTHON_PROFILER = True
 SILKY_MAX_RESPONSE_BODY_SIZE = 1
 
 # MEDIA_ROOT for development only
-MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'media')
+MEDIA_ROOT = os.path.normpath(os.path.join(BASE_DIR, 'media'))
