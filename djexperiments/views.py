@@ -8,7 +8,7 @@ from djexperiments.models import Experiment
 from django.utils.translation import ugettext as _
 from djPsych.utils import get_all_js_files_in_exp
 from django.contrib.auth.models import Group
-from djexperiments.forms import SandboxForm
+from djexperiments.forms import SandboxForm, UploadForm
 from djcollect.models import Participation
 
 # Create your views here.
@@ -85,5 +85,20 @@ def debrief(request, exp_label):
     
     return render(request, 'djexperiments/debrief.html', {'debrief': exp.debrief.render(), 'done':done, 'explabel': exp_label})
     
+@login_required
+def upload_resource(request, exp_label):
     
+    exp = Experiment.objects.get(label=exp_label)
+    
+    if not exp.research_group in request.user.groups.all():
+        raise Http404(_("You do not have access to this experiment"))
+    
+    if 'POST' == request.method: #yoda!
+        pass
+    else:
+        form = UploadForm()
+        return render(request, 'djexperiments/upload.html', {'form': form})
+        pass
+    
+    pass
     
