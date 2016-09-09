@@ -6,7 +6,7 @@
 
 {% block content %}
 	<h1> {% trans "Upload your files!" %} </h1>
-	<form method="POST" action="{{ request.get_full_path }}">
+	<form method="POST" action="{{ request.get_full_path }}" enctype="multipart/form-data">
 		{% csrf_token %}
 		{{ form }}
 		<button type="submit"> {% trans "Upload" %}</button>

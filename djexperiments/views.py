@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.http.response import HttpResponse, Http404
+from django.http.response import HttpResponse, Http404, HttpResponseRedirect
 from django.conf import settings
 import glob
 import os.path
@@ -10,6 +10,7 @@ from djPsych.utils import get_all_js_files_in_exp
 from django.contrib.auth.models import Group
 from djexperiments.forms import SandboxForm, UploadForm
 from djcollect.models import Participation
+import os
 
 # Create your views here.
 def lobby(request, exp_label):
@@ -94,11 +95,35 @@ def upload_resource(request, exp_label):
         raise Http404(_("You do not have access to this experiment"))
     
     if 'POST' == request.method: #yoda!
-        pass
+          
+        form = UploadForm(request.POST, request.FILES)
+        filesList = request.FILES.lists()    
+        
+        if form.is_valid():
+            
+            for currentFile in filesList:
+                
+                fileKeyValue = currentFile[0]
+                actualCurrentFile = currentFile[1][0]
+                
+                if (actualCurrentFile.multiple_chunks(chunk_size = 5.)):
+                    
+                    return HttpResponseRedirect("webexp/"+exp_label+"/upload")
+                
+                else :
+                    initialPath = actualCurrentFile.name
+                    actualCurrentFile.name = "/"+exp_label+"/"+actualCurrentFile.name
+                    newPath = settings.MEDIA_ROOT + actualCurrentFile.name
+                    
+                    os.rename(initialPath, newPath)
+                    actualCurrentFile.save()     
+                     
+                    return HttpResponseRedirect("webexp/"+exp_label)
+        
+        else :
+            return HttpResponseRedirect("webexp/"+exp_label+"/upload")
     else:
         form = UploadForm()
         return render(request, 'djexperiments/upload.html', {'form': form})
-        pass
     
-    pass
     
