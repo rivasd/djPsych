@@ -23,4 +23,4 @@ class SandboxForm(forms.Form):
     format = forms.ChoiceField(label=l_("Display data in format"), choices=format_choices)
     
 class UploadForm(forms.Form):
-    file = forms.FileField(label=l_("select a file"))
+    file = forms.FileField(label=l_("select a file"), required = True)

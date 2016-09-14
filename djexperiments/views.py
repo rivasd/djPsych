@@ -11,6 +11,11 @@ from django.contrib.auth.models import Group
 from djexperiments.forms import SandboxForm, UploadForm
 from djcollect.models import Participation
 import os
+from argparse import Action
+from django.core.files import File
+from test.test_socket import FileObjectClassTestCase
+from django.core.files.storage import default_storage
+from django.contrib import messages
 
 # Create your views here.
 def lobby(request, exp_label):
@@ -97,7 +102,7 @@ def upload_resource(request, exp_label):
     if 'POST' == request.method: #yoda!
           
         form = UploadForm(request.POST, request.FILES)
-        filesList = request.FILES.lists()    
+        filesList = request.FILES.lists()
         
         if form.is_valid():
             
@@ -105,23 +110,23 @@ def upload_resource(request, exp_label):
                 
                 fileKeyValue = currentFile[0]
                 actualCurrentFile = currentFile[1][0]
-                
-                if (actualCurrentFile.multiple_chunks(chunk_size = 5.)):
                     
-                    return HttpResponseRedirect("webexp/"+exp_label+"/upload")
-                
-                else :
-                    initialPath = actualCurrentFile.name
-                    actualCurrentFile.name = "/"+exp_label+"/"+actualCurrentFile.name
-                    newPath = settings.MEDIA_ROOT + actualCurrentFile.name
+                fileObject = File(actualCurrentFile)
                     
-                    os.rename(initialPath, newPath)
-                    actualCurrentFile.save()     
+                initialPath = fileObject.name
+                fileObject.name = "/"+exp_label+"/"+fileObject.name
+                newPath = settings.MEDIA_ROOT + fileObject.name
+                    
+                default_storage.save(newPath, fileObject)
+                    
+                messages.add_message(request, messages.SUCCESS, _('Your file successfully uploaded'))
                      
-                    return HttpResponseRedirect("webexp/"+exp_label)
+                return HttpResponseRedirect("/webexp/"+exp_label+"/upload")
         
         else :
-            return HttpResponseRedirect("webexp/"+exp_label+"/upload")
+            messages.add_message(request, messages.WARNING, _('The type of your file is not valid...'))
+            return HttpResponseRedirect("/webexp/"+exp_label+"/upload")
+            
     else:
         form = UploadForm()
         return render(request, 'djexperiments/upload.html', {'form': form})
