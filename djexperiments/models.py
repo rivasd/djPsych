@@ -36,6 +36,7 @@ class BaseExperiment(models.Model):
     allow_do_overs = models.BooleanField(help_text="Should we allow subjects to erase non-claimed payments and create a better one by redoing an exp. ?", blank=True, default=False)
     funds_remaining = models.FloatField(blank=True, null=True, help_text="How much money is still available to pay subjects. This is a live setting so better to change this programmatically, ask the administrator.")
     is_active = models.BooleanField(l_('Active'), help_text="Uncheck to remove this experiment from being displayed and served on the site.")
+    total_funds_added = models.FloatField(blank=True, null=True, help_text="How much money have been added to this experiment since its creation")
     
     settings_model = models.ForeignKey(ContentType)
     block_models = models.ManyToManyField(ContentType, related_name="experiments")
@@ -64,6 +65,8 @@ class BaseExperiment(models.Model):
         if self.funds_remaining is not None:
             self.funds_remaining = self.funds_remaining + round(boost, 2)
             self.funds_remaining = round(self.funds_remaining, 2)
+            self.total_funds_added += round(boost, 2)
+            self.total_funds_added = round(self.total_funds_added, 2)
             self.save()
         else:
             raise SettingException(_("cannot add funds to an unfunded experiment"))

@@ -23,18 +23,15 @@ def lobby(request, exp_label):
         exp = get_object_or_404(Experiment, label=exp_label)
     except:
         raise Http404(_("No such experiment"))
+    if not exp.is_researcher(request):
     
-    if hasattr(exp, 'lobby'):
-        lobby = exp.lobby.render()
-    else:
-        lobby = _("No homepage description available for this experiment")
-    if exp.research_group not in request.user.groups.all():
-        researcher = False
-    else:
-        researcher = True
-    
-    return render(request, 'djexperiments/lobby.html', {'exp': exp, 'researcher':researcher, 'lobby':lobby})
-        
+        if  hasattr(exp, 'lobby'):
+            lobby = exp.lobby.render()
+        else:
+            lobby = _("No homepage description available for this experiment")
+        return render(request, 'djexperiments/lobby.html', {'exp': exp, 'lobby':lobby})
+    else: 
+        return render(request, 'djexperiments/control_panel.html', {'exp': exp})  
 
 @login_required
 def launch(request, exp_label):
