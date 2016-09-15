@@ -1,6 +1,8 @@
 # Bonjour catherine!!
 # est ce que tu vois ca??
+import os
 from django.db import models
+from django.conf import settings
 from django.utils.translation import ugettext_lazy as l_
 from django.utils.translation import ugettext as _
 from djPsych.exceptions import SettingException, ParticipationRefused
@@ -9,6 +11,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import Group, Permission
 from django_markdown.models import MarkdownField
 import markdown
+
 
 # Create your models here.
 
@@ -125,8 +128,23 @@ class BaseExperiment(models.Model):
     count_finished_part.short_description = l_("#Completed participations: ")
     
      
-    
-    
+    def list_static_resources(self):
+        """
+        Returns a list of paths relative to MEDIA_ROOT for all files currently uploaded to this experiment's folder
+        """
+        
+        
+        exp_root = os.path.join(settings.MEDIA_ROOT, self.label)
+        for dir_tuple in os.walk(exp_root):
+            pass
+        
+    def is_researcher(self, request):
+        """
+        indicates whether the given request comes from a user that is in the research group of this experiment
+        """
+        
+        return self.research_group in request.user.groups.all()
+        
     
 class Experiment(BaseExperiment):
     participations = models.ManyToManyField(Subject, through='djcollect.Participation')
