@@ -20,9 +20,10 @@ from django.contrib import messages
 # Create your views here.
 def lobby(request, exp_label):
     try:
-        exp = get_object_or_404(Experiment, label=exp_label)
-    except:
+        exp = Experiment.objects.prefetch_related("research_group__user_set").get(label =exp_label)
+    except Exception as E:
         raise Http404(_("No such experiment"))
+    
     if not exp.is_researcher(request):
     
         if  hasattr(exp, 'lobby'):
