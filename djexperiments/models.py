@@ -140,11 +140,17 @@ class BaseExperiment(models.Model):
         resource_dict = {'root': []}
         exp_root = os.path.join(settings.MEDIA_ROOT, self.label)
         entries =  DefaultStorage.listdir(exp_root)
-        resource_dict['root'] = entries[1]
+        
+        if entries[1]: #only write an entry if list is not empty
+            resource_dict['root'] = entries[1]
+            
         for folder in entries[0]:
             if  folder == 'root': 
                 folder = 'root1'
-            resource_dict[folder] = DefaultStorage.listdir(os.path.join(exp_root, folder))[1]
+                
+            subfiles = DefaultStorage.listdir(os.path.join(exp_root, folder)) #guard against empty directories
+            if subfiles[1]:
+                resource_dict[folder] = subfiles[1]
         
         return resource_dict
         

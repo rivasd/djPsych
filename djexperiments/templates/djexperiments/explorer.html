@@ -1,0 +1,25 @@
+{% load i18n %}
+
+<ul id="djpsych-explorer" class="djpsych-explorer">
+	{% for dir_name, file_list in  listdir %}
+		{% if dir_name != "root" %}
+		<li	class="djpsych-folder">
+			<div class="djpsych-foldertitle">
+				<i class="fa fa-folder" aria-hidden="true"></i>
+			</div>
+			<ul class="djpsych-filelist">
+		{% endif %}
+			{% for file in file_list %}
+			<li class="djpsych-fileentry">
+				<span class="djpsych-fileicon"></span>
+				<span class="djpsych-filename">{{ file }}</span>
+				<button class="djpsych-rmvbtn">{% trans "Remove" %}</button>
+				<button class="djpsych-updatebtn">{% trans "Update" %} </button>
+			</li>
+			{% endfor %}
+		{% if dir_name != "root" %}
+			</ul>
+		</li>
+		{% endif %}
+	{% endfor %}
+</ul>
