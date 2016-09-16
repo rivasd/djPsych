@@ -30,7 +30,8 @@ def loadCustomModels(sender, instance, **kwargs):
     try:
         custom_models = import_module('djexperiments.experiments.'+instance.label)
     except ImportError:
-        pass
+        setattr(instance, 'participation_model', Participation)
+        return
         # raise BackendConfigException(_("Each experiment must have a python module present in the djexperiment.experiments package"))
     try:
         custom_calculate = custom_models.PARTICIPATION_CALCULATE

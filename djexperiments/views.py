@@ -16,7 +16,7 @@ from django.core.files import File
 from test.test_socket import FileObjectClassTestCase
 from django.core.files.storage import default_storage
 from django.contrib import messages
-
+from djmanager.utils import get_allowed_exp_for_user
 # Create your views here.
 def lobby(request, exp_label):
     try:
@@ -32,7 +32,8 @@ def lobby(request, exp_label):
             lobby = _("No homepage description available for this experiment")
         return render(request, 'djexperiments/lobby.html', {'exp': exp, 'lobby':lobby})
     else: 
-        return render(request, 'djexperiments/control_panel.html', {'exp': exp})  
+        researcher_experiments = Experiment.objects.filter(research_group__in = request.user.groups.all())
+        return render(request, 'djexperiments/control_panel.html', {'exp': exp, 'researcher_experiments' : researcher_experiments})  
 
 @login_required
 def launch(request, exp_label):

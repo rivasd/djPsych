@@ -6,6 +6,16 @@
 {% endblock %}
 
 {% block content %}
+<h1> {{ exp.verbose_name|upper }} Control Panel </h1>
+<section>
+	<nav>
+		{% for experiment in researcher_experiments %}
+			<a href = "../{{experiment.label}}"> 
+				{{experiment.verbose_name}}
+			</a>
+		{% endfor %}
+	</nav>
+</section>
 <section>
 	<button id="tosandbox" onClick = "window.location = '{% url "webexp:sandbox" exp.label %}';">{% trans "Test the experiment" %}</button>
 	<button id="download-data" onClick = "window.location = '{% url "webexp:collect:all" exp.label %}';">{% trans "Collect the data" %}</button>
@@ -30,6 +40,6 @@
 			{% endif %}
 		</li>
 	{% endfor %}
-		
+	</ul>
 </section>
 {% endblock %}
