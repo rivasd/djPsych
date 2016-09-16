@@ -1,6 +1,7 @@
 # Bonjour catherine!!
 # est ce que tu vois ca??
 import os
+from django.core.files.storage import DefaultStorage
 from django.db import models
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as l_
@@ -49,8 +50,6 @@ class BaseExperiment(models.Model):
     PayPal_sender_email = models.EmailField(null=True, blank=True)
     
     ParticipationRefused = ParticipationRefused
-    
-    
     
     def __str__(self):
         return self.verbose_name
@@ -133,13 +132,21 @@ class BaseExperiment(models.Model):
      
     def list_static_resources(self):
         """
-        Returns a list of paths relative to MEDIA_ROOT for all files currently uploaded to this experiment's folder
+        Returns dict representing the contents of the experiment's static resources directory. Limited to 1-lvl deep
+        
+        returns:    dict with one entry per subfolder, entry 'root' represents the top level '.'. Each entry is a list of files contained there
         """
         
-        
+        resource_dict = {'root': []}
         exp_root = os.path.join(settings.MEDIA_ROOT, self.label)
-        for dir_tuple in os.walk(exp_root):
-            pass
+        entries =  DefaultStorage.listdir(exp_root)
+        resource_dict['root'] = entries[1]
+        for folder in entries[0]:
+            if  folder == 'root': 
+                folder = 'root1'
+            resource_dict[folder] = DefaultStorage.listdir(os.path.join(exp_root, folder))[1]
+        
+        return resource_dict
         
     def is_researcher(self, request):
         """
