@@ -33,7 +33,7 @@ def lobby(request, exp_label):
         return render(request, 'djexperiments/lobby.html', {'exp': exp, 'lobby':lobby})
     else: 
         researcher_experiments = Experiment.objects.filter(research_group__in = request.user.groups.all())
-        return render(request, 'djexperiments/control_panel.html', {'exp': exp, 'researcher_experiments' : researcher_experiments})  
+        return render(request, 'djexperiments/control_panel.html', {'exp': exp, 'researcher_experiments' : researcher_experiments, 'listdir': exp.list_static_resources()})  
 
 @login_required
 def launch(request, exp_label):

@@ -16,6 +16,9 @@ def content_type_is_subclass_of(ct, masterclass):
     return issubclass(actual_model, masterclass)
     
 def get_allowed_exp_for_user(request):
+    """
+    Returns a QuerySet of all Experiments accessible to the user associated with this request
+    """
     research_groups = request.user.groups.filter(name__endswith='researchers')
     return Experiment.objects.filter(research_group__in=research_groups)
 

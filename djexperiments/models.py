@@ -1,7 +1,7 @@
 # Bonjour catherine!!
 # est ce que tu vois ca??
 import os
-from django.core.files.storage import DefaultStorage
+from django.core.files.storage import default_storage
 from django.db import models
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as l_
@@ -139,7 +139,7 @@ class BaseExperiment(models.Model):
         
         resource_dict = {'root': []}
         exp_root = os.path.join(settings.MEDIA_ROOT, self.label)
-        entries =  DefaultStorage.listdir(exp_root)
+        entries =  default_storage.listdir(exp_root)
         
         if entries[1]: #only write an entry if list is not empty
             resource_dict['root'] = entries[1]
@@ -148,7 +148,7 @@ class BaseExperiment(models.Model):
             if  folder == 'root': 
                 folder = 'root1'
                 
-            subfiles = DefaultStorage.listdir(os.path.join(exp_root, folder)) #guard against empty directories
+            subfiles = default_storage.listdir(os.path.join(exp_root, folder)) #guard against empty directories
             if subfiles[1]:
                 resource_dict[folder] = subfiles[1]
         
