@@ -30,13 +30,14 @@ def loadCustomModels(sender, instance, **kwargs):
     try:
         custom_models = import_module('djexperiments.experiments.'+instance.label)
     except ImportError:
-        raise BackendConfigException(_("Each experiment must have a python module present in the djexperiment.experiments package"))
+        pass
+        # raise BackendConfigException(_("Each experiment must have a python module present in the djexperiment.experiments package"))
     try:
         custom_calculate = custom_models.PARTICIPATION_CALCULATE
         plot = custom_models.PLOTTING
         Participation.calculate_payment = custom_calculate
         Participation.learning_curve = plot
-    except AttributeError:
+    except:
         pass
     setattr(instance, 'participation_model', Participation)
     
@@ -58,8 +59,8 @@ def loadCustomModels(sender, instance, **kwargs):
         pay_mod = Payment
     setattr(instance, 'payment_model', pay_mod)
     
-    if hasattr(custom_models, 'EXPERIMENT_PROXY'):
-        instance.__class__ = custom_models.EXPERIMENT_PROXY # yes this is sacrilegious, but dammit, I get results
+    #if hasattr(custom_models, 'EXPERIMENT_PROXY'):
+    #   instance.__class__ = custom_models.EXPERIMENT_PROXY # yes this is sacrilegious, but dammit, I get results
     # TODO: set the other class attributes!
     
 
