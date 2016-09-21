@@ -21,7 +21,7 @@ from djmanager.utils import get_allowed_exp_for_user
 def lobby(request, exp_label):
     try:
         exp = Experiment.objects.prefetch_related("research_group__user_set").get(label =exp_label)
-    except Exception as E:
+    except Experiment.DoesNotExist as E:
         raise Http404(_("No such experiment"))
     
     if not exp.is_researcher(request):
