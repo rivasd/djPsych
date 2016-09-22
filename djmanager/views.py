@@ -12,6 +12,9 @@ def home(request):
     available = Experiment.objects.all()
     return render(request, 'homepage.html', {'manips': available, 'plugins': plugins})
     
+def allExperiments(request):
+    return render(request, 'allExperiments.html')
+
     
 def index(request):
     return render(request, 'index.html')
