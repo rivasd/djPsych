@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+<nav id = "djpsych-perceptnavbar"> <ul id = "djpsych-navlist">
+	<li><a href="{% url "webexp:home" %}">
+		{% trans "Home" %}
+	</a></li>
+	<li><a href="{% url "webexp:profiles:personal" %}">
+		{% trans "" %}
+	</a></li>
+	<li><a href="{% url "webexp:home" %}">
+		{% trans "" %}
+	</a></li>
+	<li class="login-li">
+		{% if user.is_authenticated %}
+		<a href="{% url "account_logout" %}">{% trans "logout" %} </a>
+		{% else %}
+		<a id="sign-in-popup" href="/" class="button">{% trans "Sign in" %}</a>
+		{% endif %}
+	</a></li>
+	{% if user.is_staff %}
+	<li><a href="{% url "admin:index" %}">
+		{% trans "Admin" %}
+	</a></li>
+	{% endif %}
+</ul></nav>
+
+
+{% endblock %}
