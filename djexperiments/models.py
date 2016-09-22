@@ -1,6 +1,9 @@
 # Bonjour catherine!!
 # est ce que tu vois ca??
+import os
+from django.core.files.storage import default_storage
 from django.db import models
+from django.conf import settings
 from django.utils.translation import ugettext_lazy as l_
 from django.utils.translation import ugettext as _
 from djPsych.exceptions import SettingException, ParticipationRefused
@@ -9,6 +12,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import Group, Permission
 from django_markdown.models import MarkdownField
 import markdown
+
 
 # Create your models here.
 
@@ -33,6 +37,7 @@ class BaseExperiment(models.Model):
     allow_do_overs = models.BooleanField(help_text="Should we allow subjects to erase non-claimed payments and create a better one by redoing an exp. ?", blank=True, default=False)
     funds_remaining = models.FloatField(blank=True, null=True, help_text="How much money is still available to pay subjects. This is a live setting so better to change this programmatically, ask the administrator.")
     is_active = models.BooleanField(l_('Active'), help_text="Uncheck to remove this experiment from being displayed and served on the site.")
+    total_funds_added = models.FloatField(blank=True, null=True, help_text="How much money have been added to this experiment since its creation")
     
     settings_model = models.ForeignKey(ContentType)
     block_models = models.ManyToManyField(ContentType, related_name="experiments")
@@ -45,8 +50,6 @@ class BaseExperiment(models.Model):
     PayPal_sender_email = models.EmailField(null=True, blank=True)
     
     ParticipationRefused = ParticipationRefused
-    
-    
     
     def __str__(self):
         return self.verbose_name
@@ -61,6 +64,8 @@ class BaseExperiment(models.Model):
         if self.funds_remaining is not None:
             self.funds_remaining = self.funds_remaining + round(boost, 2)
             self.funds_remaining = round(self.funds_remaining, 2)
+            self.total_funds_added += round(boost, 2)
+            self.total_funds_added = round(self.total_funds_added, 2)
             self.save()
         else:
             raise SettingException(_("cannot add funds to an unfunded experiment"))
@@ -125,8 +130,37 @@ class BaseExperiment(models.Model):
     count_finished_part.short_description = l_("#Completed participations: ")
     
      
-    
-    
+    def list_static_resources(self):
+        """
+        Returns dict representing the contents of the experiment's static resources directory. Limited to 1-lvl deep
+        
+        returns:    dict with one entry per subfolder, entry 'root' represents the top level '.'. Each entry is a list of files contained there
+        """
+        
+        resource_dict = {'root': []}
+        exp_root = os.path.join(settings.MEDIA_ROOT, self.label)
+        entries =  default_storage.listdir(exp_root)
+        
+        if entries[1]: #only write an entry if list is not empty
+            resource_dict['root'] = entries[1]
+            
+        for folder in entries[0]:
+            if  folder == 'root': 
+                folder = 'root1'
+                
+            subfiles = default_storage.listdir(os.path.join(exp_root, folder)) #guard against empty directories
+            if subfiles[1]:
+                resource_dict[folder] = subfiles[1]
+        
+        return resource_dict
+        
+    def is_researcher(self, request):
+        """
+        indicates whether the given request comes from a user that is in the research group of this experiment
+        """
+        
+        return self.research_group in request.user.groups.all()
+        
     
 class Experiment(BaseExperiment):
     participations = models.ManyToManyField(Subject, through='djcollect.Participation')

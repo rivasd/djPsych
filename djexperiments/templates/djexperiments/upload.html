@@ -1,0 +1,21 @@
+{% extends 'homepage.html' %}
+{% load static from staticfiles %}
+{% load i18n %}
+
+{% block title %} {%trans "Upload your experimental files"%} {% endblock %}
+
+{% block content %}
+	<h1> {% trans "Upload your files!" %} </h1>
+	<form method="POST" action="{{ request.get_full_path }}" enctype="multipart/form-data">
+		{% csrf_token %}
+		{{ form }}
+		<button type="submit"> {% trans "Upload" %}</button>
+	</form>
+	{% if messages %}
+		<ul class="messages">
+    	{% for message in messages %}
+    		<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    	{% endfor %}
+		</ul>
+	{% endif %}
+{% endblock %}

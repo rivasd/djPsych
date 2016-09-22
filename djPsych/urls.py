@@ -18,6 +18,7 @@ from django.contrib import admin
 from djmanager.views import index
 from django.conf import settings
 from djexperiments.experiments.simcat import texture_generator
+from django.conf.urls.static import static
 import allauth.urls
 
 
@@ -32,6 +33,8 @@ urlpatterns = [
 ]
 
 if settings.IS_PRODUCTION is False:
-    additional = [url(r'^silk/', include('silk.urls', namespace='silk'))]
+    additional = [
+        url(r'^silk/', include('silk.urls', namespace='silk')),
+    ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns.extend(additional)
 

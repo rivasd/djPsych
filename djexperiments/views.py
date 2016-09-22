@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.http.response import HttpResponse, Http404
+from django.http.response import HttpResponse, Http404, HttpResponseRedirect
 from django.conf import settings
 import glob
 import os.path
@@ -8,27 +8,32 @@ from djexperiments.models import Experiment
 from django.utils.translation import ugettext as _
 from djPsych.utils import get_all_js_files_in_exp
 from django.contrib.auth.models import Group
-from djexperiments.forms import SandboxForm
+from djexperiments.forms import SandboxForm, UploadForm
 from djcollect.models import Participation
-
+import os
+from argparse import Action
+from django.core.files import File
+from test.test_socket import FileObjectClassTestCase
+from django.core.files.storage import default_storage
+from django.contrib import messages
+from djmanager.utils import get_allowed_exp_for_user
 # Create your views here.
 def lobby(request, exp_label):
     try:
-        exp = get_object_or_404(Experiment, label=exp_label)
-    except:
+        exp = Experiment.objects.prefetch_related("research_group__user_set").get(label =exp_label)
+    except Experiment.DoesNotExist as E:
         raise Http404(_("No such experiment"))
     
-    if hasattr(exp, 'lobby'):
-        lobby = exp.lobby.render()
-    else:
-        lobby = _("No homepage description available for this experiment")
-    if exp.research_group not in request.user.groups.all():
-        researcher = False
-    else:
-        researcher = True
+    if not exp.is_researcher(request):
     
-    return render(request, 'djexperiments/lobby.html', {'exp': exp, 'researcher':researcher, 'lobby':lobby})
-        
+        if  hasattr(exp, 'lobby'):
+            lobby = exp.lobby.render()
+        else:
+            lobby = _("No homepage description available for this experiment")
+        return render(request, 'djexperiments/lobby.html', {'exp': exp, 'lobby':lobby})
+    else: 
+        researcher_experiments = Experiment.objects.filter(research_group__in = request.user.groups.all())
+        return render(request, 'djexperiments/control_panel.html', {'exp': exp, 'researcher_experiments' : researcher_experiments, 'listdir': exp.list_static_resources()})  
 
 @login_required
 def launch(request, exp_label):
@@ -85,5 +90,44 @@ def debrief(request, exp_label):
     
     return render(request, 'djexperiments/debrief.html', {'debrief': exp.debrief.render(), 'done':done, 'explabel': exp_label})
     
+@login_required
+def upload_resource(request, exp_label):
+    
+    exp = Experiment.objects.get(label=exp_label)
+    
+    if not exp.research_group in request.user.groups.all():
+        raise Http404(_("You do not have access to this experiment"))
+    
+    if 'POST' == request.method: #yoda!
+          
+        form = UploadForm(request.POST, request.FILES)
+        filesList = request.FILES.lists()
+        
+        if form.is_valid():
+            
+            for currentFile in filesList:
+                
+                fileKeyValue = currentFile[0]
+                actualCurrentFile = currentFile[1][0]
+                    
+                fileObject = File(actualCurrentFile)
+                    
+                initialPath = fileObject.name
+                fileObject.name = "/"+exp_label+"/"+fileObject.name
+                newPath = settings.MEDIA_ROOT + fileObject.name
+                    
+                default_storage.save(newPath, fileObject)
+                    
+                messages.add_message(request, messages.SUCCESS, _('Your file successfully uploaded'))
+                     
+                return HttpResponseRedirect("/webexp/"+exp_label+"/upload")
+        
+        else :
+            messages.add_message(request, messages.WARNING, _('The type of your file is not valid...'))
+            return HttpResponseRedirect("/webexp/"+exp_label+"/upload")
+            
+    else:
+        form = UploadForm()
+        return render(request, 'djexperiments/upload.html', {'form': form})
     
     
