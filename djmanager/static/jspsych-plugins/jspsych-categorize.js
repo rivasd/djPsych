@@ -11,6 +11,18 @@ jsPsych.plugins.categorize = (function() {
   var plugin = {};
 
   jsPsych.pluginAPI.registerPreload('animation', 'stimulus', 'image');
+  
+  plugin.getTrigger = function(trial){
+	  if(trial.data && trial.data.category){
+		  if(trial.data.category === 'lakamite'){
+			  return 76;
+		  }
+		  else{
+			  return 75;
+		  }
+	  }
+	  else return null;
+  };
 
   plugin.trial = function(display_element, trial) {
 
@@ -24,7 +36,6 @@ jsPsych.plugins.categorize = (function() {
     trial.prompt = (typeof trial.prompt === 'undefined') ? '' : trial.prompt;
     trial.show_feedback_on_timeout = (typeof trial.show_feedback_on_timeout === 'undefined') ? false : trial.show_feedback_on_timeout;
     trial.timeout_message = trial.timeout_message || "<p>Please respond faster.</p>";
-    trial.is_practice = trial.is_practice || false;
     // timing params
     trial.timing_stim = trial.timing_stim || -1; // default is to show image until response
     trial.timing_response = trial.timing_response || -1; // default is no max response time
@@ -40,6 +51,8 @@ jsPsych.plugins.categorize = (function() {
     // this array holds handlers from setTimeout calls
     // that need to be cleared if the trial ends early
     var setTimeoutHandlers = [];
+    
+    var trig = plugin.getTrigger(trial);
 
     if (!trial.is_html) {
       // add image to display
@@ -55,18 +68,28 @@ jsPsych.plugins.categorize = (function() {
         "html": trial.stimulus
       }));
     }
+    //send the correct stimulus presentation trigger
+    if(trig && jsPsych.pluginAPI.hardwareConnected){
+    	jsPsych.pluginAPI.hardware({
+    		target: 'parallel',
+    		action: 'trigger',
+    		payload: trig
+    	});
+    }
+    
+    
 
     // hide image after time if the timing parameter is set
     if (trial.timing_stim > 0) {
       setTimeoutHandlers.push(setTimeout(function() {
         $('#jspsych-categorize-stimulus').css('visibility', 'hidden');
       }, trial.timing_stim));
-    }
+    };
 
     // if prompt is set, show prompt
     if (trial.prompt !== "") {
       display_element.append(trial.prompt);
-    }
+    };
 
     var trial_data = {};
 
@@ -76,7 +99,7 @@ jsPsych.plugins.categorize = (function() {
       // kill any remaining setTimeout handlers
       for (var i = 0; i < setTimeoutHandlers.length; i++) {
         clearTimeout(setTimeoutHandlers[i]);
-      }
+      };
 
       // clear keyboard listener
       jsPsych.pluginAPI.cancelAllKeyboardResponses();
@@ -84,16 +107,25 @@ jsPsych.plugins.categorize = (function() {
       var correct = false;
       if (trial.key_answer == info.key) {
         correct = true;
+      };
+      
+      //send trigger for subject response
+      if(jsPsych.pluginAPI.hardwareConnected){
+    	  jsPsych.pluginAPI.hardware({
+    		 target: 'parallel',
+    		 action: 'trigger',
+    		 payload: correct ? 1 : 2
+    	  });
       }
-
+      
       // save data
       trial_data = {
         "rt": info.rt,
         "correct": correct,
         //"stimulus": trial.stimulus,
-        "key_press": info.key,
-        "is_practice": trial.is_practice
+        "key_press": info.key
       };
+      
       if(trial.return_stim){
     	  trial_data.stimulus = trial.stimulus;
       }
@@ -110,7 +142,7 @@ jsPsych.plugins.categorize = (function() {
       var timeout = info.rt == -1;
       doFeedback(correct, timeout);
     }
-
+    
     jsPsych.pluginAPI.getKeyboardResponse({
       callback_function: after_response,
       valid_responses: trial.choices,
@@ -164,7 +196,7 @@ jsPsych.plugins.categorize = (function() {
       }
       // check if force correct button press is set
       if (trial.force_correct_button_press && correct === false && ((timeout && trial.show_feedback_on_timeout) || !timeout)) {
-
+    	
         var after_forced_response = function(info) {
           endTrial();
         }
