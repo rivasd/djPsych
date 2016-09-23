@@ -139,20 +139,23 @@ class BaseExperiment(models.Model):
         
         resource_dict = {'root': []}
         exp_root = os.path.join(settings.MEDIA_ROOT, self.label)
-        entries =  default_storage.listdir(exp_root)
+        if os.path.exists(exp_root):
+            entries =  default_storage.listdir(exp_root)
         
-        if entries[1]: #only write an entry if list is not empty
-            resource_dict['root'] = entries[1]
-            
-        for folder in entries[0]:
-            if  folder == 'root': 
-                folder = 'root1'
+            if entries[1]: #only write an entry if list is not empty
+                resource_dict['root'] = entries[1]
                 
-            subfiles = default_storage.listdir(os.path.join(exp_root, folder)) #guard against empty directories
-            if subfiles[1]:
-                resource_dict[folder] = subfiles[1]
-        
-        return resource_dict
+            for folder in entries[0]:
+                if  folder == 'root': 
+                    folder = 'root1'
+                    
+                subfiles = default_storage.listdir(os.path.join(exp_root, folder)) #guard against empty directories
+                if subfiles[1]:
+                    resource_dict[folder] = subfiles[1]
+            
+            return resource_dict
+        else:
+            return []
         
     def is_researcher(self, request):
         """
