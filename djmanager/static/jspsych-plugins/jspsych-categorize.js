@@ -111,12 +111,12 @@ jsPsych.plugins.categorize = (function() {
       if (trial.key_answer == info.key) {
         correct = true;
       };
-      
+
       //send trigger for subject response
       if(jsPsych.pluginAPI.hardwareConnected && !trial.is_practice){
     	  jsPsych.pluginAPI.hardware({
     		 target: 'parallel',
-    		 action: 'trigger',
+    		 action: 'trigger', 
     		 payload: correct ? 1 : 2
     	  });
       };
