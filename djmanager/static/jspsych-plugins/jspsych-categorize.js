@@ -113,7 +113,7 @@ jsPsych.plugins.categorize = (function() {
       };
       
       //send trigger for subject response
-      if(jsPsych.pluginAPI.hardwareConnected){
+      if(jsPsych.pluginAPI.hardwareConnected && !trial.is_practice){
     	  jsPsych.pluginAPI.hardware({
     		 target: 'parallel',
     		 action: 'trigger',
@@ -168,11 +168,14 @@ jsPsych.plugins.categorize = (function() {
       if (timeout && !trial.show_feedback_on_timeout) {
         display_element.append(trial.timeout_message);
         //send trigger for feedback/error ERPs
-        jsPsych.pluginAPI.hardware({
-        	target: 'parallel',
-        	action: 'trigger',
-        	payload: correct ? 10 : 20
-        });
+        if(!trial.is_practice){
+        	jsPsych.pluginAPI.hardware({
+            	target: 'parallel',
+            	action: 'trigger',
+            	payload: correct ? 10 : 20
+            });
+        }
+        
         
       } else {
         // show image during feedback if flag is set
