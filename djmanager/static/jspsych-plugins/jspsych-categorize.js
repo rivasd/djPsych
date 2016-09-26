@@ -119,7 +119,8 @@ jsPsych.plugins.categorize = (function() {
     		 action: 'trigger',
     		 payload: correct ? 1 : 2
     	  });
-      }
+      };
+      
       
       // save data
       trial_data = {
@@ -175,7 +176,6 @@ jsPsych.plugins.categorize = (function() {
             	payload: correct ? 10 : 20
             });
         }
-        
         
       } else {
         // show image during feedback if flag is set
