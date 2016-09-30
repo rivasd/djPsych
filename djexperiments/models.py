@@ -104,6 +104,7 @@ class BaseExperiment(models.Model):
             
             new_group.permissions.add(exp_perm)
             new_group.save()
+            os.makedirs(os.path.join(settings.MEDIA_ROOT, self.label))
         super(BaseExperiment, self).save()
         
     def create_participation(self, subject, started, complete=False, parameters={}):
