@@ -1,25 +1,24 @@
 {% load i18n %}
 
-<nav><ul class="navbar">
-	<li><a href="/">
+<nav class="mdl-navigation">
+	<a href="/" class="mdl-navigation__link">
 		{% trans  "home" %}
-	</a></li>
-	<li><a href="{% url "webexp:profiles:personal" %}">
+	</a>
+	<a href="{% url "webexp:profiles:personal" %}" class="mdl-navigation__link">
 		{% trans "profile" %}
-	</a></li>
-	<li><a href="{% url "webexp:home" %}">
+	</a>
+	<a href="{% url "webexp:home" %}" class="mdl-navigation__link">
 		{% trans "Percept Elab" %}
-	</a></li>
-	<li class="login-li">
-		{% if user.is_authenticated %}
-		<a href="{% url "account_logout" %}">{% trans "logout" %} </a>
-		{% else %}
-		<a id="sign-in-popup" href="/" class="button">{% trans "Sign in" %}</a>
-		{% endif %}
-	</a></li>
-	{% if user.is_staff %}
-	<li><a href="{% url "admin:index" %}">
-		{% trans "Admin" %}
-	</a></li>
+	</a>
+
+	{% if user.is_authenticated %}
+	<a href="{% url "account_logout" %}" class="mdl-navigation__link">{% trans "logout" %} </a>
+	{% else %}
+	<a id="sign-in-popup" href="/" class="mdl-navigation__link button">{% trans "Sign in" %}</a>
 	{% endif %}
-</ul></nav>
+	{% if user.is_staff %}
+	<a href="{% url "admin:index" %}" class="mdl-navigation__link">
+		{% trans "Admin" %}
+	</a>
+	{% endif %}
+</nav>
