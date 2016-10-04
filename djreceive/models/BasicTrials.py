@@ -95,6 +95,17 @@ class CategorizationTrial(BaseTrial):
     correct = models.BooleanField()
     category = models.CharField(max_length=24, null=True)
     
+class ForcedChoice(BaseTrial):
+    handles = 'forcedchoice'
+    rt = models.PositiveIntegerField()
+    chosen = models.CharField(max_length=128)
+    
+class Rating(BaseTrial):
+    handles = 'rating'
+    rt = models.PositiveIntegerField()
+    rating = models.IntegerField()
+    stimulus = models.CharField(max_length=128)
+    
 class SimilarityTrial(BaseTrial):
     handles = 'similarity'
     sim_score = models.PositiveIntegerField()
@@ -110,4 +121,10 @@ class SimilarityTrial(BaseTrial):
             clean_dict['secondStim'] = data_dict['stimulus'][1]
             del clean_dict['stimulus']
         return clean_dict
+    
+class SurveyLikert(BaseTrial):
+    handles = 'survey-likert'
+    rt = models.PositiveIntegerField()
+    responses = models.TextField()
+    
     
