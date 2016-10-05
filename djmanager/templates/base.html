@@ -28,25 +28,28 @@ content	Well, the content of the page
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 	<script src="https://code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
     <link href="https://code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css"></link>
+    
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-	<link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.blue_grey-deep_orange.min.css" /> 
+	<link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.grey-lime.min.css" />
 	<script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
+	
     <script src="{% static 'homePageUtilities.js' %}"></script>
     <script src="{% static 'jspsych.js' %}"></script>
     <script src="{% static 'ajax_setup.js' %}"></script>
 	<link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="{% static 'style/theme.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'style/bootstrap-social.css' %}">
+<!--     <link rel="stylesheet" type="text/css" href="{% static 'style/theme.css' %}"> -->
+    <link rel="stylesheet" type="text/css" href="{% static 'style/MDL-style.css' %}">
+<!--     <link rel="stylesheet" type="text/css" href="{% static 'style/bootstrap-social.css' %}"> -->
     <link rel="stylesheet" type="text/css" href="{% static 'style/font-awesome-4.6.3/css/font-awesome.min.css' %}">
     {% block head %}{% endblock %}
 </head>
 
 <body>
 	<div id="page" class="mdl-layout mdl-js-layout">
-		<header class="mdl-layout__header--waterfall">
+		<header class="mdl-layout__header mdl-layout__header--waterfall">
 			<div class="mdl-layout-icon"></div>
 			<div class="mdl-layout__header-row">
-				<span class="mdl-layout__title"> <img src="{% static 'style/Banner.png'%}" alt="Cognition - Communication" id="banner"/> </span>
+				<span class="mdl-layout__title"> <img class="mdl-layout-icon" src="{% static 'style/Banner.png'%}" alt="Cognition - Communication" id="banner"/> </span>
     			<div class="mdl-layout-spacer"></div>
 				{%include "includes/navbar.html" %}
 				<a id='top'></a>
@@ -54,6 +57,16 @@ content	Well, the content of the page
 		</header>
 		<div class="mdl-layout__drawer">
   		</div>
+  		<main class="mdl-layout__content">
+  			<div class="page-content">
+  				{% block content %}
+				<p>Bonjour!</p>
+				{% endblock %}
+  			</div>
+  			<footer id='footer' class="mdl-mini-footer">
+			{% include "includes/footer.html" %}
+			</footer>
+		</main>
 		<div id="hidden-login">
 			
 			<div class="login-panel">
@@ -79,16 +92,7 @@ content	Well, the content of the page
  			</div>
  			<span id="login-error"></span>
 		</div>
-		<main class="mdl-layout__content">
-			<div class="page-content">
-				{% block content %}
-				<p>Bonjour!</p>
-				{% endblock %}
-			</div>
-			
-		</main>
-		<footer id='footer'>
-			{% include "includes/footer.html" %}
-		</footer>
+		
+		
 	</div>
 </body>

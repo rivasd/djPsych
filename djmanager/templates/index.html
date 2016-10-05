@@ -1,33 +1,10 @@
 {% extends 'base.html' %}
 {% load i18n %}
 {% load static %}
-
-{% block head %}
-	<style>
-		header{
-			opacity: 0.75;
-		}
-		#content{
-			padding: 0;
-		}
-		header li a {
-			color: #383838;
-		}
-		#banner{
-			-webkit-filter: saturate(180%) contrast(120%);
-		}
-	</style>
-{% endblock %}
-
 {% block content %}
-<div id="main-banner">
-	<div id="main-image"> 
-		
-	</div>
-	<div id="taglines">
-
-		<ul>
-
+<div id="main-banner" class="full-width">
+	<div id="taglines" class="mdl-grid">
+		<ul class="mdl-cell mdl-cell--12-col">
 			<li>
 				{% trans "cognition" %}
 			</li>

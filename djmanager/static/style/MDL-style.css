@@ -1,0 +1,25 @@
+
+
+
+
+/********************** Homepage Styles ********************************/
+
+#hidden-login{
+	display: none;
+}
+
+#banner{
+    height: 70px;
+    width: 520px;
+}
+
+#main-banner{
+	background-image: url("labstaff.jpg");
+	background-size: cover;
+	background-position: 50% 10%;
+	height: 700px;
+}
+
+#taglines{
+	max-width:300px;
+}
