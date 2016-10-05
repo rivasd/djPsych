@@ -43,7 +43,7 @@ content	Well, the content of the page
 
 <body>
 	<div id="page" class="mdl-layout mdl-js-layout">
-		<header class="mdl-layout__header">
+		<header class="mdl-layout__header--waterfall">
 			<div class="mdl-layout-icon"></div>
 			<div class="mdl-layout__header-row">
 				<span class="mdl-layout__title"> <img src="{% static 'style/Banner.png'%}" alt="Cognition - Communication" id="banner"/> </span>
@@ -79,11 +79,14 @@ content	Well, the content of the page
  			</div>
  			<span id="login-error"></span>
 		</div>
-		<div id='content'>
-			{% block content %}
-			<p>Bonjour!</p>
-			{% endblock %}
-		</div>
+		<main class="mdl-layout__content">
+			<div class="page-content">
+				{% block content %}
+				<p>Bonjour!</p>
+				{% endblock %}
+			</div>
+			
+		</main>
 		<footer id='footer'>
 			{% include "includes/footer.html" %}
 		</footer>
