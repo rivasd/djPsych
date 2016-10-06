@@ -1,0 +1,10 @@
+<h1>{% trans "My experiments" %}</h1>
+<ul>
+	{% for experiment in experiments %}
+		<li>
+			<a href = "../{{experiment.label}}"> 
+				{{experiment.verbose_name}}
+			</a>
+		</li>
+	{% endfor %}
+</ul>

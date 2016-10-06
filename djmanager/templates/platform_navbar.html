@@ -1,4 +1,5 @@
 {% load i18n %}
+{% load navbar_tags %}
 
 <nav id = "djpsych-perceptnavbar"> 
 	<ul id = "djpsych-navlist">
@@ -40,16 +41,7 @@
 			</a>
 		</li>
 		<li>
-			<h1>{% trans "My experiments" %}</h1>
-			<ul>
-				{% for experiment in researcher_experiments %}
-					<li>
-						<a href = "../{{experiment.label}}"> 
-							{{experiment.verbose_name}}
-						</a>
-					</li>
-				{% endfor %}
-			</ul>
+			{% show_experiments request}
 		</li>
 	</ul>
 </nav>
