@@ -1,29 +1,24 @@
 {% extends 'base.html' %}
 {% load i18n %}
 {% load static %}
+
+{% block head %}
+<style>
+header#djpsych-header{
+	background-color: rgba(30, 30, 30, 0.6);
+}
+</style>
+{% endblock %}
+
 {% block content %}
-<div id="main-banner" class="full-width">
-	<div id="taglines" class="mdl-grid">
-		<ul class="mdl-cell mdl-cell--12-col">
-			<li>
-				{% trans "cognition" %}
-			</li>
-			<li>
-				{% trans "modeling" %}
-			</li>
-			<li>
-				{% trans "electrophysiology" %}
-			</li>
-		</ul>
-	</div>
-</div>
-<div id="below">
-	<div class="halfhalf" id="welcome">
+<div id="lab-crew"></div>
+<div class="djpsych-index__below mdl-grid">
+	<div class="mdl-cell mdl-cell--5-col mdl-cell--1-offset" id="welcome">
 		<h1>
 			{% trans "We are the Cognition & Communication Lab @ UQAM" %}
 		</h1>
 	</div>
-	<div class="halfhalf" id="description">
+	<div class="mdl-cell mdl-cell--5-col mdl-cell--1-offset" id="description">
 		<p>
 			{% trans "We investigate cognition in humans and machines" %}
 		</p>

@@ -30,7 +30,7 @@ content	Well, the content of the page
     <link href="https://code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css"></link>
     
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-	<link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.grey-lime.min.css" />
+	<link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-deep_orange.min.css" />
 	<script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
 	
     <script src="{% static 'homePageUtilities.js' %}"></script>
@@ -45,13 +45,19 @@ content	Well, the content of the page
 </head>
 
 <body>
-	<div id="page" class="mdl-layout mdl-js-layout">
-		<header class="mdl-layout__header mdl-layout__header--waterfall">
+	<div class="mdl-layout mdl-js-layout mdl-layout--no-drawer-button">
+		<header class="mdl-layout__header mdl-layout__header--waterfall mdl-layout__header--waterfall-hide-top" id="djpsych-header">
 			<div class="mdl-layout-icon"></div>
-			<div class="mdl-layout__header-row">
+			<div class="mdl-layout__header-row" id="djpsych-header__top-row">
+				<div class="mdl-layout-spacer"></div>
 				<span class="mdl-layout__title"> <img class="mdl-layout-icon" src="{% static 'style/Banner.png'%}" alt="Cognition - Communication" id="banner"/> </span>
+				<div class="mdl-layout-spacer"></div>
+			</div>
+			<div class="mdl-layout__header-row">
+				
     			<div class="mdl-layout-spacer"></div>
 				{%include "includes/navbar.html" %}
+				<div class="mdl-layout-spacer"></div>
 				<a id='top'></a>
     		</div>
 		</header>
@@ -63,6 +69,7 @@ content	Well, the content of the page
 				<p>Bonjour!</p>
 				{% endblock %}
   			</div>
+  			<div class="mdl-layout-spacer"></div>
   			<footer id='footer' class="mdl-mini-footer">
 			{% include "includes/footer.html" %}
 			</footer>

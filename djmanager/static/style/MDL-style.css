@@ -1,5 +1,14 @@
 
+@font-face{
+    font-family: "Titillium-Web";
+    src: url('Titillium_Web/TitilliumWeb-Regular.ttf'),
+        url('Titillium_Web/AdventPro-Regular.eot');
+}
 
+@font-face{
+    font-family: "Jura";
+    src: url('Jura/Jura-DemiBold.ttf');
+}
 
 
 /********************** Homepage Styles ********************************/
@@ -9,17 +18,65 @@
 }
 
 #banner{
-    height: 70px;
-    width: 520px;
-}
-
-#main-banner{
-	background-image: url("labstaff.jpg");
-	background-size: cover;
-	background-position: 50% 10%;
-	height: 700px;
+    height: 76px;
+    width: 534px;
+    position: relative;
+    left: 0%;
 }
 
 #taglines{
 	max-width:300px;
+}
+
+/* Change the layout__content class to Flex (instead of inline-block) to allow spacer to work. */
+.mdl-layout__content {
+    /* display: -webkit-flex; */
+    /* display: flex; */
+    /* -webkit-flex-direction: column; */
+    /* flex-direction: column; */
+    /* position: relative; */
+    /* top: -148px; */
+}
+
+header#djpsych-header{
+	
+}
+
+div#djpsych-header__top-row{
+	margin-top: 16px;
+}
+
+#djpsych-index-spacer{
+	width:100%;
+	height: 20%;
+}
+
+.djpsych-index__below{
+	/* margin-top: 31%; */
+	/* color:white; */
+}
+
+
+#lab-crew{
+	background-image: url("labstaff.jpg");
+	background-size: cover;
+	background-position: 50% 16%;
+	/* min-height: 700px; */
+	position: relative;
+	top: 0px;
+	px; */
+	height: 2;
+	height: 538px;
+}
+
+/********************* Basic Rules *****************************/
+
+.ul--no-dots{
+	list-style: none;
+}
+
+.mdl-layout__header .mdl-navigation__link{
+	font-family: "Titillium-Web", "sans-serif";*/
+	f;
+	font-size: 16px;
 }
