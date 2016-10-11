@@ -321,7 +321,7 @@ function ExpLauncher(opts, canvas){
 	
 	function chooseDiff(attNumber, levels){
 		//TODO: remove this temporary change
-		return 4;
+		return 2;
 		
 		
 		if(levels > attNumber){
