@@ -18,6 +18,9 @@
 	</nav>
 </section>
 <section>
+	{% include 'includes/platform_navbar.html' %}
+</section>
+<section>
 	<button id="tosandbox" onClick = "window.location = '{% url "webexp:sandbox" exp.label %}';">{% trans "Test the experiment" %}</button>
 	<button id="download-data" onClick = "window.location = '{% url "webexp:collect:all" exp.label %}';">{% trans "Collect the data" %}</button>
 </section>

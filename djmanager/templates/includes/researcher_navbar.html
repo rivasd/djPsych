@@ -1,4 +1,5 @@
-{% if experiments is not None %}
+{%load i18n %}
+{% if experiments %}
 <h1>{% trans "My experiments" %}</h1>
 <ul>
 	{% for experiment in experiments %}
