@@ -18,28 +18,35 @@ manips	an array of arrays, each top level array representing an experiment as se
 <div class="mdl-grid" id="djpsych-webexp">
 	
 	<div class="mdl-cell mdl-cell--2-col djpsych-percept-navbar">
-		
+		{% include "includes/platform_navbar.html"%}
 	
+	</div >
+	
+	
+	<div class="mdl-cell mdl-cell--10-col">
+		{% block percept-content %}
+		<h1>{% trans "Our web-based research projects" %}</h1>
+		<p>
+			{% trans "In our lab, we conduct not only experiments combining behavioural data and ERPs, but also simulations of artificial neural networks. However, not everyone is willing to come out to the lab and have to wear an" %} 
+			<a href="http://www.biosemi.com/pics/apply_cap2_large.jpg"> {% trans "EEG cap full of gel!" %} </a>
+		</p>
+		<p>
+			{% trans "That`s why we have created cognitive psychology experiments online. By participating, you are helping us reach our research objectives and at the same time you might learn something about your own cognition. You will also have the opportunity to be paid for your contribution via" %}
+			<a href="http://paypal.com"> {% trans "Paypal" %} </a> {% trans "!"%}
+		</p>
+		<p>
+			{% trans "Below you will see a list of experiments currently available for participation. Click on one of them to find out more or to participate!" %}
+		</p>
+		<ul id="available-exp">
+			{% for manip in manips %}
+			<li>
+				<a href="{% url 'webexp:lobby' manip.label%}"> {{ manip.verbose_name }} </a>	
+			</li>
+			{% endfor %}
+		</ul>
+	
+		{% endblock %}
 	</div>
-
-	<h1>{% trans "Our web-based research projects" %}</h1>
-	<p>
-		{% trans "In our lab, we conduct not only experiments combining behavioural data and ERPs, but also simulations of artificial neural networks. However, not everyone is willing to come out to the lab and have to wear an" %} 
-		<a href="http://www.biosemi.com/pics/apply_cap2_large.jpg"> {% trans "EEG cap full of gel!" %} </a>
-	</p>
-	<p>
-		{% trans "That`s why we have created cognitive psychology experiments online. By participating, you are helping us reach our research objectives and at the same time you might learn something about your own cognition. You will also have the opportunity to be paid for your contribution via" %}
-		<a href="http://paypal.com"> {% trans "Paypal" %} </a> {% trans "!"%}
-	</p>
-	<p>
-		{% trans "Below you will see a list of experiments currently available for participation. Click on one of them to find out more or to participate!" %}
-	</p>
-	<ul id="available-exp">
-		{% for manip in manips %}
-		<li>
-			<a href="{% url 'webexp:lobby' manip.label%}"> {{ manip.verbose_name }} </a>	
-		</li>
-		{% endfor %}
-	</ul>
+	
 </div>
 {% endblock %}

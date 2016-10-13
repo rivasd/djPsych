@@ -19,6 +19,9 @@ p {
 	font-size: 18px;
 }
 
+a{
+	text-decoration: none;
+}
 /********************** Homepage Styles ********************************/
 
 #hidden-login{
@@ -106,6 +109,9 @@ div#djpsych-header__top-row{
 	margin:0 2%;
 }
 
+nav ul{
+	list-style:none;
+}
 /***************************** Text-related rules **************************/
 
 .extra-heavy{
@@ -113,4 +119,18 @@ div#djpsych-header__top-row{
 }
 .right-align{
 	text-align: right;
+}
+
+/******************************** PERCEPT styles ****************************/
+
+h6, h5{
+	font-family: "Titillium-Web";
+}
+
+#djpsych-perceptnavbar h5 {
+	margin-bottom: 0px;
+}
+
+#djpsych-perceptnavbar h6 {
+	margin-top: 0px;
 }

@@ -1,9 +1,9 @@
 {%load i18n %}
 {% if experiments %}
 <h1>{% trans "My experiments" %}</h1>
-<ul>
+<ul class="mdl-list">
 	{% for experiment in experiments %}
-		<li>
+		<li class="mdl-list__item">
 			<a href = "../{{experiment.label}}"> 
 				{{experiment.verbose_name}}
 			</a>
