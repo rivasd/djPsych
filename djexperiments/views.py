@@ -101,16 +101,14 @@ def upload_resource(request, exp_label):
     if 'POST' == request.method: #yoda!
           
         form = UploadForm(request.POST, request.FILES)
-        filesList = request.FILES.lists()
+        filesList = request.FILES.getlist('file')
         
         if form.is_valid():
             
             for currentFile in filesList:
                 
-                fileKeyValue = currentFile[0]
-                actualCurrentFile = currentFile[1][0]
                     
-                fileObject = File(actualCurrentFile)
+                fileObject = File(currentFile)
                     
                 initialPath = fileObject.name
                 fileObject.name = "/"+exp_label+"/"+fileObject.name
@@ -118,9 +116,9 @@ def upload_resource(request, exp_label):
                     
                 default_storage.save(newPath, fileObject)
                     
-                messages.add_message(request, messages.SUCCESS, _('Your file successfully uploaded'))
-                     
-                return HttpResponseRedirect("/webexp/"+exp_label+"/upload")
+                messages.add_message(request, messages.SUCCESS, _('Your file successfully uploaded: ')+initialPath)
+                
+            return HttpResponseRedirect("/webexp/"+exp_label+"/upload")   
         
         else :
             messages.add_message(request, messages.WARNING, _('The type of your file is not valid...'))
