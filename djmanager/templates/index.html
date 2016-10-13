@@ -12,19 +12,19 @@ header#djpsych-header{
 
 {% block content %}
 <div id="lab-crew"></div>
-<div class="djpsych-index__below mdl-grid">
-	<div class="mdl-cell mdl-cell--5-col mdl-cell--1-offset" id="welcome">
-		<h1>
+<div class="djpsych-index__below mdl-grid mdl-color--grey-600">
+	<div class="mdl-cell mdl-cell--5-col mdl-cell--1-offset mdl-color-text--grey-100 vertical-center-cont" id="welcome">
+		<h1 class="right-align">
 			{% trans "We are the Cognition & Communication Lab @ UQAM" %}
 		</h1>
 	</div>
-	<div class="mdl-cell mdl-cell--5-col mdl-cell--1-offset" id="description">
+	<div class="mdl-cell mdl-cell--5-col mdl-color-text--grey-100 vertical-center-cont" id="description">
 		<p>
 			{% trans "We investigate cognition in humans and machines" %}
 		</p>
 	</div>
 </div>
-<div id="rest">
+<div id="rest" class="mdl-grid">
 		<p>
 			{% trans "online platform for web experiments" as exp_link %}
 			{% url "webexp:home" as exp_href%}

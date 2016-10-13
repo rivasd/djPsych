@@ -1,8 +1,7 @@
 
 @font-face{
     font-family: "Titillium-Web";
-    src: url('Titillium_Web/TitilliumWeb-Regular.ttf'),
-        url('Titillium_Web/AdventPro-Regular.eot');
+    src: url('Titillium_Web/TitilliumWeb-Regular.ttf');
 }
 
 @font-face{
@@ -10,6 +9,15 @@
     src: url('Jura/Jura-DemiBold.ttf');
 }
 
+/************************************ Basic Defaults ******************************/
+
+html, body, h1, h2 {
+	font-family: "Titillium-Web", sans-serif; 
+}
+
+p {
+	font-size: 18px;
+}
 
 /********************** Homepage Styles ********************************/
 
@@ -56,19 +64,24 @@ div#djpsych-header__top-row{
 .djpsych-index__below{
 	/* margin-top: 31%; */
 	/* color:white; */
+	min-height: 344px;
 }
 
 
 #lab-crew{
 	background-image: url("labstaff.jpg");
 	background-size: cover;
-	background-position: 50% 16%;
+	background-position: 51% 27%;
 	/* min-height: 700px; */
 	position: relative;
 	top: 0px;
 	px; */
 	height: 2;
-	height: 538px;
+	height: 560px;
+}
+
+#rest{
+	min-height:600px;
 }
 
 /********************* Basic Rules *****************************/
@@ -81,4 +94,23 @@ div#djpsych-header__top-row{
 	font-family: "Titillium-Web", "sans-serif";*/
 	f;
 	font-size: 16px;
+}
+
+.vertical-center-cont{
+	display:flex;
+	flex-direction: column;
+  	justify-content: center;
+}
+
+#djpsych-webexp{
+	margin:0 2%;
+}
+
+/***************************** Text-related rules **************************/
+
+.extra-heavy{
+	font-size: 24pts;
+}
+.right-align{
+	text-align: right;
 }
