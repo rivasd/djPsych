@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'homepage.html' %}
 {% load i18n %}
 
 
@@ -6,7 +6,7 @@
 {{exp.verbose_name}}
 {% endblock %}
 
-{% block content %}
+{% block percept-content %}
 <h1> {{ exp.verbose_name|upper }} Control Panel </h1>
 <section>
 	<nav>
@@ -18,18 +18,15 @@
 	</nav>
 </section>
 <section>
-	{% include 'includes/platform_navbar.html' %}
-</section>
-<section>
-	<button id="tosandbox" onClick = "window.location = '{% url "webexp:sandbox" exp.label %}';">{% trans "Test the experiment" %}</button>
-	<button id="download-data" onClick = "window.location = '{% url "webexp:collect:all" exp.label %}';">{% trans "Collect the data" %}</button>
+	<button class="mdl-button mdl-js-button mdl-button--raised" id="tosandbox" onClick = "window.location = '{% url "webexp:sandbox" exp.label %}';">{% trans "Test the experiment" %}</button>
+	<button class="mdl-button mdl-js-button mdl-button--raised" id="download-data" onClick = "window.location = '{% url "webexp:collect:all" exp.label %}';">{% trans "Collect the data" %}</button>
 </section>
 <section>
 	<table id = "money_handler_table">
 		<th><td colspan = 2>{% trans "Your money account" %}</td></th>
 		<tr><td>{% trans "Money you have in your account for this experiment : " %}</td><td>{{exp.funds_remaining}} CAN$</td></tr>
 		<tr><td>{% trans "Money you spent since the beginning of this experiment : "%}</td><td>{{exp.total_funds_added}} CAN$</td></tr>
-		<tr><td colspan = 2><button id = "increasing_money_account">{% trans "Transfer money to your account!" %}</button></td></tr>
+		<tr><td colspan = 2><button class="mdl-button mdl-js-button mdl-button--raised" id = "increasing_money_account">{% trans "Transfer money to your account!" %}</button></td></tr>
 	</table>
 </section>
 <section>
