@@ -64,6 +64,30 @@ class HTMLBlock(BaseSettingBlock):
     url = models.URLField()
     
     
+class RatingBlock(BaseSettingBlock):
+    
+    
+    is_html = models.BooleanField(help_text=l_("True if the stimulus is html instead of being a image url"))
+    
+    prompt = models.CharField(max_length=32, blank=True, help_text=l_("Any content here will be displayed below the stimulus, as a reminder to the participant"))
+    
+    responses = models.TextField(choices = (('bx','boxes'),('sl','slider')), help_text=l_("Choice between displaying a slider or choices in boxes for response"))
+    
+    labels = models.CharField(max_length = 1024,blank=True, help_text=l_("Sets the labels that you can slide on with the slider. You have separate them with a coma."))
+    intervals = models.CharField(max_length = 16, blank=True, help_text=l_("The first and last value associated with the labels on the slider. You have to separate the two with a coma"))
+    show_ticks = models.BooleanField(blank=True, help_text=l_("True if you want to show ticks on the slider"))
+    
+    choices = models.CharField(blank=True, max_length = 1024, help_text=l_("Sets the options that you can choose for the rating boxes. You have separate them with a coma."))
+
+class ForcedChoiceBlock(BaseSettingBlock): 
+    
+    is_html = models.BooleanField(help_text=l_("True if the stimulus is html instead of being a image url"))
+    timing_stim = models.IntegerField(help_text=l_("How long to show the stimuli for in milliseconds."))
+    timing_fixation = models.IntegerField(help_text=l_("How long to show the fixation cross for in milliseconds."))  
+    prompt = models.CharField(max_length=32, blank=True, help_text=l_("Any content here will be displayed below the stimulus, as a reminder to the participant"))
+    
+    
+    
     
     
     
