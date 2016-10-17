@@ -1,4 +1,5 @@
 {% load i18n %}
+{% load navbar_tags %}
 
 <nav id = "djpsych-perceptnavbar"> 
 	<ul id = "djpsych-navlist">
@@ -14,42 +15,33 @@
 		</li>
 		<li>
 			<a href="{% url "webexp:allExperiments" %}">
-			{% trans "Browse exoeriments" %}
+			{% trans "Browse experiments" %}
 			</a>
 		</li>
 		<li>
-			<a href="{% url "" %}">
+			<a href="/">
 				{% trans "Learning about us" %} 
 			</a>
 			<ul>
 				<li>
-					<a href="{% url "" %}">
+					<a href="/">
 						{% trans "Researchers" %} 
 					</a>
 				</li>
 				<li>
-					<a href="{% url "" %}">
+					<a href="/">
 						{% trans "Participants" %} 
 					</a>
 				</li>
 			</ul>
 		</li>
 		<li>
-			<a href="{% url "" %}">
+			<a href="/">
 				{% trans "Contact us" %}
 			</a>
 		</li>
 		<li>
-			<h1>{% trans "My experiments" %}</h1>
-			<ul>
-				{% for experiment in researcher_experiments %}
-					<li>
-						<a href = "../{{experiment.label}}"> 
-							{{experiment.verbose_name}}
-						</a>
-					</li>
-				{% endfor %}
-			</ul>
+			{% show_experiments %}
 		</li>
 	</ul>
 </nav>
