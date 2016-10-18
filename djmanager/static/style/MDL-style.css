@@ -106,11 +106,16 @@ div#djpsych-header__top-row{
 }
 
 #djpsych-webexp{
-	margin:0 2%;
+	/* margin:0 2%; */
+	padding: 0px;
 }
 
 nav ul{
 	list-style:none;
+}
+div.mdl-layout__container{
+	height: 100vh;
+	min-height: 100vh;
 }
 /***************************** Text-related rules **************************/
 
@@ -127,10 +132,17 @@ h6, h5{
 	font-family: "Titillium-Web";
 }
 
-#djpsych-perceptnavbar h5 {
+#djpsych-percept-navbar h5 {
 	margin-bottom: 0px;
+	text-align:center;
 }
 
-#djpsych-perceptnavbar h6 {
+#djpsych-percept-navbar h6 {
 	margin-top: 0px;
+	text-align:center;
+}
+
+#djpsych-percept-navbar{
+	margin:0;
+	background-color: #e6e6e6;
 }

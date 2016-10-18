@@ -2,25 +2,24 @@
 {% load navbar_tags %}
 
 <nav id = "djpsych-perceptnavbar"> 
-	<h5>PERCEPT</h4>
-	<h6>{% trans "Online Lab"%}</h5>
-	<ul id = "djpsych-navlist" class="mdl-list">
-		<li class="mdl-list__item">
+	
+	<ul id = "djpsych-navlist" class="djpsych-listmenu">
+		<li class="djpsych-listmenu__item">
 			<a href="{% url "webexp:home" %}">
 			{% trans "Home" %}
 			</a>
 		</li>
-		<li class="mdl-list__item">
+		<li class="djpsych-listmenu__item">
 			<a href="{% url "webexp:profiles:personal" %}">
 			{% trans "My profile" %}
 			</a>
 		</li>
-		<li class="mdl-list__item">
+		<li class="djpsych-listmenu__item">
 			<a href="{% url "webexp:allExperiments" %}">
 			{% trans "Browse experiments" %}
 			</a>
 		</li>
-		<li class="mdl-list__item">
+		<li class="djpsych-listmenu__item">
 			<a href="/">
 				{% trans "Learning about us" %} 
 			</a>
@@ -37,12 +36,12 @@
 				</li>
 			</ul>
 		</li>
-		<li class="mdl-list__item">
+		<li class="djpsych-listmenu__item">
 			<a href="/">
 				{% trans "Contact us" %}
 			</a>
 		</li>
-		<li class="mdl-list__item">
+		<li class="djpsych-listmenu__item">
 			{% show_experiments %}
 		</li>
 	</ul>
