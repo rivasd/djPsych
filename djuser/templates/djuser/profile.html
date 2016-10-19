@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {# this means we want to show the file djmanager/templates/base.html but with some of its blocks replaced with what is here #}
+{% extends 'homepage.html' %} {# this means we want to show the file djmanager/templates/base.html but with some of its blocks replaced with what is here #}
 {% load i18n %} {# Allow the use of the trans tag to tag Strings for translation later #}
 
 {% comment %}  
@@ -9,7 +9,7 @@ In this template, we expect to be passed two template variables: subjectform and
 WE ASSUME THIS TEMPLATE IS UNREACHABLE BY USERS THAT ARE NOT LOGGED IN
 {% endcomment %}
 
-{% block content %}
+{% block percept-content %}
 <h1>{% trans "Hello, " %} {% if request.user.first_name %}{{ request.user.first_name }} {{ request.user.last_name }}
 {%else %} 
 {{ request.user.username }}

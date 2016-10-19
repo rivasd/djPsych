@@ -43,12 +43,13 @@ a{
 .mdl-layout__content {
     /* display: -webkit-flex; */
     display: flex;
-    /* -webkit-flex-direction: column; */
-    flex-direction: column;
+    -webkit-flex-direction: column;
+    /* flex-direction: column; */
     /* position: relative; */
     /* top: -148px; */
-    justify-content: space-between;
+    /* justify-content: space-between; */
     /* overflow: hidden; */
+    height: 100vh;
 }
 
 header#djpsych-header{
@@ -108,14 +109,17 @@ div#djpsych-header__top-row{
 #djpsych-webexp{
 	/* margin:0 2%; */
 	padding: 0px;
+	/* height: 100%; */
+	min-height: 77vh;
 }
 
 nav ul{
 	list-style:none;
 }
 div.mdl-layout__container{
-	height: 100vh;
-	min-height: 100vh;
+	/* height: 100vh; */
+	/* min-height: 100vh; */
+	/* height: auto; */
 }
 /***************************** Text-related rules **************************/
 
@@ -145,4 +149,18 @@ h6, h5{
 #djpsych-percept-navbar{
 	margin:0;
 	background-color: #e6e6e6;
+	align-self: stretch;
+	flex-grow: 1;
+}
+.djpsych-percept-content{
+	padding-left:20px;
+	flex-grow: 1;
+}
+
+.djpsych-listmenu{
+	padding-left:10px;
+}
+
+.djpsych-listmenu__item{
+	margin: 10px 5px;
 }
