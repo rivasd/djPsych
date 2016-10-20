@@ -41,7 +41,7 @@ a{
 
 /* Change the layout__content class to Flex (instead of inline-block) to allow spacer to work. */
 .mdl-layout__content {
-    /* display: -webkit-flex; */
+    display: -webkit-flex;
     display: flex;
     -webkit-flex-direction: column;
     /* flex-direction: column; */
@@ -49,7 +49,7 @@ a{
     /* top: -148px; */
     /* justify-content: space-between; */
     /* overflow: hidden; */
-    height: 100vh;
+    /* height: 100vh; */
 }
 
 header#djpsych-header{
@@ -90,6 +90,11 @@ div#djpsych-header__top-row{
 
 /********************* Basic Rules *****************************/
 
+.page-content{
+	/* min-height:77vh; */
+	flex-grow: 8;
+	/* height: auto; */
+}
 .ul--no-dots{
 	list-style: none;
 }

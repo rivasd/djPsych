@@ -42,7 +42,7 @@ def launch(request, exp_label):
     consentfile = 'djexperiments/'+exp_label+'/consent.html'
     plugins = [os.path.basename(file) for file in glob.glob(os.path.join(os.path.dirname(__file__), '../djmanager/static/jspsych-plugins/')+'*.js')]
     return render(request, 'djexperiments/launch.html', {'scripts': js_modules, 'exp': exp, 
-                                                         'consent':consentfile, 'plugins':plugins, 'static_url': settings.STATIC_URL})
+                                                         'consent':consentfile, 'plugins':plugins, 'static_url': settings.STATIC_URL, 'header_type': 'mdl-layout__header--scroll'})
 
 def summary(request, exp_label):
     return HttpResponse()
