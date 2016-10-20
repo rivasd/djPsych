@@ -3,40 +3,47 @@
 
 <nav id = "djpsych-perceptnavbar"> 
 	
-	<ul id = "djpsych-navlist" class="djpsych-listmenu">
-		<li class="djpsych-listmenu__item">
-			<a href="{% url "webexp:home" %}">
+	<ul id = "djpsych-navlist" class="djpsych-listmenu ">
+		<li class="djpsych-listmenu__item mdl-js-ripple-effect">
+			<span class="mdl-ripple"></span>
+			<a href="{% url "webexp:home" %}" >
 			{% trans "Home" %}
 			</a>
 		</li>
-		<li class="djpsych-listmenu__item">
-			<a href="{% url "webexp:profiles:personal" %}">
+		<li class="djpsych-listmenu__item mdl-js-ripple-effect">
+			<span class="mdl-ripple"></span>
+			<a href="{% url "webexp:profiles:personal" %}" class="">
+			
 			{% trans "My profile" %}
 			</a>
 		</li>
-		<li class="djpsych-listmenu__item">
+		<li class="djpsych-listmenu__item mdl-js-ripple-effect">
+			<span class="mdl-ripple"></span>
 			<a href="{% url "webexp:allExperiments" %}">
 			{% trans "Browse experiments" %}
 			</a>
 		</li>
-		<li class="djpsych-listmenu__item">
+		<li class="djpsych-listmenu__item djpsych-listmenu__item--sub ">
 			<a href="/">
 				{% trans "Learning about us" %} 
 			</a>
 			<ul class="djpsych-listmenu djpsych-listmenu--inner">
-				<li class="djpsych-listmenu__item">
+				<li class="djpsych-listmenu__item mdl-js-ripple-effect">
+					<span class="mdl-ripple"></span>
 					<a href="/">
 						{% trans "Researchers" %} 
 					</a>
 				</li>
-				<li class="djpsych-listmenu__item">
+				<li class="djpsych-listmenu__item mdl-js-ripple-effect">
+					<span class="mdl-ripple"></span>
 					<a href="/">
 						{% trans "Participants" %} 
 					</a>
 				</li>
 			</ul>
 		</li>
-		<li class="djpsych-listmenu__item">
+		<li class="djpsych-listmenu__item mdl-js-ripple-effect">
+			<span class="mdl-ripple"></span>
 			<a href="/">
 				{% trans "Contact us" %}
 			</a>

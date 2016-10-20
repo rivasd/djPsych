@@ -158,9 +158,31 @@ h6, h5{
 }
 
 .djpsych-listmenu{
-	padding-left:10px;
+	padding-left: 0px;
 }
 
 .djpsych-listmenu__item{
-	margin: 10px 5px;
+	padding: 5px 5px 5px 10px;
+	position: relative;
+	overflow: hidden;
+}
+
+.djpsych-listmenu__item:HOVER{
+	background-color: #d6d6d6;
+	cursor: pointer;
+}
+
+.djpsych-listmenu--inner{
+	padding-top:10px;
+}
+.djpsych-listmenu__item.djpsych-listmenu__item--sub:hover{
+	background-color:inherit;
+}
+
+.djpsych-listmenu__item > a{
+	height: 100%;
+	width:100%;
+	display: block;
+	position:relative;
+	overflow:hidden;
 }
