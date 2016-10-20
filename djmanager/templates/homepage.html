@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static from staticfiles %}
 {% load i18n %}
+{% load experiment_tags %}
 {% comment %}  
 The home page for our web experiment platform, ready to present and link to multiple experiments!
 This template expects a particular context variable: manips
@@ -39,13 +40,13 @@ manips	an array of arrays, each top level array representing an experiment as se
 		<p>
 			{% trans "Below you will see a list of experiments currently available for participation. Click on one of them to find out more or to participate!" %}
 		</p>
-		<ul id="available-exp">
+		<div id="available-exp">
 			{% for manip in manips %}
-			<li>
-				<a href="{% url 'webexp:lobby' manip.label%}"> {{ manip.verbose_name }} </a>	
-			</li>
+			
+				{% cardify manip %}
+			
 			{% endfor %}
-		</ul>
+		</div>
 	
 		{% endblock %}
 	</div>

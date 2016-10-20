@@ -11,4 +11,4 @@ register = template.Library()
 
 @register.inclusion_tag("custom_tag_templates/cardify.html")
 def cardify(experiment):
-    return {}
+    return {"exp": experiment}
