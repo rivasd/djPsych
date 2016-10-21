@@ -161,6 +161,11 @@ MODELTRANSLATION_DEFAULT_LANGUAGE = 'en'
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 SITE_ID = 1
+# store our js dependencies as fully fledged git repos here
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'dialog_polyfill'),
+    os.path.join(BASE_DIR, 'jsPsych')
+]
 
 MEDIA_URL = '/media/'
 

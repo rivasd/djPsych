@@ -17,6 +17,8 @@ from test.test_socket import FileObjectClassTestCase
 from django.core.files.storage import default_storage
 from django.contrib import messages
 from djmanager.utils import get_allowed_exp_for_user
+from djPsych.utils import fetch_files_of_type
+
 # Create your views here.
 def lobby(request, exp_label):
     try:
@@ -40,7 +42,7 @@ def launch(request, exp_label):
     exp = Experiment.objects.get(label=exp_label)
     js_modules = get_all_js_files_in_exp(exp_label=exp_label)
     consentfile = 'djexperiments/'+exp_label+'/consent.html'
-    plugins = [os.path.basename(file) for file in glob.glob(os.path.join(os.path.dirname(__file__), '../djmanager/static/jspsych-plugins/')+'*.js')]
+    plugins = fetch_files_of_type('djPsych/jsPsych/plugins', 'js')
     return render(request, 'djexperiments/launch.html', {'scripts': js_modules, 'exp': exp, 
                                                          'consent':consentfile, 'plugins':plugins, 'static_url': settings.STATIC_URL, 'header_type': 'mdl-layout__header--scroll'})
 
@@ -55,7 +57,7 @@ def sandbox(request, exp_label):
     if not exp.research_group in request.user.groups.all():
         raise Http404(_("You do not have permission to access the sandbox"))
     
-    plugins = [os.path.basename(file) for file in glob.glob(os.path.join(os.path.dirname(__file__), '../djmanager/static/jspsych-plugins/')+'*.js')]
+    plugins = fetch_files_of_type('djPsych/jsPsych/plugins', 'js')
     js_modules = get_all_js_files_in_exp(exp_label)
     configs = exp.get_all_configurations()
     choices = []

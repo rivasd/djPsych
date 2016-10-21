@@ -7,7 +7,7 @@
 
 {% block content %}
 
-<div class="rubrique" id="login-text">
+<div class="djpsych-maincenter" id="login-text">
 	<h1>{% trans "Sign In" %}</h1>
 	
 	{% get_providers as socialaccount_providers %}
@@ -34,7 +34,7 @@
 			  {% if redirect_field_value %}
 			  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
 			  {% endif %}
-			  <button class="primaryAction ownline" type="submit">{% trans "Sign In" %}</button>
+			  <button class="primaryAction ownline mdl-button mdl-js-button mdl-button--raised mdl-button--accent" type="submit">{% trans "Sign In" %}</button>
 			  <a class="secondaryAction ownline" href="{% url 'account_reset_password' %}" id="forgotpass">{% trans "Forgot Password?" %}</a>
 			  
 			</form>
@@ -50,7 +50,7 @@
 	
 	{% else %}
 	<p>{% blocktrans %}If you have not created an account yet, then please
-	<a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}</p>
+	<a href="{{ signup_url }}" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">sign up</a> first.{% endblocktrans %}</p>
 	{% endif %}
 	
 	

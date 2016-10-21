@@ -1,0 +1,9 @@
+[submodule "djPsych/static/dialog_polyfill"]
+	path = djPsych/static/dialog_polyfill
+	url = https://github.com/GoogleChrome/dialog-polyfill
+[submodule "djPsych/dialog_polyfill"]
+	path = djPsych/dialog_polyfill
+	url = https://github.com/GoogleChrome/dialog-polyfill
+[submodule "djPsych/jsPsych"]
+	path = djPsych/jsPsych
+	url = https://github.com/rivasd/jsPsych

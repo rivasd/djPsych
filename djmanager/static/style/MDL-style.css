@@ -88,6 +88,11 @@ div#djpsych-header__top-row{
 	min-height:600px;
 }
 
+.djpsych-maincenter{
+	width: 90%;
+	margin: 0 auto;
+	display:block;
+}
 /********************* Basic Rules *****************************/
 
 footer{
@@ -96,7 +101,7 @@ footer{
 
 .page-content{
 	/* min-height:77vh; */
-	/* flex-grow: 1; */
+	flex-grow: 1;
 	/* height: auto; */
 	position: relative;
 }
