@@ -1,0 +1,35 @@
+{% load i18n %}
+{% load socialaccount %}
+{% get_providers as socialaccount_providers %}
+{% get_current_language as lang %}
+{% load static from staticfiles %}
+<dialog id="hidden-login" class="mdl-dialog">
+	<h4 class="mdl-dialog__title"> {% trans "Authentication" %}</h4>
+	<div class="login-panel mdl-dialog__content">
+		<div>
+			<p>{% trans "You can login or register using your existing account for: "%}</p>
+			{% for provider in socialaccount_providers %}
+			<li>
+			  <a title="{{provider.name}}" class="socialaccount_provider {{provider.id}}" 
+			     href="{% provider_login_url provider.id process="login" %}"><img src="{% static "style/"%}provider-img-{{ provider.name }}.png" id="provider-img-{{ provider.name }}" class="login-btn"/></a>
+			</li>
+			{% endfor %}
+		</div>
+		<div class="login-panel">
+			<p>{% trans "or with regular, boring, username and password" %}</p>
+			<form class="login" method="POST" action="{% url 'account_login' %}" id="hidden-login-form">
+				{% csrf_token %}
+				{{ login_form.as_ul }}
+				<a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a> 
+				<a class="button secondaryAction" href="{% url 'account_signup' %}?next={{ request.get_full_path }}"> {% trans "Create account" %}</a>
+	 			<input type="hidden" name="next" value="{{ request.get_full_path }}" />
+	 			</br>
+	 			<button class="primaryAction" type="submit">{% trans "Sign In" %}</button>
+			</form>
+		</div>
+		<span id="login-error"></span>
+	</div>
+	<div class="mdl-dialog__actions">
+		<button class="mdl-button"> Sign up </button>
+	</div>
+</dialog>

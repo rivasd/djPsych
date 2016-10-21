@@ -25,7 +25,7 @@ a{
 /********************** Homepage Styles ********************************/
 
 #hidden-login{
-	display: none;
+	/* display: none; */
 }
 
 #banner{
@@ -94,6 +94,10 @@ div#djpsych-header__top-row{
 	display:block;
 }
 /********************* Basic Rules *****************************/
+
+dialog.mdl-dialog{
+	
+}
 
 footer{
 	flex-shrink:2;

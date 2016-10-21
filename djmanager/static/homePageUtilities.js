@@ -31,19 +31,17 @@ $(function () {
     
     var $signinbutton = $("#sign-in-popup");
     
+    
+    
+    var dialog = document.getElementById("hidden-login");
+    if (! dialog.showModal) {
+        dialogPolyfill.registerDialog(dialog);
+    }
+    
     if($signinbutton.length){
     	$signinbutton.click(function(evt){
     		evt.preventDefault();
-    		$("#hidden-login").dialog({
-    			modal: true,
-    			dialogClass: 'login-popup',
-    			draggable: false,
-    			height: 'auto',
-    			resizable: false,
-    			width: 400,
-    			appendTo: "#content"
-    		})
-    		
+    		dialog.show();
     	});
     }
     
