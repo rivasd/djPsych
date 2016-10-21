@@ -26,6 +26,10 @@ a{
 
 #hidden-login{
 	/* display: none; */
+	z-index: 2;
+	top: 50%;
+	transform: translateY(-50%);
+	/* width: auto; */
 }
 
 #banner{

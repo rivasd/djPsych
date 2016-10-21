@@ -7,3 +7,12 @@
 [submodule "djPsych/jsPsych"]
 	path = djPsych/jsPsych
 	url = https://github.com/rivasd/jsPsych
+[submodule "djPsych/octicon"]
+	path = djPsych/octicon
+	url = https://github.com/primer/octicons
+[submodule "jsPsych/octicon/octicon"]
+	path = jsPsych/octicon/octicon
+	url = https://github.com/primer/octicons
+[submodule "djPsych/octicon/octicon"]
+	path = djPsych/octicon/octicon
+	url = https://github.com/primer/octicons
