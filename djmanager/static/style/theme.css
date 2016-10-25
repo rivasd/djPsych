@@ -697,10 +697,10 @@ div.entry{
     margin: auto;
 }
 .incorrect{
-    color: #b00000;
+    color: #B40404;
 }
 .correct{
-    color: #268600;
+    color: #04B404;
 }
 #expForm div.pseudoTableRow label {
     display: inline-block;
