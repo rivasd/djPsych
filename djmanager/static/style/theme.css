@@ -698,9 +698,11 @@ div.entry{
 }
 .incorrect{
     color: #B40404;
+    font: 24pt;
 }
 .correct{
     color: #04B404;
+    font: 24pt;
 }
 #expForm div.pseudoTableRow label {
     display: inline-block;
