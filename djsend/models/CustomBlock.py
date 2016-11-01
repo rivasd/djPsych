@@ -99,5 +99,6 @@ class ForcedChoiceBlock(BaseSettingBlock):
     def toDict(self):
         initial = super(RatingBlock,self).toDict()
         initial['key_choices'] = self.key_choices.split(',')
+        return initial
         
     
