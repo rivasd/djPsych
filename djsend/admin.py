@@ -16,6 +16,9 @@ from modeltranslation.admin import TranslationAdmin, TranslationGenericStackedIn
 from djstim.models import Category, MicroComponentPair
 from djreceive.models.CustomTrials import CogComSimilarityTrial
 from djstim.admin import LinkedStimulusInline
+from djsend.models.BasicBlock import SurveyMultiChoiceBlock,SurveyLikertBlock
+from djsend.models.CustomBlock import ForcedChoiceBlock, RatingBlock
+from djsend.models.BaseStimuli import Question
 
 
 class InstructionInline(TranslationGenericStackedInline):
@@ -168,5 +171,27 @@ class SimCatSettingAdmin(GenericGlobalSettingAdmin):
     filter_horizontal = ['microcomponent_pairs', 'practice_pairs']
     
     inlines = [CategoryInline]
+    
+class QuestionAdminInline(GenericStackedInline):
+    model = Question
+    
+@admin.register(SurveyMultiChoiceBlock)    
+class SurveyMultiChoiceAdmin(GenericBlockAdmin):
+    pass
+
+@admin.register(SurveyLikertBlock)    
+class SurveyLikertAdmin(GenericBlockAdmin):
+    inlines = [QuestionAdminInline]
+
+@admin.register(ForcedChoiceBlock)    
+class ForcedChoiceAdmin(GenericBlockAdmin):
+    inlines = [QuestionAdminInline]
+
+@admin.register(RatingBlock)    
+class RatingAdmin(GenericBlockAdmin):
+    pass
+    
+    
+    
     
     

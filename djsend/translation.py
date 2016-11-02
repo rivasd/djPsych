@@ -6,7 +6,7 @@ Created on Feb 24, 2016
 
 from modeltranslation.translator import register, TranslationOptions
 from .models import Instruction, CategorizationBlock, GenericSettingBlock, \
-                    SimilarityBlock
+                    SimilarityBlock, Question, ForcedChoiceBlock, RatingBlock, SurveyLikertBlock, SurveyMultiChoiceBlock
 
 @register(Instruction)
 class InstructionTransOptions(TranslationOptions):
@@ -23,3 +23,24 @@ class GenericSettingblockOptions(TranslationOptions):
 @register(SimilarityBlock)
 class SimilarityBlockOptions(TranslationOptions):
     fields=('prompt', 'labels', 'timeout_message')
+    
+@register(Question)
+class QuestionOptions(TranslationOptions):
+    fields=('question_label','answer_options')
+    
+@register(RatingBlock)
+class RatingOptions(TranslationOptions):
+    fields=('prompt',)
+
+@register(ForcedChoiceBlock)
+class ForcedChoiceOptions(TranslationOptions):
+    fields=('prompt',)
+
+@register(SurveyLikertBlock)
+class SurveyLikertOptions(TranslationOptions):
+    pass
+
+@register(SurveyMultiChoiceBlock)
+class SurveyMultiChoiceOptions(TranslationOptions):
+    fields=('preamble',)
+    
