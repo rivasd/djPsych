@@ -1,5 +1,6 @@
 {% load i18n %}
 {% load socialaccount %}
+
 {% get_providers as socialaccount_providers %}
 {% get_current_language as lang %}
 {% load static from staticfiles %}
@@ -8,28 +9,53 @@
 	<div class="login-panel mdl-dialog__content">
 		<div>
 			<p>{% trans "You can login or register using your existing account for: "%}</p>
+			<ul class="ul--no-dots ul--no-padding">
 			{% for provider in socialaccount_providers %}
+			
 			<li>
-			  <a title="{{provider.name}}" class="socialaccount_provider {{provider.id}}" 
-			     href="{% provider_login_url provider.id process="login" %}"><img src="{% static "style/"%}provider-img-{{ provider.name }}.png" id="provider-img-{{ provider.name }}" class="login-btn"/></a>
+			  <a title="{{provider.name}}" class="socialaccount_provider {{provider.id}}" href="{% provider_login_url provider.id process="login" %}">
+			     <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent provider-btn provider-btn--{{provider.name|lower}}">
+			     	<span class="fa fa-{{ provider.name|lower }}"> </span> <span>{% trans "Sign in with"%} {{provider.name}}</span>
+			     </button>
+			  </a>
 			</li>
 			{% endfor %}
+			</ul>
 		</div>
 		<div class="login-panel">
 			<p>{% trans "or with regular, boring, username and password" %}</p>
 			<form class="login" method="POST" action="{% url 'account_login' %}" id="hidden-login-form">
 				{% csrf_token %}
-				{{ login_form.as_ul }}
+				{% for field in login_form %}
+				
+					{% if field.is_hidden%}
+						{{ field }}
+					{% else %}
+						{% if field.html_name != "remember"%}
+						<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+							<label for="{{field.id_for_label}}" class="mdl-textfield__label">{{field.label}}</label>
+							{{field}}
+						</div>
+						{% else %}
+						<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="{{ field.id_for_label }}">
+							{{ field }}
+							<span class="mdl-checkbox__label">{{field.label}}</span>
+						</label>
+						{% endif %}
+					{% endif %}
+				
+				{% endfor %}
 				<a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a> 
 				<a class="button secondaryAction" href="{% url 'account_signup' %}?next={{ request.get_full_path }}"> {% trans "Create account" %}</a>
 	 			<input type="hidden" name="next" value="{{ request.get_full_path }}" />
 	 			</br>
-	 			<button class="primaryAction" type="submit">{% trans "Sign In" %}</button>
+	 			
 			</form>
 		</div>
 		<span id="login-error"></span>
 	</div>
 	<div class="mdl-dialog__actions">
-		<button class="mdl-button"> Sign up </button>
+		<button class="mdl-button" form="hidden-login-form" action="submit"> {% trans "Sign in"%} </button>
+		<button class="mdl-button close" > {% trans "Close"%} </button>
 	</div>
 </dialog>

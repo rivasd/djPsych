@@ -14,6 +14,29 @@ $(function () {
         });
     };
 
+    
+    
+    var $signinbutton = $("#sign-in-popup");
+    
+    
+    
+    var dialog = document.getElementById("hidden-login");
+    if (! dialog.showModal) {
+        dialogPolyfill.registerDialog(dialog);
+    }
+    
+    dialog.querySelector(".close").addEventListener('click', function(){
+    	dialog.close();
+    });
+    
+    
+    if($signinbutton.length){
+    	$signinbutton.click(function(evt){
+    		evt.preventDefault();
+    		dialog.show();
+    	});
+    }
+    
     $("#hidden-login-form").submit(function (evt) {
     	evt.preventDefault()
     	$.ajax({
@@ -29,21 +52,6 @@ $(function () {
     	})
     });
     
-    var $signinbutton = $("#sign-in-popup");
-    
-    
-    
-    var dialog = document.getElementById("hidden-login");
-    if (! dialog.showModal) {
-        dialogPolyfill.registerDialog(dialog);
-    }
-    
-    if($signinbutton.length){
-    	$signinbutton.click(function(evt){
-    		evt.preventDefault();
-    		dialog.show();
-    	});
-    }
     
     function delete_cookie(name) {
         document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';

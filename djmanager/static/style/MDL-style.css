@@ -97,6 +97,20 @@ div#djpsych-header__top-row{
 	margin: 0 auto;
 	display:block;
 }
+
+.mdl-button--raised.mdl-button.provider-btn.provider-btn--google{
+	background-color: #DD2C00;
+}
+
+.mdl-button--raised.mdl-button.provider-btn.provider-btn--facebook{
+	background-color: #01579B;
+}
+
+.mdl-button.mdl-button--raised.provider-btn{
+	color: white;
+	width: 100%;
+	margin-top: 10px;
+}
 /********************* Basic Rules *****************************/
 
 dialog.mdl-dialog{
@@ -115,6 +129,10 @@ footer{
 }
 .ul--no-dots{
 	list-style: none;
+}
+
+.ul--no-padding{
+	padding-left:0;
 }
 
 .mdl-layout__header .mdl-navigation__link{

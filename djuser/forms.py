@@ -6,11 +6,13 @@ Created on Mar 4, 2016
 Handles forms to edit/display subject personal info, using (I hope!) django's built-in ModelForm
 see: https://docs.djangoproject.com/en/1.9/topics/forms/modelforms/#modelform
 '''
-
+from django import forms
 from django.forms import ModelForm
+
 from .models import Subject
 from django.contrib.auth import get_user_model
 from django.forms.fields import DateField
+from allauth.account.forms import LoginForm
 
 class SubjectForm(ModelForm):
     
@@ -32,4 +34,14 @@ class PublicUserForm(ModelForm):
         fields= ['first_name', 'last_name']
         
         
-        
+class MaterialLogin(LoginForm):
+    """
+    an override of the default login form that will use Material Design styling
+    """
+    
+    pass
+
+    
+    
+    
+    

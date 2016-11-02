@@ -5,5 +5,15 @@ Created on Mar 1, 2016
 '''
 from allauth.account.forms import LoginForm
 
+
+
+
+
 def addLoginForm(request):
-    return {'login_form': LoginForm()}
+    # let us customize the login form!
+    loginForm = LoginForm()
+    loginForm.fields['password'].widget.attrs.update({'class':'mdl-textfield__input'})
+    loginForm.fields['login'].widget.attrs.update({'class': 'mdl-textfield__input'})
+    loginForm.fields['remember'].widget.attrs.update({'class':'mdl-checkbox__input'})
+    
+    return {'login_form': loginForm}
