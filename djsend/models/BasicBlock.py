@@ -12,6 +12,7 @@ from .Instructions import Instruction
 import json
 from gfklookupwidget.fields import GfkLookupField
 from pip.cmdoptions import verbose
+from .BaseStimuli import BaseStimuli, Question
 
 
 class BaseSettingBlock(models.Model):
@@ -98,4 +99,72 @@ class GenericSettingBlock(BaseSettingBlock):
         # Translators: 
         return l_('Exp. block "')+self.name+'"'
     pass
+
+class SurveyMultiChoiceBlock(BaseSettingBlock):
+    
+    preamble = models.TextField(help_text = l_("A short paragraphe that will display at the top of your questions page"))
+    horizontal = models.BooleanField(help_text=l_("Do you want the answer choices to be displayed horizontally? If so, put true, else put false."), default=False)
+    
+    questions = GenericRelation(Question)
+    
+    def toDict(self):
+        initial = super(SurveyMultiChoiceBlock,self).toDict()
+        
+        questions_list = []
+        option_labels_list = []
+        question_requirement_list = []
+        
+        for question in self.questions.all():
+            questions_list.append(question.question_label)
+            option_labels_list.append(question.answer_options)
+            question_requirement_list.append(question.required)
+        
+        for choices_group in option_labels_list:
+            choices_group.split(';')
+            
+            
+            
+        initial['question_label'] = questions_list
+        initial['answer_options'] = option_labels_list
+        initial['required'] = question_requirement_list
+        
+        return initial
+
+
+class SurveyLikertBlock(BaseSettingBlock):
+    
+    questions = GenericRelation(Question)
+    
+    def toDict(self):
+        
+        initial = super(SurveyLikertBlock,self).toDict()
+        
+        questions_list = []
+        option_labels_list = []
+        question_requirement_list = []
+        
+        for question in self.questions.all():
+            questions_list.append(question.question_label)
+            option_labels_list.append(question.answer_options)
+            question_requirement_list.append(question.required)
+        
+        for choices_group in option_labels_list:
+            choices_group.split(';')
+            
+            
+            
+        initial['question_label'] = questions_list
+        initial['answer_options'] = option_labels_list
+        initial['required'] = question_requirement_list
+        
+        return initial
+        
+        
+        
+        
+        
+        
+        
+    
+    
 
