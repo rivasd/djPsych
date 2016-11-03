@@ -124,8 +124,8 @@ class SurveyMultiChoiceBlock(BaseSettingBlock):
             
             
             
-        initial['question_label'] = questions_list
-        initial['answer_options'] = option_labels_list
+        initial['questions'] = questions_list
+        initial['options'] = option_labels_list
         initial['required'] = question_requirement_list
         
         return initial
@@ -153,8 +153,8 @@ class SurveyLikertBlock(BaseSettingBlock):
             
             
             
-        initial['question_label'] = questions_list
-        initial['answer_options'] = option_labels_list
+        initial['questions'] = questions_list
+        initial['labels'] = option_labels_list
         initial['required'] = question_requirement_list
         
         return initial

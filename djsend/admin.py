@@ -177,7 +177,15 @@ class QuestionAdminInline(GenericStackedInline):
     
 @admin.register(SurveyMultiChoiceBlock)    
 class SurveyMultiChoiceAdmin(GenericBlockAdmin):
-    pass
+    inlines = [QuestionAdminInline]
+    fieldsets = GenericBlockAdmin.fieldsets + (
+        (l_("Survey Multi Choice task parameters"), {'fields':(
+            'preamble',
+            'horizontal'
+        )}),                               
+    )
+    
+   
 
 @admin.register(SurveyLikertBlock)    
 class SurveyLikertAdmin(GenericBlockAdmin):
@@ -185,11 +193,30 @@ class SurveyLikertAdmin(GenericBlockAdmin):
 
 @admin.register(ForcedChoiceBlock)    
 class ForcedChoiceAdmin(GenericBlockAdmin):
-    inlines = [QuestionAdminInline]
+    fieldsets = GenericBlockAdmin.fieldsets + (
+        (l_("Forced Choice task parameters"), {'fields':(
+            'is_html',
+            'timing_stim',
+            'timing_fixation',  
+            'prompt', 
+            'keyboard',
+            'key_choices'
+        )}),                               
+    )
 
 @admin.register(RatingBlock)    
 class RatingAdmin(GenericBlockAdmin):
-    pass
+        fieldsets = GenericBlockAdmin.fieldsets + (
+        (l_("Rating task parameters"), {'fields':(
+            'is_html',
+            'prompt',
+            'responses',
+            'labels',
+            'intervals',
+            'show_ticks',
+            'choices',
+        )}),                               
+    )
     
     
     

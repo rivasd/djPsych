@@ -30,7 +30,7 @@ class QuestionOptions(TranslationOptions):
     
 @register(RatingBlock)
 class RatingOptions(TranslationOptions):
-    fields=('prompt',)
+    fields=('prompt','choices')
 
 @register(ForcedChoiceBlock)
 class ForcedChoiceOptions(TranslationOptions):
