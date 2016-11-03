@@ -6,6 +6,7 @@ Created on Feb 23, 2016
 
 from .BasicGeneral import GenericGlobalSetting, BaseGlobalSetting
 from .CustomGeneral import SimCatGlobalSetting
-from .BasicBlock import GenericSettingBlock
+from .BasicBlock import *
 from .CustomBlock import *
-from .Instructions import * 
+from .Instructions import *
+from .BaseStimuli import BaseStimuli, Question

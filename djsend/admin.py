@@ -16,6 +16,9 @@ from modeltranslation.admin import TranslationAdmin, TranslationGenericStackedIn
 from djstim.models import Category, MicroComponentPair
 from djreceive.models.CustomTrials import CogComSimilarityTrial
 from djstim.admin import LinkedStimulusInline
+from djsend.models.BasicBlock import SurveyMultiChoiceBlock,SurveyLikertBlock
+from djsend.models.CustomBlock import ForcedChoiceBlock, RatingBlock
+from djsend.models.BaseStimuli import Question
 
 
 class InstructionInline(TranslationGenericStackedInline):
@@ -168,5 +171,54 @@ class SimCatSettingAdmin(GenericGlobalSettingAdmin):
     filter_horizontal = ['microcomponent_pairs', 'practice_pairs']
     
     inlines = [CategoryInline]
+    
+class QuestionAdminInline(GenericStackedInline):
+    model = Question
+    
+@admin.register(SurveyMultiChoiceBlock)    
+class SurveyMultiChoiceAdmin(GenericBlockAdmin):
+    inlines = [QuestionAdminInline]
+    fieldsets = GenericBlockAdmin.fieldsets + (
+        (l_("Survey Multi Choice task parameters"), {'fields':(
+            'preamble',
+            'horizontal'
+        )}),                               
+    )
+    
+   
+
+@admin.register(SurveyLikertBlock)    
+class SurveyLikertAdmin(GenericBlockAdmin):
+    inlines = [QuestionAdminInline]
+
+@admin.register(ForcedChoiceBlock)    
+class ForcedChoiceAdmin(GenericBlockAdmin):
+    fieldsets = GenericBlockAdmin.fieldsets + (
+        (l_("Forced Choice task parameters"), {'fields':(
+            'is_html',
+            'timing_stim',
+            'timing_fixation',  
+            'prompt', 
+            'keyboard',
+            'key_choices'
+        )}),                               
+    )
+
+@admin.register(RatingBlock)    
+class RatingAdmin(GenericBlockAdmin):
+        fieldsets = GenericBlockAdmin.fieldsets + (
+        (l_("Rating task parameters"), {'fields':(
+            'is_html',
+            'prompt',
+            'responses',
+            'labels',
+            'intervals',
+            'show_ticks',
+            'choices',
+        )}),                               
+    )
+    
+    
+    
     
     
