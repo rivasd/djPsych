@@ -14,6 +14,29 @@ $(function () {
         });
     };
 
+    
+    
+    var $signinbutton = $("#sign-in-popup");
+    
+    
+    
+    var dialog = document.getElementById("hidden-login");
+    if (! dialog.showModal) {
+        dialogPolyfill.registerDialog(dialog);
+    }
+    
+    dialog.querySelector(".close").addEventListener('click', function(){
+    	dialog.close();
+    });
+    
+    
+    if($signinbutton.length){
+    	$signinbutton.click(function(evt){
+    		evt.preventDefault();
+    		dialog.show();
+    	});
+    }
+    
     $("#hidden-login-form").submit(function (evt) {
     	evt.preventDefault()
     	$.ajax({
@@ -24,28 +47,20 @@ $(function () {
     			window.location.reload();
     		},
     		error: function(resp){
-    			$("#login-error").text(resp.responseJSON.form_errors.__all__[0])
+    			if(resp.responseJSON.form_errors.__all__){
+    				$("#login-error").text(resp.responseJSON.form_errors.__all__[0]).css('visibility', 'visible');
+    			}
+    			else{
+    				['login', 'password'].forEach(function(elem){
+    					if(resp.responseJSON.form_errors[elem]){
+    						$("#mdl-dialog__"+elem+"-error").text(resp.responseJSON.form_errors[elem]).css('visibility', 'visible');
+    					}
+    				});
+    			}
     		}
     	})
     });
     
-    var $signinbutton = $("#sign-in-popup");
-    
-    if($signinbutton.length){
-    	$signinbutton.click(function(evt){
-    		evt.preventDefault();
-    		$("#hidden-login").dialog({
-    			modal: true,
-    			dialogClass: 'login-popup',
-    			draggable: false,
-    			height: 'auto',
-    			resizable: false,
-    			width: 400,
-    			appendTo: "#content"
-    		})
-    		
-    	});
-    }
     
     function delete_cookie(name) {
         document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';

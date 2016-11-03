@@ -1,4 +1,4 @@
-{% extends 'homepage.html' %}
+{% extends 'base.html' %}
 {% load static from staticfiles %}
 {% load i18n %}
 
@@ -7,7 +7,7 @@
 {{ block.super }}
 
 {% for plugin in plugins %}
-{% with script="jspsych-plugins/"|add:plugin%}
+{% with script="plugins/"|add:plugin%}
 <script src="{% static script %}"></script>
 {% endwith %}
 {% endfor %}
@@ -54,6 +54,7 @@ var loading = "{% trans "Please wait while we generate your textures..." %}";
 {% block content %}
 
 {% if not sandbox %}
+<a id='top'></a>
 <div id="jsPsychTarget">
 	{% include consent %}
 	
@@ -87,7 +88,7 @@ var loading = "{% trans "Please wait while we generate your textures..." %}";
 	    </fieldset>
 	</form>
 </div>
-<button href="#top" class="btn" id="start">{% trans "Start the experiment!" %}</a>
+<button href="#top" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" id="start" >{% trans "Start the experiment!" %}</a>
 {% else %}
 {# This is shown if the experiment is requested by a researcher #}
 <div id="sandbox" class="full-width">

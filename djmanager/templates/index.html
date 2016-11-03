@@ -3,56 +3,28 @@
 {% load static %}
 
 {% block head %}
-	<style>
-		header{
-			opacity: 0.75;
-		}
-		#content{
-			padding: 0;
-		}
-		header li a {
-			color: #383838;
-		}
-		#banner{
-			-webkit-filter: saturate(180%) contrast(120%);
-		}
-	</style>
+<style>
+header#djpsych-header{
+	background-color: rgba(30, 30, 30, 0.6);
+}
+</style>
 {% endblock %}
 
 {% block content %}
-<div id="main-banner">
-	<div id="main-image"> 
-		
-	</div>
-	<div id="taglines">
-
-		<ul>
-
-			<li>
-				{% trans "cognition" %}
-			</li>
-			<li>
-				{% trans "modeling" %}
-			</li>
-			<li>
-				{% trans "electrophysiology" %}
-			</li>
-		</ul>
-	</div>
-</div>
-<div id="below">
-	<div class="halfhalf" id="welcome">
-		<h1>
+<div id="lab-crew"></div>
+<div class="djpsych-index__below mdl-grid mdl-color--grey-600">
+	<div class="mdl-cell mdl-cell--5-col mdl-cell--1-offset mdl-color-text--grey-100 vertical-center-cont" id="welcome">
+		<h1 class="right-align">
 			{% trans "We are the Cognition & Communication Lab @ UQAM" %}
 		</h1>
 	</div>
-	<div class="halfhalf" id="description">
+	<div class="mdl-cell mdl-cell--5-col mdl-color-text--grey-100 vertical-center-cont" id="description">
 		<p>
 			{% trans "We investigate cognition in humans and machines" %}
 		</p>
 	</div>
 </div>
-<div id="rest">
+<div id="rest" class="mdl-grid">
 		<p>
 			{% trans "online platform for web experiments" as exp_link %}
 			{% url "webexp:home" as exp_href%}

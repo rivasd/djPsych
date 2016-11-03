@@ -1,0 +1,253 @@
+
+@font-face{
+    font-family: "Titillium-Web";
+    src: url('Titillium_Web/TitilliumWeb-Regular.ttf');
+}
+
+@font-face{
+    font-family: "Jura";
+    src: url('Jura/Jura-DemiBold.ttf');
+}
+
+/************************************ Basic Defaults ******************************/
+
+html, body, h1, h2 {
+	font-family: "Titillium-Web", sans-serif; 
+}
+
+p {
+	font-size: 18px;
+}
+
+a{
+	text-decoration: none;
+}
+/********************** Homepage Styles ********************************/
+
+#hidden-login{
+	/* display: none; */
+	z-index: 2;
+	top: 50%;
+	transform: translateY(-50%);
+	/* width: auto; */
+}
+
+#banner{
+    height: 76px;
+    width: 534px;
+    position: relative;
+    left: 0%;
+}
+
+#taglines{
+	max-width:300px;
+}
+
+/* Change the layout__content class to Flex (instead of inline-block) to allow spacer to work. */
+.mdl-layout__content {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    /* flex-direction: column; */
+    /* position: relative; */
+    /* top: -148px; */
+    /* justify-content: space-between; */
+    /* overflow: hidden; */
+    height: auto;
+}
+
+header#djpsych-header{
+	
+}
+
+div#djpsych-header__top-row{
+	margin-top: 16px;
+}
+
+#djpsych-index-spacer{
+	width:100%;
+	height: 20%;
+}
+
+.djpsych-index__below{
+	/* margin-top: 31%; */
+	/* color:white; */
+	min-height: 344px;
+}
+
+
+#lab-crew{
+	background-image: url("labstaff.jpg");
+	background-size: cover;
+	background-position: 51% 27%;
+	/* min-height: 700px; */
+	position: relative;
+	top: 0px;
+	px; */
+	height: 2;
+	height: 560px;
+}
+
+#rest{
+	min-height:600px;
+}
+
+.djpsych-maincenter{
+	width: 90%;
+	margin: 0 auto;
+	display:block;
+}
+
+.mdl-button--raised.mdl-button.provider-btn.provider-btn--google{
+	background-color: #DD2C00;
+}
+
+.mdl-button--raised.mdl-button.provider-btn.provider-btn--facebook{
+	background-color: #01579B;
+}
+
+.mdl-button.mdl-button--raised.provider-btn{
+	color: white;
+	width: 100%;
+	margin-top: 10px;
+}
+/********************* Basic Rules *****************************/
+
+dialog.mdl-dialog{
+	
+}
+
+footer{
+	flex-shrink:2;
+}
+
+.page-content{
+	/* min-height:77vh; */
+	flex-grow: 1;
+	/* height: auto; */
+	position: relative;
+}
+.ul--no-dots{
+	list-style: none;
+}
+
+.ul--no-padding{
+	padding-left:0;
+}
+
+.mdl-layout__header .mdl-navigation__link{
+	font-family: "Titillium-Web", "sans-serif";
+	font-size: 16px;
+	color: #d23e0a;
+}
+
+.vertical-center-cont{
+	display:flex;
+	flex-direction: column;
+  	justify-content: center;
+}
+
+#djpsych-webexp{
+	/* margin:0 2%; */
+	padding: 0px;
+	/* height: 100%; */
+	min-height: 77vh;
+}
+
+nav ul{
+	list-style:none;
+}
+div.mdl-layout__container{
+	/* height: 100vh; */
+	/* min-height: 100vh; */
+	/* height: auto; */
+}
+/***************************** Text-related rules **************************/
+
+.extra-heavy{
+	font-size: 24pts;
+}
+.right-align{
+	text-align: right;
+}
+
+/******************************** PERCEPT styles ****************************/
+
+h6, h5{
+	font-family: "Titillium-Web";
+}
+
+#djpsych-percept-navbar h5 {
+	margin-bottom: 0px;
+	text-align:center;
+}
+
+#djpsych-percept-navbar h6 {
+	margin-top: 0px;
+	text-align:center;
+}
+
+#djpsych-percept-navbar{
+	margin:0;
+	background-color: #e6e6e6;
+	align-self: stretch;
+	flex-grow: 1;
+}
+.djpsych-percept-content{
+	padding-left:20px;
+	flex-grow: 1;
+}
+
+.djpsych-listmenu{
+	padding-left: 0px;
+}
+
+.djpsych-listmenu__item{
+	padding: 5px 5px 5px 10px;
+	position: relative;
+	overflow: hidden;
+}
+
+.djpsych-listmenu__item:HOVER{
+	background-color: #d6d6d6;
+	cursor: pointer;
+}
+
+.djpsych-listmenu--inner{
+	padding-top:10px;
+}
+.djpsych-listmenu__item.djpsych-listmenu__item--sub:hover{
+	background-color:inherit;
+}
+
+.djpsych-listmenu__item > a{
+	height: 100%;
+	width:100%;
+	display: block;
+	position:relative;
+	overflow:hidden;
+}
+
+/**************************** jsPsych-related styles ***********************************/
+
+div#jsPsychTarget{
+	width: 90%;
+	min-height: 100vh;
+	/* display: flex; */
+	margin: 0 auto;
+	/* padding: 5% 0%; */
+	position: relative;
+	/* text-align: center; */
+	/* flex-direction: column; */
+	/* justify-content: center; */
+	/* align-items: center; */
+}
+
+#top{
+	/* display:none; */
+}
+
+.jspsych-genstim, .jspsych-sim-stim{
+	display: inline-block;
+	vertical-align: center;
+}

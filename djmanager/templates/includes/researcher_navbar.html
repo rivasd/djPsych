@@ -1,9 +1,9 @@
 {%load i18n %}
 {% if experiments %}
-<h1>{% trans "My experiments" %}</h1>
-<ul>
+<h6>{% trans "My experiments" %}</h6>
+<ul class="djpsych-listmenu">
 	{% for experiment in experiments %}
-		<li>
+		<li class="djpsych-listmenu__item">
 			<a href = "../{{experiment.label}}"> 
 				{{experiment.verbose_name}}
 			</a>

@@ -403,7 +403,7 @@ button:hover{
 
 .prompt, .feedback{
 	text-align: center;
-	font-size: 16pts;
+	font-size: 22pts;
 }
 
 .horizontal-li{
@@ -697,10 +697,12 @@ div.entry{
     margin: auto;
 }
 .incorrect{
-    color: #b00000;
+    color: #B40404;
+    font: 24pt;
 }
 .correct{
-    color: #268600;
+    color: #04B404;
+    font: 24pt;
 }
 #expForm div.pseudoTableRow label {
     display: inline-block;

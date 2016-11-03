@@ -1,0 +1,18 @@
+[submodule "djPsych/static/dialog_polyfill"]
+	path = djPsych/static/dialog_polyfill
+	url = https://github.com/GoogleChrome/dialog-polyfill
+[submodule "djPsych/dialog_polyfill"]
+	path = djPsych/dialog_polyfill
+	url = https://github.com/GoogleChrome/dialog-polyfill
+[submodule "djPsych/jsPsych"]
+	path = djPsych/jsPsych
+	url = https://github.com/rivasd/jsPsych
+[submodule "djPsych/octicon"]
+	path = djPsych/octicon
+	url = https://github.com/primer/octicons
+[submodule "jsPsych/octicon/octicon"]
+	path = jsPsych/octicon/octicon
+	url = https://github.com/primer/octicons
+[submodule "djPsych/octicon/octicon"]
+	path = djPsych/octicon/octicon
+	url = https://github.com/primer/octicons

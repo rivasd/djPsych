@@ -1,11 +1,11 @@
-{% extends 'base.html' %}
+{% extends 'homepage.html' %}
 {% load i18n %}
 
-{% block content %}
+{% block percept-content %}
 {{ lobby|safe }}
 {% if exp.is_active %}
-<button id="launch" onClick = "window.location = '{% url "webexp:launch" exp.label%}';">{% trans "Participate!" %}</button>
-<button id="debrief" onClick = "window.location = '{% url "webexp:debrief" exp.label%}';">{% trans "Go to debrief" %}</button>
+<button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" id="launch" onClick = "window.location = '{% url "webexp:launch" exp.label%}';">{% trans "Participate!" %}</button>
+<button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" id="debrief" onClick = "window.location = '{% url "webexp:debrief" exp.label%}';">{% trans "Go to debrief" %}</button>
 {% else %}
 <p class="warning">{% trans "Sorry! this experiment is not currently active." %}</p>
 {% endif %}

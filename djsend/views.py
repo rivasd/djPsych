@@ -50,7 +50,7 @@ def sendSettings(request, exp_label):
             if exp.max_pending is not None and on_the_ice.count() >= exp.max_pending:
                 raise ParticipationRefused(_("You have reached the maximum number of unfinished participations for this experiment. Go finish one instead."))
         else:
-            to_be_continued = on_the_ice.get(pk=request.session.get('continue'))
+            to_be_continued = on_the_ice.get(pk=request.session.get('continue')) 
             if exp.max_pending is not None and on_the_ice.count() > exp.max_pending:
                 raise ParticipationRefused(_("You have reached the maximum number of unfinished participations for this experiment. Go finish one instead."))
         

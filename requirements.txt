@@ -10,3 +10,4 @@ django-genericadmin
 jsonfield
 django-silk
 matplotlib
+django-material
