@@ -48,7 +48,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'material',
     'modeltranslation',
     'grappelli',
     'django.contrib.admin',
