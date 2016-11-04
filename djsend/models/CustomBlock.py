@@ -97,7 +97,7 @@ class ForcedChoiceBlock(BaseSettingBlock):
     key_choices = models.CharField(blank=True, max_length = 1024, help_text=l_("Choose the keys (letters) you have to press for each stimulus. You have separate them with a coma. ex: k,l"))
     
     def toDict(self):
-        initial = super(FocedChoiceBlock,self).toDict()
+        initial = super(ForcedChoiceBlock,self).toDict()
         initial['key_choices'] = self.key_choices.split(',')
         return initial
         
