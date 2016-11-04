@@ -134,6 +134,7 @@ class BaseExperiment(models.Model):
     def list_static_resources(self):
         """
         Returns dict representing the contents of the experiment's static resources directory. Limited to 1-lvl deep
+        WARNING works only with local filesystem storage!!!!
         
         returns:    dict with one entry per subfolder, entry 'root' represents the top level '.'. Each entry is a list of files contained there
         """
@@ -164,7 +165,31 @@ class BaseExperiment(models.Model):
         """
         
         return self.research_group in request.user.groups.all()
-        
+         
+    
+    def list_static_urls(self):
+        resource_dict = self.list_static_resources()
+        url_dict = {"js": [], "css": [], 'other':[]}
+        for folder, filelist in resource_dict.items():
+            directory = folder if folder != "root" else ""
+            
+            for file in filelist:
+                path = os.path.join(default_storage.base_url, self.label+'/', directory, file)
+                extension = os.path.splitext(path)[1]
+                
+                if extension == ".js":
+                    url_dict['js'].append(path)
+                elif extension == '.css':
+                    url_dict['css'].append(path)
+                else :
+                    url_dict['other'].append(path)
+                
+                                
+        return url_dict
+            
+            
+    
+    
     
 class Experiment(BaseExperiment):
     participations = models.ManyToManyField(Subject, through='djcollect.Participation')

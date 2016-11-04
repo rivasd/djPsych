@@ -40,10 +40,11 @@ def lobby(request, exp_label):
 @login_required
 def launch(request, exp_label):
     exp = Experiment.objects.get(label=exp_label)
-    js_modules = get_all_js_files_in_exp(exp_label=exp_label)
+    
+    resources = exp.list_static_urls()
     consentfile = 'djexperiments/'+exp_label+'/consent.html'
     plugins = fetch_files_of_type('djPsych/jsPsych/plugins', 'js')
-    return render(request, 'djexperiments/launch.html', {'scripts': js_modules, 'exp': exp, 
+    return render(request, 'djexperiments/launch.html', {'resources': resources, 'exp': exp, 
                                                          'consent':consentfile, 'plugins':plugins, 'static_url': settings.STATIC_URL, 'header_type': 'mdl-layout__header--scroll'})
 
 def summary(request, exp_label):
@@ -58,7 +59,7 @@ def sandbox(request, exp_label):
         raise Http404(_("You do not have permission to access the sandbox"))
     
     plugins = fetch_files_of_type('djPsych/jsPsych/plugins', 'js')
-    js_modules = get_all_js_files_in_exp(exp_label)
+    resources = exp.list_static_urls()
     configs = exp.get_all_configurations()
     choices = []
     for config in configs:
@@ -66,7 +67,7 @@ def sandbox(request, exp_label):
         
     sandboxform = SandboxForm(versions=choices)
     context= {
-        'scripts': js_modules,
+        'resources': resources,
         'exp': exp,
         'plugins': plugins,
         'static_url': settings.STATIC_URL,

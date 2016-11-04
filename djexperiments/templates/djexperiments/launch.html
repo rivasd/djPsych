@@ -11,10 +11,14 @@
 <script src="{% static script %}"></script>
 {% endwith %}
 {% endfor %}
-{% for script in scripts %}
-	{% with module="djexperiments/"|add:exp.label|add:"/"|add:script %}
-	<script src="{% static module %}"></script>
-	{% endwith %}
+{% for type, files in resources.items %}
+	{% for file in files %}
+		{% if type == "js" %}
+			<script src="{{ file }}"></script>
+		{% elif type == "css" %}
+			<link rel="stylesheet" type="text/css" href="{{ file }}"> </link>
+		{% endif %}
+	{% endfor %}
 {% endfor %}
 <script src="{% static "djPsych.js"%}"></script>
 <script>
