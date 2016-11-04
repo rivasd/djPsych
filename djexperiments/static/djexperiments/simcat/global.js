@@ -63,7 +63,7 @@ function run(settings){
 			timeline: exp.timeline,
 			on_finish: function(data){
 				//jsPsych.data.displayData("json");
-				djPsych.save(data, true, exp.meta);
+				serverPsych.save(data, true, exp.meta);
 			},
 			on_trial_start:function(){
 				jsPsych.getDisplayElement()[0].scrollIntoView();
@@ -79,7 +79,7 @@ function runExperiment() {
 	var $feedback = $("<div></div>", {id: 'retroaction'});
 	$("#content").prepend($feedback);
 	$("#jsPsychTarget").append($progressbar).append($stimCanvas);
-    djPsych.request(run, 'final');
+    serverPsych.request(run, 'final');
 }
 
 function showWinnings(trial_data){

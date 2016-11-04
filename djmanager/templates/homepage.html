@@ -40,7 +40,7 @@ manips	an array of arrays, each top level array representing an experiment as se
 		<p>
 			{% trans "Below you will see a list of experiments currently available for participation. Click on one of them to find out more or to participate!" %}
 		</p>
-		<div id="available-exp">
+		<div id="available-exp" class="row-flexcontainer">
 			{% for manip in manips %}
 			
 				{% cardify manip %}

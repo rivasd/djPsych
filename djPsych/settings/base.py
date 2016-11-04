@@ -164,7 +164,8 @@ SITE_ID = 1
 # store our js dependencies as fully fledged git repos here
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'dialog_polyfill'),
-    os.path.join(BASE_DIR, 'jsPsych')
+    os.path.join(BASE_DIR, 'jsPsych'),
+    os.path.join(BASE_DIR, 'serverPsych')
 ]
 
 MEDIA_URL = '/media/'

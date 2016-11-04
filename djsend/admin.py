@@ -206,19 +206,21 @@ class ForcedChoiceAdmin(GenericBlockAdmin):
 
 @admin.register(RatingBlock)    
 class RatingAdmin(GenericBlockAdmin):
-        fieldsets = GenericBlockAdmin.fieldsets + (
-        (l_("Rating task parameters"), {'fields':(
-            'is_html',
-            'prompt',
-            'responses',
-            'labels',
-            'intervals',
-            'show_ticks',
-            'choices',
-        )}),                               
+    fieldsets = GenericBlockAdmin.fieldsets + (
+    (l_("Rating task parameters"), {'fields':(
+        'is_html',
+        'prompt',
+        'responses',
+        'labels',
+        'intervals',
+        'show_ticks',
+        'choices',
+    )}),                               
     )
     
-    
-    
-    
+    def get_form(self, request, obj=None, **kwargs):
+        form = super(CategorizationBlockAdmin, self).get_form(request, obj=obj, **kwargs)
+        form.base_fields['type'].initial = 'rating'
+        form.base_fields['save_with'].initial = ContentType.objects.get_for_model(CategorizationTrial)
+        return form
     

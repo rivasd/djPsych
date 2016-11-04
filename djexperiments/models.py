@@ -40,6 +40,7 @@ class BaseExperiment(models.Model):
     total_funds_added = models.FloatField(blank=True, null=True, help_text="How much money have been added to this experiment since its creation")
     
     settings_model = models.ForeignKey(ContentType)
+    #TODO: auto-update this (hide it from the user)
     block_models = models.ManyToManyField(ContentType, related_name="experiments")
     research_group = models.OneToOneField(Group, null=True, blank=True)
     

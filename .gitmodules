@@ -16,3 +16,6 @@
 [submodule "djPsych/octicon/octicon"]
 	path = djPsych/octicon/octicon
 	url = https://github.com/primer/octicons
+[submodule "djPsych/serverPsych"]
+	path = djPsych/serverPsych
+	url = https://github.com/rivasd/serverPsych

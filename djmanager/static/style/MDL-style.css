@@ -162,6 +162,11 @@ div.mdl-layout__container{
 	/* min-height: 100vh; */
 	/* height: auto; */
 }
+
+.row-flexcontainer{
+	display: flex;
+	flex-direction: row;
+}
 /***************************** Text-related rules **************************/
 
 .extra-heavy{
@@ -228,6 +233,10 @@ h6, h5{
 	overflow:hidden;
 }
 
+.djpsych-expcard{
+	margin: 10px;
+	
+}
 /**************************** jsPsych-related styles ***********************************/
 
 .stim-table img{

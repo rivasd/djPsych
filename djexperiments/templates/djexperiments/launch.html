@@ -20,7 +20,7 @@
 		{% endif %}
 	{% endfor %}
 {% endfor %}
-<script src="{% static "djPsych.js"%}"></script>
+<script src="{% static "serverPsych.js"%}"></script>
 <script>
 $(function(){
 	function serverSideBegin(e){
@@ -33,7 +33,7 @@ $(function(){
         runExperiment();
 	}
 
-	djPsych.init("{{ exp.label }}", "{{ static_url }}", "{{ version }}")
+	serverPsych.init("{{ exp.label }}", "{{ static_url }}", "{{ version }}")
 	
 	$("#start").click(function(e){
 		if (document.getElementById("accept").checked) {
