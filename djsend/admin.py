@@ -79,6 +79,8 @@ class GenericGlobalSettingAdmin(admin.ModelAdmin):
         (l_("Additional parameters"), {'fields':("extra_parameters",)})
     )
     
+    list_display = ('experiment', 'name')
+    
     def get_queryset(self, request):
         qs = super(GenericGlobalSettingAdmin, self).get_queryset(request)
         return qs.filter(experiment__in=get_allowed_exp_for_user(request))
