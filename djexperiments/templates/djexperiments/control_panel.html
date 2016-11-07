@@ -7,44 +7,46 @@
 {% endblock %}
 
 {% block percept-content %}
-<h1> {{ exp.verbose_name|upper }} Control Panel </h1>
-<section>
-	<nav>
-		{% for experiment in researcher_experiments %}
-			<a href = "../{{experiment.label}}"> 
-				{{experiment.verbose_name}}
-			</a>
+<div class="djpsych-percept-dashboard">
+	<h1> {{ exp.verbose_name|upper }} Control Panel </h1>
+	<section>
+		<nav>
+			{% for experiment in researcher_experiments %}
+				<a href = "../{{experiment.label}}"> 
+					{{experiment.verbose_name}}
+				</a>
+			{% endfor %}
+		</nav>
+	</section>
+	<section>
+		<button class="mdl-button mdl-js-button mdl-button--raised" id="tosandbox" onClick = "window.location = '{% url "webexp:sandbox" exp.label %}';">{% trans "Test the experiment" %}</button>
+		<button class="mdl-button mdl-js-button mdl-button--raised" id="download-data" onClick = "window.location = '{% url "webexp:collect:all" exp.label %}';">{% trans "Collect the data" %}</button>
+	</section>
+	<section>
+		<table id = "money_handler_table">
+			<th><td colspan = 2>{% trans "Your money account" %}</td></th>
+			<tr><td>{% trans "Money you have in your account for this experiment : " %}</td><td>{{exp.funds_remaining}} CAN$</td></tr>
+			<tr><td>{% trans "Money you spent since the beginning of this experiment : "%}</td><td>{{exp.total_funds_added}} CAN$</td></tr>
+			<tr><td colspan = 2><button class="mdl-button mdl-js-button mdl-button--raised" id = "increasing_money_account">{% trans "Transfer money to your account!" %}</button></td></tr>
+		</table>
+	</section>
+	<section>
+		<div>{% trans "Experiment's researcher group :"%} </div>
+		<ul>
+		{% for researcher in exp.research_group.user_set.all %}
+			<li>
+				{% if researcher.last_name and researcher.first_name %} 
+					{{researcher.first_name}} {{researcher.last_name}} : {{researcher.email}}
+				{% else %}
+					{{researcher.username}} : {{researcher.email}}
+				{% endif %}
+			</li>
 		{% endfor %}
-	</nav>
-</section>
-<section>
-	<button class="mdl-button mdl-js-button mdl-button--raised" id="tosandbox" onClick = "window.location = '{% url "webexp:sandbox" exp.label %}';">{% trans "Test the experiment" %}</button>
-	<button class="mdl-button mdl-js-button mdl-button--raised" id="download-data" onClick = "window.location = '{% url "webexp:collect:all" exp.label %}';">{% trans "Collect the data" %}</button>
-</section>
-<section>
-	<table id = "money_handler_table">
-		<th><td colspan = 2>{% trans "Your money account" %}</td></th>
-		<tr><td>{% trans "Money you have in your account for this experiment : " %}</td><td>{{exp.funds_remaining}} CAN$</td></tr>
-		<tr><td>{% trans "Money you spent since the beginning of this experiment : "%}</td><td>{{exp.total_funds_added}} CAN$</td></tr>
-		<tr><td colspan = 2><button class="mdl-button mdl-js-button mdl-button--raised" id = "increasing_money_account">{% trans "Transfer money to your account!" %}</button></td></tr>
-	</table>
-</section>
-<section>
-	<div>{% trans "Experiment's researcher group :"%} </div>
-	<ul>
-	{% for researcher in exp.research_group.user_set.all %}
-		<li>
-			{% if researcher.last_name and researcher.first_name %} 
-				{{researcher.first_name}} {{researcher.last_name}} : {{researcher.email}}
-			{% else %}
-				{{researcher.username}} : {{researcher.email}}
-			{% endif %}
-		</li>
-	{% endfor %}
-	</ul>
-	
-</section>
-<section id="explorer">
-	{% include "djexperiments/explorer.html" %}
-</section>
+		</ul>
+		
+	</section>
+	<section id="explorer">
+		{% include "djexperiments/explorer.html" %}
+	</section>
+</div>
 {% endblock %}

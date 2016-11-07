@@ -79,7 +79,7 @@ class GenericGlobalSettingAdmin(admin.ModelAdmin):
         (l_("Additional parameters"), {'fields':("extra_parameters",)})
     )
     
-    list_display = ('experiment', 'name')
+    list_display = ('name', 'experiment')
     
     def get_queryset(self, request):
         qs = super(GenericGlobalSettingAdmin, self).get_queryset(request)
