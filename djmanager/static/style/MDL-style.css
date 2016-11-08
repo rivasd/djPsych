@@ -380,7 +380,7 @@ img.loader{
     text-align: center;
     margin: auto;
 }
-.incorrect{
+.error{
     color: #B40404;
     font: 24pt;
 }
