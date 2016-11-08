@@ -30,17 +30,17 @@
 			<input id='non' name='ruleFound' value='no' type='radio' class="mdl-radio__button"/>
 			<span class="mdl-radio__label"> {% trans "No" %} </span>
 		</label>
-		
+		<p>{% trans "If you said yes, please describe your rule so far: " %}</p>
         <div class="mdl-textfield mdl-js-textfield">
         	<textarea name='ruleDescription' class="mdl-textfield__input" type="text" id="ruleDescription"> </textarea>
         	<label class="mdl-textfield__label" for="ruleDescription">{% trans "If you said yes, please describe your rule so far: " %}</label>
         </div>
-		
+		<p>{% trans "If you said no, describe the strategy that you use (even if you choose at random!): " %}</p>
 		<div class="mdl-textfield mdl-js-textfield">
         	<textarea name='stratDescription' class="mdl-textfield__input" type="text" id="stratDescription"> </textarea>
         	<label class="mdl-textfield__label" for="stratDescription">{% trans "If you said no, describe the strategy that you use (even if you choose at random!): " %}</label>
         </div>
-        
+        <br><br>
 		<button type='button' id='ctn-button' class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">{% trans "Submit" %}</button>
 	</fieldset>
 	<script>
