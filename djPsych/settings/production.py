@@ -26,4 +26,4 @@ DATABASES = {
 # change to live when we go live!
 PAYPAL_MODE = 'live'
 
-MEDIA_ROOT = '/var/www/labo'
+MEDIA_ROOT = os.path.normpath(os.path.join('/', 'var/', 'www/', 'labo/'))

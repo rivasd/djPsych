@@ -37,7 +37,7 @@ $(function () {
 });
 
 function run(settings){
-	settings.timeline = djPsych.unpack(settings.timeline, function(t){return t;});
+	settings.timeline = serverPsych.unpack(settings.timeline, function(t){return t;});
 	var launcher = ExpLauncher(settings, document.getElementById("stimCanvas")); //initialize a launcher and drawer 
 	var $bar = $("#progressBar");
 	var $progressLabel = $("<div></div>");
