@@ -266,3 +266,151 @@ div#jsPsychTarget{
 	display: inline-block;
 	vertical-align: center;
 }
+
+#jsPsychTarget img{
+	display:block;
+}
+
+.prompt, .feedback{
+	text-align: center;
+	font-size: 22pts;
+}
+
+#jspsych_sim_stim{
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+    height: 310px;
+    width:  310px;
+	}
+	
+#jspsych-categorize-stimulus{
+    margin-left: auto;
+	margin-right: auto;
+	display: block;
+    height: 310px;
+    width:  310px;
+}
+
+#jspsych-sim-stim{
+	height: 310px;
+	width:  310px;
+	margin: auto;
+	display: block;
+}
+
+#fixationCross{
+    height: 200px;
+    width: 200px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+img.fix{
+    margin-top: 50px;
+    height: 100px;
+    width:  100px;
+    }
+
+img.loader{
+    width: 30px;
+    height: 30px;
+}
+
+#instructionsDown{
+	text-align:center;
+	}
+
+#slider{
+	display:block;
+	background-image: url('sliderBackground.png');
+	background-size:630px 56px;
+	background-position: -10px -11px;
+	width: 600px;
+	height:26px;
+	margin-top:25px;
+    margin-left: auto;
+    margin-right: auto;
+	}	
+	
+#slider span.ui-slider-handle{
+	background-image: url('zd_slider_widget_knob.gif');
+	height:34px;
+	width:17px;
+	background-size:17px 34px;
+	border: none;
+	top:-4px;
+	}
+
+.ui-slider .ui-slider-handle:focus{
+	border:none;
+	}	
+	
+#jsPsychTarget #sliderlabels{
+	margin-left:auto !important;
+	margin-right:auto !important;
+	width:600px !important;
+	}
+
+#sliderlabels li{
+	position: relative;	
+	}
+
+#jsPsychTarget table{
+	margin: auto;
+}
+
+#retroaction{
+    display: block;
+    margin-right: 0px;
+    font-size: 10pt;
+    line-height: 0.5em;
+    margin-left: auto;
+    width: 200px;
+}
+#retroaction p{
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+.feedback{
+    font: 14pt;
+    font-weight: 600;
+    display: block;
+    text-align: center;
+    margin: auto;
+}
+.incorrect{
+    color: #B40404;
+    font: 24pt;
+}
+.correct{
+    color: #04B404;
+    font: 24pt;
+}
+
+#expForm div.pseudoTableRow label {
+    display: inline-block;
+    padding-left: 0px;
+    margin-right: 10px;
+}
+
+#advice {
+  float: left;
+  width: 200px;
+  position: relative;
+  margin: 0px;
+  background-color: rgb(250, 255, 189);
+  top: 8px;
+  padding: 7px;
+  border-radius: 6px;
+  box-shadow: -1px 2px 5px 2px black;
+}
+
+.jspsych-genstim {
+      width: 300px;
+      height: 300px;
+      display: block;
+      margin: 0 auto;
+      text-align: center;
+}
