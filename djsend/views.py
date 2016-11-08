@@ -84,7 +84,7 @@ def sendSettings(request, exp_label):
     save_dict['html'] = ContentType.objects.get_for_model(CogComHTMLTrial).pk
     request.session['data_mapping'] = json.dumps(save_dict)
     #adding static resources to settings
-    final_settings['resources'] = exp.list_static_url()
+    final_settings['resources'] = exp.list_static_urls()
     # Good luck :)
     return JsonResponse(final_settings)
 
