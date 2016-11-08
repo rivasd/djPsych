@@ -83,6 +83,8 @@ def sendSettings(request, exp_label):
     #TODO: find a better way to handle our html auto insertion...
     save_dict['html'] = ContentType.objects.get_for_model(CogComHTMLTrial).pk
     request.session['data_mapping'] = json.dumps(save_dict)
+    #adding static resources to settings
+    final_settings['resources'] = exp.list_static_url()
     # Good luck :)
     return JsonResponse(final_settings)
 
