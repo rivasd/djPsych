@@ -43,4 +43,9 @@
         
 		<button type='button' id='ctn-button' class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">{% trans "Submit" %}</button>
 	</fieldset>
+	<script>
+		if(!(typeof(componentHandler) == 'undefined')){
+		      componentHandler.upgradeAllRegistered();
+		  }
+	</script>
 </form>
