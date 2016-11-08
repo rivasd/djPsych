@@ -9,7 +9,7 @@ from .adminForms import GenericSettingBlockForm
 from django.contrib.contenttypes.models import ContentType
 import inspect
 from djmanager.utils import get_allowed_exp_for_user, get_subclass_ct_pk
-from djreceive.models.BasicTrials import BaseTrial, CategorizationTrial
+from djreceive.models.BasicTrials import BaseTrial, CategorizationTrial, Rating
 from django.contrib.contenttypes.admin import GenericTabularInline,\
     GenericStackedInline
 from modeltranslation.admin import TranslationAdmin, TranslationGenericStackedInline
@@ -221,8 +221,8 @@ class RatingAdmin(GenericBlockAdmin):
     )
     
     def get_form(self, request, obj=None, **kwargs):
-        form = super(CategorizationBlockAdmin, self).get_form(request, obj=obj, **kwargs)
+        form = super(RatingAdmin, self).get_form(request, obj=obj, **kwargs)
         form.base_fields['type'].initial = 'rating'
-        form.base_fields['save_with'].initial = ContentType.objects.get_for_model(CategorizationTrial)
+        form.base_fields['save_with'].initial = ContentType.objects.get_for_model(Rating)
         return form
     
