@@ -71,7 +71,7 @@ class RatingBlock(BaseSettingBlock):
     
     prompt = models.CharField(max_length=32, blank=True, help_text=l_("Any content here will be displayed below the stimulus, as a reminder to the participant"))
     
-    responses = models.TextField(choices = (('bx','boxes'),('sl','slider')), help_text=l_("Choice between displaying a slider or choices in boxes for response"))
+    responses = models.CharField(max_length = 16, choices = (('bx','boxes'),('sl','slider')), help_text=l_("Choice between displaying a slider or choices in boxes for response"))
     
     labels = models.CharField(max_length = 1024,blank=True, help_text=l_("Sets the labels that you can slide on with the slider. You have separate them with a coma and no spaces."))
     intervals = models.CharField(max_length = 16, blank=True, help_text=l_("The first and last value associated with the labels on the slider. You have to separate the two with a coma and no spaces"))
