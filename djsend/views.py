@@ -2,6 +2,7 @@
 views.py for djsend
 """
 
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseBadRequest, JsonResponse
 from django.utils.translation import ugettext as _
 from djexperiments.models import Experiment

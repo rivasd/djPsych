@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.http.response import HttpResponse, Http404, HttpResponseRedirect
+from django.http.response import HttpResponse, Http404, HttpResponseRedirect, JsonResponse
 from django.conf import settings
 import glob
 import os.path
@@ -131,4 +131,23 @@ def upload_resource(request, exp_label):
         form = UploadForm()
         return render(request, 'djexperiments/upload.html', {'form': form})
     
+@login_required
+def exp_filesystem(request, exp_label):
+    """
+    Single RESTful view to interact with the personal file tree of an experiment
+    """
+    try:
+        exp = Experiment.objects.get(label=exp_label)
+    except Experiment.DoesNotExist:
+        return JsonResponse({'error': _("There is no experiment by the name: "+exp_label)})
+    
+    if not exp.is_researcher(request):
+        return JsonResponse({'error': _("You are not authorized to browse: "+exp_label)})
+    
+    #Reject all GET request so we can simplify the interface
+    if request.method == "GET":
+        if request.GET["action"] == "ls":
+            #request to get full directory desription, in jsTree-readable format
+            pass
+    pass
     

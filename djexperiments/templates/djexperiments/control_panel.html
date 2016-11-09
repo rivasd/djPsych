@@ -1,9 +1,14 @@
 {% extends 'homepage.html' %}
 {% load i18n %}
+{% load static %}
 
 
 {% block title %}
 {{exp.verbose_name}}
+{% endblock %}
+
+{% block head %}
+<script src="{% static "djexperiments/fileExplorer.js" %}"></script>
 {% endblock %}
 
 {% block percept-content %}
