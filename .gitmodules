@@ -19,3 +19,9 @@
 [submodule "djPsych/serverPsych"]
 	path = djPsych/serverPsych
 	url = https://github.com/rivasd/serverPsych
+[submodule "djPsych/jsTreeGrid"]
+	path = djPsych/jsTreeGrid
+	url = https://github.com/deitch/jstree-grid
+[submodule "djPsych/jsTreeGrid/jstree-grid"]
+	path = djPsych/jsTreeGrid/jstree-grid
+	url = https://github.com/deitch/jstree-grid
