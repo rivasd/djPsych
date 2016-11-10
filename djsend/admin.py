@@ -212,7 +212,7 @@ class RatingAdmin(GenericBlockAdmin):
     (l_("Rating task parameters"), {'fields':(
         'is_html',
         'prompt',
-        'responses',
+        'response',
         'labels',
         'intervals',
         'show_ticks',
