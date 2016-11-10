@@ -12,7 +12,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import Group, Permission
 from django_markdown.models import MarkdownField
 import markdown
-
+from djPsych.utils import get_type
 
 # Create your models here.
 
@@ -170,24 +170,13 @@ class BaseExperiment(models.Model):
     
     def list_static_urls(self):
         resource_dict = self.list_static_resources()
-        image_ext = ('jpeg','jpg', 'tiff', 'gif', 'bmp', 'png', 'svg')
         url_dict = {"js": [], "css": [], "images": [], 'other':[]}
         for folder, filelist in resource_dict.items():
             directory = folder if folder != "root" else ""
             
             for file in filelist:
                 path = os.path.join(default_storage.base_url, self.label+'/', directory, file)
-                extension = os.path.splitext(path)[1]
-                
-                if extension.lower() == ".js":
-                    url_dict['js'].append(path)
-                elif extension.lower() == '.css':
-                    url_dict['css'].append(path)
-                elif extension.lower() in image_ext:
-                    url_dict['images'].append(path)
-                else :
-                    url_dict['other'].append(path)
-                
+                url_dict[get_type(path)].append(path)
                                 
         return url_dict
             

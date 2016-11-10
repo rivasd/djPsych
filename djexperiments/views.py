@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http.response import HttpResponse, Http404, HttpResponseRedirect, JsonResponse
 from django.conf import settings
+from django.core.files.storage import default_storage
 import glob
 import os.path
 from djexperiments.models import Experiment
@@ -17,7 +18,7 @@ from test.test_socket import FileObjectClassTestCase
 from django.core.files.storage import default_storage
 from django.contrib import messages
 from djmanager.utils import get_allowed_exp_for_user
-from djPsych.utils import fetch_files_of_type
+from djPsych.utils import fetch_files_of_type, get_type
 
 # Create your views here.
 def lobby(request, exp_label):
@@ -145,9 +146,38 @@ def exp_filesystem(request, exp_label):
         return JsonResponse({'error': _("You are not authorized to browse: "+exp_label)})
     
     #Reject all GET request so we can simplify the interface
-    if request.method == "GET":
-        if request.GET["action"] == "ls":
+    if request.method == "POST":
+        if request.POST["action"] == "ls":
             #request to get full directory desription, in jsTree-readable format
-            pass
-    pass
+            contents = exp.list_static_resources()
+            response = contents
+            
+            if request.POST["mode"] == "jsTree":
+                response = [{"text": exp.label, "type":'#', "icon":"fa fa-folder"}]
+                root_nodes = []
+                
+                for folder, files in contents.items():
+                    
+                    if folder == "root":
+                        target = root_nodes
+                    else:
+                        folder_node = {"text":folder, "type":"folder", "data":default_storage.base_url+'/'+exp.label+'/'+folder, "children":[]}
+                        root_nodes.append(folder_node)
+                        target = folder_node['children']
+                        
+                    for file in files:
+                        file_node={
+                            "data":default_storage.base_url+"/"+exp.label+'/'+(folder+'/') if folder != "root" else ""+file,
+                            "type": get_type(file),
+                            "text": file
+                        }
+                        target.append(file_node)
+
+                            
+                
+                response[0]["children"] = root_nodes
+            
+            return JsonResponse(response, safe=False)
+    else:
+        return JsonResponse({'error': _("This API only available through POST request"+exp_label)})
     

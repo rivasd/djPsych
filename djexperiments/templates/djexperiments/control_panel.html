@@ -9,6 +9,11 @@
 
 {% block head %}
 <script src="{% static "djexperiments/fileExplorer.js" %}"></script>
+<script>
+
+var expLabel = "{{ exp.label }}";
+
+</script>
 {% endblock %}
 
 {% block percept-content %}

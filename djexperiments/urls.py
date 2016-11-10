@@ -4,7 +4,7 @@ Created on Feb 22, 2016
 @author: Daniel Rivas
 '''
 from django.conf.urls import url, include
-from djexperiments.views import lobby, launch, summary, sandbox, debrief, upload_resource
+from djexperiments.views import lobby, launch, summary, sandbox, debrief, upload_resource, exp_filesystem
 from djreceive.views import save
 from djpay.views import claim
 
@@ -19,6 +19,7 @@ urlpatterns =[
     url(r'^collect/', include('djcollect.urls', namespace='collect')),
     url(r'^sandbox$', sandbox, name="sandbox"),
     url(r'^debrief$', debrief, name="debrief"),
-    url(r'^upload$', upload_resource, name="upload")
+    url(r'^upload$', upload_resource, name="upload"),
+    url(r'^files$', exp_filesystem, name="browse")
 ]
 
