@@ -116,14 +116,9 @@ class SurveyMultiChoiceBlock(BaseSettingBlock):
         
         for question in self.questions.all():
             questions_list.append(question.question_label)
-            option_labels_list.append(question.answer_options)
+            option_labels_list.append(question.answer_options.split(','))
             question_requirement_list.append(question.required)
-        
-        for choices_group in option_labels_list:
-            choices_group.split(';')
-            
-            
-            
+               
         initial['questions'] = questions_list
         initial['options'] = option_labels_list
         initial['required'] = question_requirement_list
@@ -145,13 +140,8 @@ class SurveyLikertBlock(BaseSettingBlock):
         
         for question in self.questions.all():
             questions_list.append(question.question_label)
-            option_labels_list.append(question.answer_options)
-            question_requirement_list.append(question.required)
-        
-        for choices_group in option_labels_list:
-            choices_group.split(';')
-            
-            
+            option_labels_list.append(question.answer_options.split(','))
+            question_requirement_list.append(question.required)           
             
         initial['questions'] = questions_list
         initial['labels'] = option_labels_list

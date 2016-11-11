@@ -127,4 +127,10 @@ class SurveyLikert(BaseTrial):
     rt = models.PositiveIntegerField()
     responses = models.TextField()
     
+class SurveyMultiChoice(BaseTrial):
+    handles = 'survey-multi-choice'
+    rt = models.PositiveIntegerField
+    responses = models.TextField()
+    
+    
     
