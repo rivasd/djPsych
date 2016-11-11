@@ -69,7 +69,7 @@ class RatingBlock(BaseSettingBlock):
     
     is_html = models.BooleanField(help_text=l_("True if the stimulus is html instead of being a image url"))
     
-    prompt = models.CharField(max_length=32, blank=True, help_text=l_("Any content here will be displayed below the stimulus, as a reminder to the participant"))
+    prompt = models.CharField(max_length=256, blank=True, help_text=l_("Any content here will be displayed below the stimulus, as a reminder to the participant"))
     
     response = models.CharField(max_length = 16, default = 'slider', choices = (('boxes','boxes'),('slider','slider')), help_text=l_("Choice between displaying a slider or choices in boxes for response"))
     
@@ -92,7 +92,7 @@ class ForcedChoiceBlock(BaseSettingBlock):
     is_html = models.BooleanField(help_text=l_("True if the stimulus is html instead of being a image url"))
     timing_stim = models.IntegerField(help_text=l_("How long to show the stimuli for in milliseconds."))
     timing_fixation = models.IntegerField(help_text=l_("How long to show the fixation cross for in milliseconds."))  
-    prompt = models.CharField(max_length=32, blank=True, help_text=l_("Any content here will be displayed below the stimulus, as a reminder to the participant"))
+    prompt = models.CharField(max_length=256, blank=True, help_text=l_("Any content here will be displayed below the stimulus, as a reminder to the participant"))
     keyboard = models.BooleanField(help_text=l_("True if the response is made by pressing keys instead of clicking on the pictures"))
     key_choices = models.CharField(blank=True, max_length = 1024, help_text=l_("Choose the keys (letters) you have to press for each stimulus. You have separate them with a coma. ex: k,l"))
     
