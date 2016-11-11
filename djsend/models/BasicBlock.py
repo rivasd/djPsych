@@ -122,6 +122,7 @@ class SurveyMultiChoiceBlock(BaseSettingBlock):
         initial['questions'] = questions_list
         initial['options'] = option_labels_list
         initial['required'] = question_requirement_list
+        initial['preamble'] = self.preamble
         
         return initial
 
