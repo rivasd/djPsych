@@ -237,6 +237,9 @@ h6, h5{
 	margin: 10px;
 	
 }
+#djpsych-upload-dialog{
+	
+}
 /**************************** jsPsych-related styles ***********************************/
 
 .stim-table img{
@@ -413,4 +416,9 @@ img.loader{
       display: block;
       margin: 0 auto;
       text-align: center;
+}
+
+/*********************** jsTree styles *********************************/
+.vakata-context{
+	z-index:4;
 }

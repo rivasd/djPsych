@@ -170,7 +170,7 @@ class BaseExperiment(models.Model):
     
     def list_static_urls(self):
         resource_dict = self.list_static_resources()
-        url_dict = {"js": [], "css": [], "images": [], 'other':[]}
+        url_dict = {"js": [], "css": [], "image": [], 'other':[]}
         for folder, filelist in resource_dict.items():
             directory = folder if folder != "root" else ""
             

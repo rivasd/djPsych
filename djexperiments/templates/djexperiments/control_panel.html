@@ -58,5 +58,20 @@ var expLabel = "{{ exp.label }}";
 	<section id="explorer">
 		{% include "djexperiments/explorer.html" %}
 	</section>
+	<dialog id="djpsych-upload-dialog" class="mdl-dialog">
+		<h4 class="mdl-dialog__title">{% trans "File Upload" %}</h4>
+		<form method="post" action="{% url "webexp:lobby" exp.label%}" enctype="multipart/form-data" name="djpsych-upload-dialog" id="djpsych-upload-dialog__form">
+			<div class="mdl-dialog__content">
+		      <input type="file" name="uploads" multiple/>
+		      <input type="hidden" id="parentFolder" name="parent" />
+		      <input type="hidden" id="action" name="action" value="add"/>
+		    </div>
+		    
+		    <div class="mdl-dialog__actions">
+		      <button type="button" class="mdl-button" action="submit" id="djpsych-upload-dialog__submit">{% trans "Upload" %}</button>
+		      <button type="button" class="mdl-button close">{% trans "Nevermind" %}</button>
+		    </div>
+	    </form>
+	</dialog>
 </div>
 {% endblock %}
