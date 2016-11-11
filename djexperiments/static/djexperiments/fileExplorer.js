@@ -21,6 +21,9 @@ $(function(){
 			},
 			"image":{
 				icon:"fa fa-file-image-o"
+			},
+			"css":{
+				icon: "fa fa-paint-brush"
 			}
 		},
 		core:{
