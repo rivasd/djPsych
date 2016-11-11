@@ -165,7 +165,8 @@ SITE_ID = 1
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'dialog_polyfill'),
     os.path.join(BASE_DIR, 'jsPsych'),
-    os.path.join(BASE_DIR, 'serverPsych')
+    os.path.join(BASE_DIR, 'serverPsych'),
+    os.path.join(BASE_DIR, 'jsTreeGrid')
 ]
 
 MEDIA_URL = '/media/'

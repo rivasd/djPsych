@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.http.response import HttpResponse, Http404, HttpResponseRedirect
+from django.http.response import HttpResponse, Http404, HttpResponseRedirect, JsonResponse,HttpResponseBadRequest
 from django.conf import settings
+from django.core.files.storage import default_storage
 import glob
 import os.path
 from djexperiments.models import Experiment
@@ -14,10 +15,10 @@ import os
 from argparse import Action
 from django.core.files import File
 from test.test_socket import FileObjectClassTestCase
-from django.core.files.storage import default_storage
 from django.contrib import messages
 from djmanager.utils import get_allowed_exp_for_user
-from djPsych.utils import fetch_files_of_type
+from djPsych.utils import fetch_files_of_type, get_type
+import json
 
 # Create your views here.
 def lobby(request, exp_label):
@@ -34,8 +35,9 @@ def lobby(request, exp_label):
             lobby = _("No homepage description available for this experiment")
         return render(request, 'djexperiments/lobby.html', {'exp': exp, 'lobby':lobby})
     else: 
+        uploadForm = UploadForm()
         researcher_experiments = Experiment.objects.filter(research_group__in = request.user.groups.all())
-        return render(request, 'djexperiments/control_panel.html', {'exp': exp, 'researcher_experiments' : researcher_experiments, 'listdir': exp.list_static_resources()})  
+        return render(request, 'djexperiments/control_panel.html', {'exp': exp, 'researcher_experiments' : researcher_experiments, 'listdir': exp.list_static_resources(), 'uploadForm':uploadForm})  
 
 @login_required
 def launch(request, exp_label):
@@ -131,4 +133,86 @@ def upload_resource(request, exp_label):
         form = UploadForm()
         return render(request, 'djexperiments/upload.html', {'form': form})
     
+@login_required
+def exp_filesystem(request, exp_label):
+    """
+    Single RESTful view to interact with the personal file tree of an experiment
+    """
+    try:
+        exp = Experiment.objects.get(label=exp_label)
+    except Experiment.DoesNotExist:
+        return JsonResponse({'error': _("There is no experiment by the name: "+exp_label)})
+    
+    if not exp.is_researcher(request):
+        return JsonResponse({'error': _("You are not authorized to browse: "+exp_label)})
+    
+    #Reject all GET request so we can simplify the interface
+    if request.method == "POST":
+        if request.POST["action"] == "ls":
+            #request to get full directory desription, in jsTree-readable format
+            contents = exp.list_static_resources()
+            response = contents
+            
+            if request.POST["mode"] == "jsTree":
+                response = [{"text": exp.label, "type":'#', "icon":"fa fa-folder", "data":exp.label, "state":{"opened":True}}]
+                root_nodes = []
+                
+                for folder, files in contents.items():
+                    
+                    if folder == "root":
+                        target = root_nodes
+                    else:
+                        folder_node = {
+                            "text":folder, 
+                            "type":"folder", 
+                            "data":default_storage.base_url+'/'+exp.label+'/'+folder, 
+                            "children":[]
+                        }
+                        root_nodes.append(folder_node)
+                        target = folder_node['children']
+                        
+                    for file in files:
+                        file_node={
+                            "data":default_storage.base_url+"/"+exp.label+'/'+(folder+'/') if folder != "root" else ""+file,
+                            "type": get_type(file),
+                            "text": file
+                        }
+                        target.append(file_node)
+
+                response[0]["children"] = root_nodes
+            
+            return JsonResponse(response, safe=False)
+        
+        elif request.POST["action"] == "rm":
+            to_delete = json.loads(request.POST["args"])
+            #some checks across all paths to delete
+            for filename in to_delete:
+                full_path = default_storage.path(os.path.join(exp.label, filename))
+                if not os.path.exists(full_path):
+                    return JsonResponse({'error':_("requested file :"+filename+" does not exist")})
+                if os.path.isdir(full_path):
+                    return JsonResponse({'error':_("cannot delete folders")})
+            #if no errors, actually delete
+            for filename in to_delete:   
+                default_storage.delete(os.path.join(exp.label, filename))
+
+            return JsonResponse({'success':True})
+        
+        elif request.POST["action"] == "mkdir":
+            pass
+        
+        elif request.POST["action"] == "add":
+            filesList = request.FILES.getlist('uploads')
+            parentDir = request.POST["parent"]
+            for currentFile in filesList:
+                fileObject = File(currentFile)
+                initialPath = fileObject.name
+                newPath = os.path.join(default_storage.location, exp.label, parentDir, initialPath)
+                default_storage.save(newPath, fileObject)
+                messages.add_message(request, messages.SUCCESS, _('Your file successfully uploaded: ')+initialPath)
+            
+            return JsonResponse({"success":True})
+            
+    else:
+        return JsonResponse({'error': _("This API only available through POST request"+exp_label)})
     

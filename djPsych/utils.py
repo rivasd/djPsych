@@ -31,3 +31,20 @@ def fetch_files_of_type(pathname, ext):
         files.append(os.path.basename(file))
     
     return files
+
+def get_type(filepath):
+    """
+    Simple function used to classify a file into web-dev related categories depending on the extension of its pathname
+    """
+    
+    image_ext = ('.jpeg','.jpg', '.tiff', '.gif', '.bmp', '.png', '.svg')
+    extension = os.path.splitext(filepath)[1]
+    if extension.lower() == ".js":
+        return 'js'
+    elif extension.lower() == '.css':
+        return 'css'
+    elif extension.lower() in image_ext:
+        return 'image'
+    else :
+        return 'other'
+    
