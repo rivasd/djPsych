@@ -165,15 +165,16 @@ def exp_filesystem(request, exp_label):
                         folder_node = {
                             "text":folder, 
                             "type":"folder", 
-                            "data":default_storage.base_url+'/'+exp.label+'/'+folder, 
+                            "data":exp.label+'/'+folder, 
                             "children":[]
                         }
                         root_nodes.append(folder_node)
                         target = folder_node['children']
                         
                     for file in files:
+                        subfolder = (folder+'/') if folder != "root" else ""
                         file_node={
-                            "data":default_storage.base_url+"/"+exp.label+'/'+(folder+'/') if folder != "root" else ""+file,
+                            "data":exp.label+'/'+subfolder+file,
                             "type": get_type(file),
                             "text": file
                         }
@@ -187,14 +188,14 @@ def exp_filesystem(request, exp_label):
             to_delete = json.loads(request.POST["args"])
             #some checks across all paths to delete
             for filename in to_delete:
-                full_path = default_storage.path(os.path.join(exp.label, filename))
+                full_path = default_storage.path(os.path.join(filename))
                 if not os.path.exists(full_path):
                     return JsonResponse({'error':_("requested file :"+filename+" does not exist")})
                 if os.path.isdir(full_path):
                     return JsonResponse({'error':_("cannot delete folders")})
             #if no errors, actually delete
             for filename in to_delete:   
-                default_storage.delete(os.path.join(exp.label, filename))
+                default_storage.delete(filename)
 
             return JsonResponse({'success':True})
         
