@@ -60,8 +60,9 @@ var loading = "{% trans "Please wait while we generate your textures..." %}";
 <a id='top'></a>
 {% if not sandbox %}
 <div id="jsPsychTarget">
+	{% if consent %}
 	{% include consent %}
-	
+	{% endif %}
 	<form name="consent" id="consent">
 	    <fieldset>
 	    <legend>{% trans "Consent" %}</legend>

@@ -181,7 +181,8 @@ class BaseExperiment(models.Model):
                                 
         return url_dict
             
-            
+    def get_active_participations(self, request):
+        return self.participation_set.filter(subject__user=request.user, complete=False)        
     
     
     

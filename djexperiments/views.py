@@ -44,8 +44,17 @@ def launch(request, exp_label):
     exp = Experiment.objects.get(label=exp_label)
     
     resources = exp.list_static_urls()
-    consentfile = 'djexperiments/'+exp_label+'/consent.html'
+    if os.path.exists(os.path.join(settings.BASE_DIR, "..", 'djexperiments', exp.label, 'consenthtml')):
+        consentfile = 'djexperiments/'+exp_label+'/consent.html'
+    else:
+        consentfile = None
+    
     plugins = fetch_files_of_type('djPsych/jsPsych/plugins', 'js')
+    
+    #check if completion of a specific participation was requested
+    if request.GET.get("continue", default=None):
+        request.session["continue"] = request.GET['continue']
+    
     return render(request, 'djexperiments/launch.html', {'resources': resources, 'exp': exp, 
                                                          'consent':consentfile, 'plugins':plugins, 'static_url': settings.STATIC_URL, 'header_type': 'mdl-layout__header--scroll'})
 

@@ -37,7 +37,7 @@ def sendSettings(request, exp_label):
     except Experiment.DoesNotExist:
         return JsonResponse({'error': _("There is no experiment by the name: "+exp_label)})
     
-    participations = exp.participation_model.objects.filter(subject__user=request.user, experiment=exp)
+    participations = exp.participations.filter(subject__user=request.user, experiment=exp)
     len(participations) # force evaluation of queryset
     previous = participations.filter(complete=True)
     on_the_ice = participations.filter(complete=False)
@@ -71,7 +71,10 @@ def sendSettings(request, exp_label):
     # add the subject_id to the response
     final_settings['subject'] = request.user.subject.id
     # the primary key of the participation to continue if this is a request to continue a previous participation. False otherwise
-    final_settings['previous']= to_be_continued if to_be_continued is not None else False
+    if to_be_continued:
+        
+        final_settings['previous']= to_be_continued if to_be_continued is not None else False
+        final_settings['oldParams'] = to_be_continued.parameters
     # generate 8 character random sequence to identify this request for an experiment. Make the session remember it, too!
     request.session['exp_id'] = final_settings['exp_id'] = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(16))
     request.session['current_exp'] = final_settings['current_exp'] = exp_label
