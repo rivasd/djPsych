@@ -200,19 +200,34 @@ def exp_filesystem(request, exp_label):
             return JsonResponse({'success':True})
         
         elif request.POST["action"] == "mkdir":
-            pass
+            parentDir = request.POST["parent"]
+            name = request.POST["name"]
+            
+            try:
+                os.mkdirs(os.path.join(default_storage.location, exp.label, parentDir, name), exist_ok = True) #@UndefinedVariable
+            except OSError as e:
+                return JsonResponse({"error":str(e)})
+            return JsonResponse({'success': True, 'nodes':[{"text":name, "type":"folder"}]})
         
         elif request.POST["action"] == "add":
             filesList = request.FILES.getlist('uploads')
             parentDir = request.POST["parent"]
+            newNodes = []
             for currentFile in filesList:
                 fileObject = File(currentFile)
                 initialPath = fileObject.name
                 newPath = os.path.join(default_storage.location, exp.label, parentDir, initialPath)
+                relative_path = os.path.join(exp.label, parentDir, initialPath)
                 default_storage.save(newPath, fileObject)
                 messages.add_message(request, messages.SUCCESS, _('Your file successfully uploaded: ')+initialPath)
+                
+                newNodes.append({"text": initialPath, "data":relative_path, "type":get_type(initialPath)})
             
-            return JsonResponse({"success":True})
+            return JsonResponse({"success":True, "nodes":newNodes})
+        
+        elif request.POST["action"] == "rename":
+            
+            return JsonResponse()
             
     else:
         return JsonResponse({'error': _("This API only available through POST request"+exp_label)})
