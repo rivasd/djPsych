@@ -183,6 +183,7 @@ class SurveyMultiChoiceAdmin(GenericBlockAdmin):
     fieldsets = GenericBlockAdmin.fieldsets + (
         (l_("Survey Multi Choice task parameters"), {'fields':(
             'preamble',
+            'horizontal'
         )}),                               
     )
     
