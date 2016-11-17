@@ -8,6 +8,7 @@ from django.db import models
 from .runs import Run
 from jsonfield import JSONField
 import copy
+from django.template.defaultfilters import first
 
 
 class BaseTrial(models.Model):
@@ -98,7 +99,11 @@ class CategorizationTrial(BaseTrial):
 class ForcedChoice(BaseTrial):
     handles = 'forcedchoice'
     rt = models.PositiveIntegerField()
-    chosen = models.CharField(max_length=128)
+    chosen = models.IntegerField()
+    leftRating = models.IntegerField(null=True)
+    rightRating = models.IntegerField(null=True)
+    first = models.CharField(max_length=1024, null=True)
+    last = models.CharField(max_length=1024, null=True)
     
 class Rating(BaseTrial):
     handles = 'rating'
@@ -125,12 +130,12 @@ class SimilarityTrial(BaseTrial):
 class SurveyLikert(BaseTrial):
     handles = 'survey-likert'
     rt = models.PositiveIntegerField()
-    responses = models.TextField()
+    responses = JSONField(null=False, blank=True)
     
 class SurveyMultiChoice(BaseTrial):
     handles = 'survey-multi-choice'
     rt = models.PositiveIntegerField
-    responses = models.TextField()
+    responses = JSONField(null=False, blank=True)
     
     
     
