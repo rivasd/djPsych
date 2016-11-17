@@ -33,7 +33,11 @@ $(function(){
         runExperiment();
 	}
 
-	serverPsych.init("{{ exp.label }}", "{{ static_url }}", "{{ version }}")
+	serverPsych.init({
+		name: "{{ exp.label }}",
+		staticRoot: "{{ static_url }}",
+		completion: "{{ completion }}"
+	})
 	
 	$("#start").click(function(e){
 		if (document.getElementById("accept").checked) {

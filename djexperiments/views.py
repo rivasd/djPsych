@@ -51,11 +51,17 @@ def launch(request, exp_label):
     
     plugins = fetch_files_of_type('djPsych/jsPsych/plugins', 'js')
     
+    completion = {}
     #check if completion of a specific participation was requested
     if request.GET.get("continue", default=None):
         request.session["continue"] = request.GET['continue']
+        completion = Participation.objects.get(pk=request.session['continue']).completion_status()
     
-    return render(request, 'djexperiments/launch.html', {'resources': resources, 'exp': exp, 
+    #send a brief description of the requested participation (if any), or the last one, or nothing if this is the very first time
+    
+    
+    
+    return render(request, 'djexperiments/launch.html', {'resources': resources, 'exp': exp, 'completion':completion,
                                                          'consent':consentfile, 'plugins':plugins, 'static_url': settings.STATIC_URL, 'header_type': 'mdl-layout__header--scroll'})
 
 def summary(request, exp_label):

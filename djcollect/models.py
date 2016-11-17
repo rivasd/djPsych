@@ -5,13 +5,14 @@ from djuser.models import Subject
 from jsonfield import JSONField
 from django.contrib.auth.models import User
 from djPsych.exceptions import PayoutException
+from djreceive.models import Run
 
 # Create your models here.
 
 class Participation(models.Model):
     """
     Represents a single participation of a Subject to an Experiment
-      
+    
     Meant to hold multiple Run objects, allows a participation to be completed in different attempts
     I recommend to always get a Participation instance with select_related()
     """
@@ -25,9 +26,9 @@ class Participation(models.Model):
     #this is where the magic happens: store options in json format here so that experimental settings stay the same across sessions
     parameters = JSONField(null=True, blank=True)
     
-    def create_run(self, start, end, browserdict=None):
+    def create_run(self, start, end, setting, browserdict=None):
         
-        run = self.experiment.run_model(participation=self, start_time=start, end_time=end)
+        run = Run(participation=self, start_time=start, global_setting_obj=setting, end_time=end)
         if browserdict is not None:
             browser = browserdict['name']
             version = browserdict['version']
@@ -76,7 +77,23 @@ class Participation(models.Model):
             dict_array.append(trial.toDict())
             
         return dict_array
+    
+    def completion_status(self):
+        """
+        Returns a dict that describes how many runs of each kind have been completed and linked to this part. 
+        Runs are organized by the name of the GlobalSetting that was used when the subject generated the data
         
+        """
+        runs = {}
+        for run in self.run_set.all():
+            if hasattr(runs, run.global_setting_obj.name):
+                runs[run.global_setting_obj.name] += 1
+            else:
+                runs[run.global_setting_obj.name] = 1
+        
+        return runs
+    
+    
 class Researcher(models.Model):
     """
     An extension on the Django user model that represents users who are researchers and allowed to get data.
