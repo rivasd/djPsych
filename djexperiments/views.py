@@ -14,7 +14,6 @@ from djcollect.models import Participation
 import os
 from argparse import Action
 from django.core.files import File
-from test.test_socket import FileObjectClassTestCase
 from django.contrib import messages
 from djmanager.utils import get_allowed_exp_for_user
 from djPsych.utils import fetch_files_of_type, get_type
@@ -61,7 +60,7 @@ def launch(request, exp_label):
     
     
     
-    return render(request, 'djexperiments/launch.html', {'resources': resources, 'exp': exp, 'completion':completion,
+    return render(request, 'djexperiments/launch.html', {'resources': resources, 'exp': exp, 'completion':json.dumps(completion),
                                                          'consent':consentfile, 'plugins':plugins, 'static_url': settings.STATIC_URL, 'header_type': 'mdl-layout__header--scroll'})
 
 def summary(request, exp_label):
@@ -90,7 +89,8 @@ def sandbox(request, exp_label):
         'static_url': settings.STATIC_URL,
         'sandboxform': sandboxform,
         'sandbox': True,
-        'version': 'test'
+        'version': 'test',
+        'completion': json.dumps({})
     }
     
     return render(request, 'djexperiments/launch.html', context)
