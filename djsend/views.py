@@ -68,7 +68,7 @@ def sendSettings(request, exp_label):
     
     #store the id of the global setting object used in the request to that the generated data saved later can be linked to it
     request.session['setting_id'] = global_settings_obj.id
-    request.session['setting_model_id'] = ContentType.objects.get_for_model(global_settings_obj)
+    request.session['setting_model_id'] = ContentType.objects.get_for_model(global_settings_obj).id
     
     global_settings_obj.build_timeline(global_settings_obj.get_all_blocks(), request)
     final_settings = global_settings_obj.toDict()
