@@ -60,7 +60,7 @@ def launch(request, exp_label):
     
     
     
-    return render(request, 'djexperiments/launch.html', {'resources': resources, 'exp': exp, 'completion':json.dumps(completion),
+    return render(request, 'djexperiments/launch.html', {'resources': resources, 'exp': exp, 'completion':json.dumps(completion), 'sandbox': False,
                                                          'consent':consentfile, 'plugins':plugins, 'static_url': settings.STATIC_URL, 'header_type': 'mdl-layout__header--scroll'})
 
 def summary(request, exp_label):
@@ -88,7 +88,7 @@ def sandbox(request, exp_label):
         'plugins': plugins,
         'static_url': settings.STATIC_URL,
         'sandboxform': sandboxform,
-        'sandbox': "true",
+        'sandbox': True,
         'version': 'test',
         'completion': json.dumps({})
     }

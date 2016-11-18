@@ -38,7 +38,8 @@ def collect_all(request, exp_label):
         
         name = "subject_"+str(participation.subject.id)+str(participation.started).replace(' ', '_').replace(':', '-')+"diff"
         if participation.parameters is not None:
-            name = name + str(participation.parameters["difficulty"])
+            if hasattr(participation.parameters, 'difficulty'):
+                name = name + str(participation.parameters["difficulty"])
         
         data_as_string_io = get_csv_iostring_from_participation(participation)
         main_zipfile.writestr(name+'.csv', data_as_string_io.getvalue())

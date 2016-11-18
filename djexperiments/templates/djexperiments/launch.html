@@ -37,7 +37,7 @@ $(function(){
 		name: "{{ exp.label }}",
 		staticRoot: "{{ static_url }}",
 		completion: JSON.parse("{{ completion }}"),
-		sandboxval: JSON.parse({{sandbox}})
+		sandboxval: JSON.parse("{{sandbox|lower}}")
 	})
 	
 	$("#start").click(function(e){

@@ -88,7 +88,7 @@ def save(request, exp_label):
     sortings = sort_trials(data)
     for trial_type, trial_batch in sortings.items():
         # TODO: maybe find a better way to handle practice and instruction trials
-        if trial_type == 'instructions' or trial_type == 'text':
+        if trial_type == 'instructions' or trial_type == 'text' or trial_type == 'call-function':
             continue
         try:
             trial_content_type = ContentType.objects.get(pk=mapping[trial_type])
