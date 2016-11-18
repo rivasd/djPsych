@@ -36,7 +36,8 @@ $(function(){
 	serverPsych.init({
 		name: "{{ exp.label }}",
 		staticRoot: "{{ static_url }}",
-		completion: JSON.parse("{{ completion }}")
+		completion: JSON.parse("{{ completion }}"),
+		sandboxval: JSON.parse({{sandbox}})
 	})
 	
 	$("#start").click(function(e){

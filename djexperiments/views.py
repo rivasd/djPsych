@@ -88,7 +88,7 @@ def sandbox(request, exp_label):
         'plugins': plugins,
         'static_url': settings.STATIC_URL,
         'sandboxform': sandboxform,
-        'sandbox': True,
+        'sandbox': "true",
         'version': 'test',
         'completion': json.dumps({})
     }

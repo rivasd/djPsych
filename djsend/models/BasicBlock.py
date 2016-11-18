@@ -49,7 +49,7 @@ class BaseSettingBlock(models.Model):
         del dictionary['id']
         # add the params from the extra_params field. be careful for overrides!
         if self.extra_params is not None:
-            for key, value in json.loads(self.extra_params).iteritems():
+            for key, value in self.extra_params.items():
                 dictionary[key] = value
         
         dictionary['instructions'] = self.sort_instructions()
