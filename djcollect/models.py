@@ -26,7 +26,7 @@ class Participation(models.Model):
     #this is where the magic happens: store options in json format here so that experimental settings stay the same across sessions
     parameters = JSONField(null=True, blank=True)
     
-    def create_run(self, start, end, setting, browserdict=None):
+    def create_run(self, start, end, setting=None, browserdict=None):
         
         run = Run(participation=self, start_time=start, global_setting_obj=setting, end_time=end)
         if browserdict is not None:

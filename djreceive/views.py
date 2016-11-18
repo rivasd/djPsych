@@ -78,7 +78,7 @@ def save(request, exp_label):
         participation = exp.participation_set.get(pk=previous)
     
     # now that we have the participation, create the run representing the data just received
-    new_run = participation.create_run(request.session['start_time'], datetime.datetime.now(), browser_info, setting=setting) 
+    new_run = participation.create_run(request.session['start_time'], datetime.datetime.now(), browserdict=browser_info, setting=setting) 
     
     try:
         mapping = json.loads(request.session['data_mapping'])
