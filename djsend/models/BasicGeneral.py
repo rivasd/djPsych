@@ -26,7 +26,7 @@ class BaseGlobalSetting(models.Model):
         abstract=True
     
     experiment = models.ForeignKey(Experiment)
-    name = models.CharField(max_length=20, help_text="An identifier for this set of settings, for example 'production' or 'test settings' ")
+    name = models.CharField(max_length=64, help_text="An identifier for this set of settings, for example 'production' or 'test settings' ")
     max_consecutive_timeouts = models.IntegerField(blank=True, null=True, help_text="The experiment will automatically abort if this number if the subject does not respond fast enough to this many consecutive trials")
     max_total_timeouts = models.IntegerField(blank=True, null=True, help_text="The experiment will automatically abort if this many trials are allowed to timeout in total")
     fixation_cross = models.CharField(blank=True, null=True, max_length = 32, help_text="The path to fixation cross image, will be appended to static/your_app_name/")

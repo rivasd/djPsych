@@ -13,6 +13,7 @@ from djexperiments.models import Experiment
 from .utils import sort_trials
 import datetime
 from django.contrib.contenttypes.models import ContentType
+from django.core.exceptions import ObjectDoesNotExist
 # Create your views here.
 
 def save(request, exp_label):
@@ -26,6 +27,7 @@ def save(request, exp_label):
     if not 'exp_id' in request.session or not 'current_exp' in request.session:
         return JsonResponse({'error':_("Data received unexpectedly. Refused.")})
     
+    #verify client-generated data is ok
     try:
         meta = json.loads(request.POST['meta'])
         data = json.loads(request.POST['data'])
@@ -41,23 +43,42 @@ def save(request, exp_label):
     except ValueError:
         return JsonResponse({'error':_("Data was malformed, expecting two POST variable, each a correct JSON string. Refused")})
     
+    #verify server-side data generated when requesting the experiment earlier
+    try:
+        setting_id = request.session['setting_id']
+        setting_model_id = request.session['setting_model_id']
+    except KeyError:
+        return JsonResponse({'error':_("the setting object was not set before this data was generated")})
+    
+    setting_model = ContentType.objects.get(id=setting_model_id)
+    try:
+        setting = setting_model.get_object_for_this_type(id=setting_id)
+    except ObjectDoesNotExist:
+        return JsonResponse({'error':_("the setting object that generated this data does not exist anymore")})
+    
+    #verify data comes from the right user and comes from the last request
     if request.session['exp_id'] != code or request.session['current_exp'] != exp_name:
         return JsonResponse({'error':_("Data does not match last requested experiment. Did you start multiple experiments at the same time?")})
     if subject_id != request.user.subject.id:
         return JsonResponse({'error':_("The experimental data does not match your credentials. Refused.")})
-    
+        
     exp = Experiment.objects.get(label=exp_label)
     if previous == False:
+
         if 'globalparams' in meta:
             globalparams = meta['globalparams']
         else:
             globalparams = {}
         participation = exp.create_participation(subject=request.user.subject, started=request.session['start_time'], complete=finished, parameters=globalparams)
     else:
-        participation = exp.participation_model.objects.get(pk=previous)
+        #verify that the participation pk matches the one saved in the request 
+        if request.session.get("previous") != previous:
+            return JsonResponse({'error':_("Could not reliably find the participation to continue")})
+        request.session.pop("previous")
+        participation = exp.participation_set.get(pk=previous)
     
     # now that we have the participation, create the run representing the data just received
-    new_run = participation.create_run(request.session['start_time'], datetime.datetime.now(), browser_info) 
+    new_run = participation.create_run(request.session['start_time'], datetime.datetime.now(), browser_info, setting=setting) 
     
     try:
         mapping = json.loads(request.session['data_mapping'])

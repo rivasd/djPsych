@@ -43,7 +43,7 @@ manips	an array of arrays, each top level array representing an experiment as se
 		<div id="available-exp" class="row-flexcontainer">
 			{% for manip in manips %}
 			
-				{% cardify manip %}
+				{% cardify manip request %}
 			
 			{% endfor %}
 		</div>

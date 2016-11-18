@@ -5,10 +5,10 @@ Created on Oct 19, 2016
 '''
 
 from django import template
-from djexperiments.models import Experiment
 
 register = template.Library()
 
 @register.inclusion_tag("custom_tag_templates/cardify.html")
-def cardify(experiment):
-    return {"exp": experiment}
+def cardify(experiment, request):
+    is_researcher = experiment.is_researcher(request)
+    return {"exp": experiment, 'is_researcher':is_researcher}

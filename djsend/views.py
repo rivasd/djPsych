@@ -37,7 +37,7 @@ def sendSettings(request, exp_label):
     except Experiment.DoesNotExist:
         return JsonResponse({'error': _("There is no experiment by the name: "+exp_label)})
     
-    participations = exp.participation_model.objects.filter(subject__user=request.user, experiment=exp)
+    participations = exp.participation_set.filter(subject__user=request.user, experiment=exp)
     len(participations) # force evaluation of queryset
     previous = participations.filter(complete=True)
     on_the_ice = participations.filter(complete=False)
@@ -66,17 +66,26 @@ def sendSettings(request, exp_label):
     except Exception as e:
         return JsonResponse({'error': str(e)})
     
+    #store the id of the global setting object used in the request to that the generated data saved later can be linked to it
+    request.session['setting_id'] = global_settings_obj.id
+    request.session['setting_model_id'] = ContentType.objects.get_for_model(global_settings_obj)
+    
     global_settings_obj.build_timeline(global_settings_obj.get_all_blocks(), request)
     final_settings = global_settings_obj.toDict()
     # add the subject_id to the response
     final_settings['subject'] = request.user.subject.id
     # the primary key of the participation to continue if this is a request to continue a previous participation. False otherwise
-    final_settings['previous']= to_be_continued if to_be_continued is not None else False
+    if to_be_continued:
+        
+        final_settings['previous']= to_be_continued if to_be_continued is not None else False
+        request.session['previous'] = to_be_continued.id
+        final_settings['oldParams'] = to_be_continued.parameters
     # generate 8 character random sequence to identify this request for an experiment. Make the session remember it, too!
     request.session['exp_id'] = final_settings['exp_id'] = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(16))
     request.session['current_exp'] = final_settings['current_exp'] = exp_label
     request.session['start_time'] = str(datetime.datetime.now())
     save_dict= {}
+    
     # save a mapping of 'type' attribute to content type id so that later we know with which model to save data-objects of each type
     for block in final_settings['timeline']:
         if 'save_with_id' in block:

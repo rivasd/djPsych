@@ -33,7 +33,11 @@ $(function(){
         runExperiment();
 	}
 
-	serverPsych.init("{{ exp.label }}", "{{ static_url }}", "{{ version }}")
+	serverPsych.init({
+		name: "{{ exp.label }}",
+		staticRoot: "{{ static_url }}",
+		completion: JSON.parse("{{ completion }}")
+	})
 	
 	$("#start").click(function(e){
 		if (document.getElementById("accept").checked) {
@@ -60,8 +64,9 @@ var loading = "{% trans "Please wait while we generate your textures..." %}";
 <a id='top'></a>
 {% if not sandbox %}
 <div id="jsPsychTarget">
+	{% if consent %}
 	{% include consent %}
-	
+	{% endif %}
 	<form name="consent" id="consent">
 	    <fieldset>
 	    <legend>{% trans "Consent" %}</legend>

@@ -14,7 +14,6 @@ from djcollect.models import Participation
 import os
 from argparse import Action
 from django.core.files import File
-from test.test_socket import FileObjectClassTestCase
 from django.contrib import messages
 from djmanager.utils import get_allowed_exp_for_user
 from djPsych.utils import fetch_files_of_type, get_type
@@ -44,9 +43,24 @@ def launch(request, exp_label):
     exp = Experiment.objects.get(label=exp_label)
     
     resources = exp.list_static_urls()
-    consentfile = 'djexperiments/'+exp_label+'/consent.html'
+    if os.path.exists(os.path.join(settings.BASE_DIR, "..", 'djexperiments', exp.label, 'consenthtml')):
+        consentfile = 'djexperiments/'+exp_label+'/consent.html'
+    else:
+        consentfile = None
+    
     plugins = fetch_files_of_type('djPsych/jsPsych/plugins', 'js')
-    return render(request, 'djexperiments/launch.html', {'resources': resources, 'exp': exp, 
+    
+    completion = {}
+    #check if completion of a specific participation was requested
+    if request.GET.get("continue", default=None):
+        request.session["continue"] = request.GET['continue']
+        completion = Participation.objects.get(pk=request.session['continue']).completion_status()
+    
+    #send a brief description of the requested participation (if any), or the last one, or nothing if this is the very first time
+    
+    
+    
+    return render(request, 'djexperiments/launch.html', {'resources': resources, 'exp': exp, 'completion':json.dumps(completion),
                                                          'consent':consentfile, 'plugins':plugins, 'static_url': settings.STATIC_URL, 'header_type': 'mdl-layout__header--scroll'})
 
 def summary(request, exp_label):
@@ -75,7 +89,8 @@ def sandbox(request, exp_label):
         'static_url': settings.STATIC_URL,
         'sandboxform': sandboxform,
         'sandbox': True,
-        'version': 'test'
+        'version': 'test',
+        'completion': json.dumps({})
     }
     
     return render(request, 'djexperiments/launch.html', context)
