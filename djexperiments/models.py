@@ -2,6 +2,7 @@
 # est ce que tu vois ca??
 import os
 from django.core.files.storage import default_storage
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as l_
@@ -181,9 +182,13 @@ class BaseExperiment(models.Model):
                                 
         return url_dict
             
-    def get_active_participations(self, request):
-        return self.participation_set.filter(subject__user=request.user, complete=False)        
-    
+    def get_latest_pending(self, request):
+        try:
+            last = self.participation_set.filter(subject__user=request.user, complete=False).latest(field_name="started")
+        except ObjectDoesNotExist:
+            return False
+        return last
+     
     
     
 class Experiment(BaseExperiment):

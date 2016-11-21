@@ -55,7 +55,9 @@ def launch(request, exp_label):
     if request.GET.get("continue", default=None):
         request.session["continue"] = request.GET['continue']
         completion = Participation.objects.get(pk=request.session['continue']).completion_status()
-    
+    else:
+        latest = exp.get_latest_pending(request)
+        completion = latest.completion_status() if latest else {}
     #send a brief description of the requested participation (if any), or the last one, or nothing if this is the very first time
     
     
