@@ -6,8 +6,7 @@ Created on Feb 23, 2016
 from django.db import models
 from .BasicGeneral import BaseGlobalSetting
 from django.utils.translation import ugettext_lazy as l_
-
-
+from django.conf import settings
 
 class SimCatGlobalSetting(BaseGlobalSetting):
     sample_table_height = models.IntegerField(help_text='In the table of sample stimuli shown at the beginning, how many images hight should the table be.' )
@@ -27,7 +26,7 @@ class SimCatGlobalSetting(BaseGlobalSetting):
         super_dict = super(SimCatGlobalSetting, self).toDict()
         # we should add the categories and microcomponent pairs for our experiment
         microcomponents = {}
-        prefix = '/static/djexperiments/'+self.experiment.label+'/attributes/'
+        prefix = settings.MEDIA_URL+'/'+self.experiment.label+'/attributes/'
         for pair in self.microcomponent_pairs.all():
             microcomponents[pair.index] = {
                 '0': prefix+pair.first,

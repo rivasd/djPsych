@@ -23,8 +23,8 @@ class Category(models.Model):
 #TODO:  is there really a point to having an index if everything will be randomized?
 class MicroComponentPair(models.Model):
     index = models.PositiveIntegerField()
-    first = models.CharField(max_length=16)
-    second = models.CharField(max_length=16)
+    first = models.CharField(max_length=128)
+    second = models.CharField(max_length=128)
     
     def __str__(self):
         return self.first + "-" + self.second + " order "+ str(self.index)
