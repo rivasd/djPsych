@@ -17,13 +17,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='run',
             name='content_type',
-            field=models.ForeignKey(default=0, on_delete=django.db.models.deletion.CASCADE, to='contenttypes.ContentType'),
+            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='contenttypes.ContentType'),
             preserve_default=False,
         ),
         migrations.AddField(
             model_name='run',
             name='object_id',
-            field=models.PositiveIntegerField(default=0),
+            field=models.PositiveIntegerField(default=1),
             preserve_default=False,
         ),
         migrations.AlterField(
