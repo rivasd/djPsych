@@ -174,7 +174,7 @@ class SimCatSettingAdmin(GenericGlobalSettingAdmin):
     
     inlines = [CategoryInline]
     
-class QuestionAdminInline(GenericStackedInline):
+class QuestionAdminInline(TranslationGenericStackedInline):
     model = Question
     
 @admin.register(SurveyMultiChoiceBlock)    
