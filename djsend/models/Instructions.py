@@ -9,6 +9,7 @@ from django.utils.translation import ugettext_lazy as l_
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django_markdown.models import MarkdownField
+from markdown import markdown
 
 
 # TODO: maybe reuse this to have intro and outro 'instructions' attached to a global setting?
@@ -41,6 +42,6 @@ class Instruction(models.Model):
         html_wrap = "<p class=\"instructions {0.css_class}\"> {0.text} </p>".format(self)
         dictionary = {
             'type': 'instructions',
-            'text': html_wrap,
+            'text': markdown(self.text),
         }
         return dictionary
