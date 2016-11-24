@@ -225,4 +225,15 @@ class RatingAdmin(GenericBlockAdmin):
         form.base_fields['type'].initial = 'rating'
         form.base_fields['save_with'].initial = ContentType.objects.get_for_model(Rating)
         return form
+
+@admin.register(AudioCatBlock)    
+class AudioCatAdmin(GenericBlockAdmin):
+    fieldsets = GenericBlockAdmin.fieldsets + (
+    (l_("Audio Categorization task parameters"), {'fields':(
+        'prompt',
+        'correct_feedback',
+        'incorrect_feedback'
+    )}),                               
+    )
+    
     

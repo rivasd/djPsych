@@ -43,4 +43,8 @@ class SurveyLikertOptions(TranslationOptions):
 @register(SurveyMultiChoiceBlock)
 class SurveyMultiChoiceOptions(TranslationOptions):
     fields=('preamble',)
+
+@register(AudioCatBlock)
+class AudioCatOptions(TranslationOptions):
+    fields=('prompt','correct_feedback','incorrect_feedback')
     

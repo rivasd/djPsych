@@ -137,5 +137,12 @@ class SurveyMultiChoice(BaseTrial):
     rt = models.PositiveIntegerField
     responses = JSONField(null=False, blank=True)
     
+class AudioCatTrial(BaseTrial):
+    handles = 'audio-categorization'
+    rt = models.PositiveIntegerField
+    stimulus = models.CharField(max_length=128)
+    correct = models.BooleanField()
+    category = models.CharField(max_length=24, null=True)
+    
     
     
