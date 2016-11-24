@@ -6,7 +6,7 @@ Created on Feb 24, 2016
 
 from modeltranslation.translator import register, TranslationOptions
 from .models import Instruction, CategorizationBlock, GenericSettingBlock, \
-                    SimilarityBlock, Question, ForcedChoiceBlock, RatingBlock, SurveyLikertBlock, SurveyMultiChoiceBlock
+                    SimilarityBlock, Question, ForcedChoiceBlock, RatingBlock, SurveyLikertBlock, SurveyMultiChoiceBlock, AudioCatBlock
 
 @register(Instruction)
 class InstructionTransOptions(TranslationOptions):

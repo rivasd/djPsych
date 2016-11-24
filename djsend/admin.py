@@ -17,7 +17,7 @@ from djstim.models import Category, MicroComponentPair
 from djreceive.models.CustomTrials import CogComSimilarityTrial
 from djstim.admin import LinkedStimulusInline
 from djsend.models.BasicBlock import SurveyMultiChoiceBlock,SurveyLikertBlock
-from djsend.models.CustomBlock import ForcedChoiceBlock, RatingBlock
+from djsend.models.CustomBlock import ForcedChoiceBlock, RatingBlock, AudioCatBlock
 from djsend.models.BaseStimuli import Question
 
 
