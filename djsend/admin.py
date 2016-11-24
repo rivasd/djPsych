@@ -230,9 +230,12 @@ class RatingAdmin(GenericBlockAdmin):
 class AudioCatAdmin(GenericBlockAdmin):
     fieldsets = GenericBlockAdmin.fieldsets + (
     (l_("Audio Categorization task parameters"), {'fields':(
+        'choices',
         'prompt',
         'correct_feedback',
-        'incorrect_feedback'
+        'incorrect_feedback',
+        'timing_feedback'
+        
     )}),                               
     )
     

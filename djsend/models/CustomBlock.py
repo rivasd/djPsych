@@ -103,7 +103,7 @@ class ForcedChoiceBlock(BaseSettingBlock):
     
 class AudioCatBlock(BaseSettingBlock):
     choices = models.CharField(blank=True, max_length = 1024, help_text=l_("Choose the keys associated for all categories. You have separate them with a coma and non spaces."))
-    response_ends_trial = models.BooleanField(help_text=l_("Does the trial finishes after the response"))
+    response_ends_trial = models.BooleanField(default =True, help_text=l_("Does the trial finishes after the response"))
     timing_response = models.IntegerField(help_text=l_("time limit for the participant before the trial automatically advances"), default=-1)
     prompt = models.CharField(max_length=256, blank=True, help_text=l_("Any content here will be displayed below the stimulus, as a reminder to the participant"))
     key_answer = models.CharField(blank=True, max_length = 1024, help_text=l_("Key associated with the category"))
@@ -112,7 +112,7 @@ class AudioCatBlock(BaseSettingBlock):
     incorrect_feedback = models.CharField(max_length=64, blank=True, help_text=l_("Any content here will be displayed as a feedback given to the participants when he doesn't hit the correct category"))
     
     def toDict(self):
-        initial = super(ForcedChoiceBlock,self).toDict()
+        initial = super(AudioCatBlock,self).toDict()
         initial['choices'] = self.choices.split(',')
         return initial
     
