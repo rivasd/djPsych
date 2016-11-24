@@ -43,7 +43,7 @@ def launch(request, exp_label):
     exp = Experiment.objects.get(label=exp_label)
     
     resources = exp.list_static_urls()
-    if os.path.exists(os.path.join(settings.BASE_DIR, "..", 'djexperiments', exp.label, 'consenthtml')):
+    if os.path.exists(os.path.join(settings.BASE_DIR, "..", 'djexperiments', "templates", 'djexperiments', exp.label, 'consent.html')):
         consentfile = 'djexperiments/'+exp_label+'/consent.html'
     else:
         consentfile = None
