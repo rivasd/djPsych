@@ -61,19 +61,25 @@ def save(request, exp_label):
         return JsonResponse({'error':_("Data does not match last requested experiment. Did you start multiple experiments at the same time?")})
     if subject_id != request.user.subject.id:
         return JsonResponse({'error':_("The experimental data does not match your credentials. Refused.")})
-        
+    
+    
+    #retrieve the JSON data to be added to participation object for things that need to be equal across sessions (only if needed/requested)
+    if 'extraParams' in meta:
+        globalparams = meta['globalparams']
+    else:
+        globalparams = {}
+    
+    
+    # select the participation to append to OR create a new one if this was not a continuation
     exp = Experiment.objects.get(label=exp_label)
-    if 'previous' in request.session:
-
-        if 'globalparams' in meta:
-            globalparams = meta['globalparams']
-        else:
-            globalparams = {}
+    if not 'previous' in request.session:
         participation = exp.create_participation(subject=request.user.subject, started=request.session['start_time'], complete=finished, parameters=globalparams)
     else:
         #verify that the participation pk matches the one saved in the request 
         previous = request.session.pop("previous")
         participation = exp.participation_set.get(pk=previous)
+        participation.parameters = globalparams if 'extraParams' in meta else participation.parameters # replace the content if something was returned, else don't touch it
+    
     
     # now that we have the participation, create the run representing the data just received
     new_run = participation.create_run(request.session['start_time'], datetime.datetime.now(), browserdict=browser_info, setting=setting) 
