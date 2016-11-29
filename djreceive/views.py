@@ -63,7 +63,7 @@ def save(request, exp_label):
         return JsonResponse({'error':_("The experimental data does not match your credentials. Refused.")})
         
     exp = Experiment.objects.get(label=exp_label)
-    if finished:
+    if 'previous' in request.session:
 
         if 'globalparams' in meta:
             globalparams = meta['globalparams']
@@ -72,8 +72,6 @@ def save(request, exp_label):
         participation = exp.create_participation(subject=request.user.subject, started=request.session['start_time'], complete=finished, parameters=globalparams)
     else:
         #verify that the participation pk matches the one saved in the request 
-        if not "previous" in request.session:
-            return JsonResponse({'error':_("Could not reliably find the participation to continue")})
         previous = request.session.pop("previous")
         participation = exp.participation_set.get(pk=previous)
     
