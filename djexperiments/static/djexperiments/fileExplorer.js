@@ -5,7 +5,7 @@
 
 $(function(){
 	
-	$("#djpsych-explorer").jstree({
+	var fileExp = $("#djpsych-explorer").jstree({
 		plugins: ["contextmenu", "types"],
 		contextmenu:{
 			show_at_node:false,
@@ -21,6 +21,9 @@ $(function(){
 			},
 			"image":{
 				icon:"fa fa-file-image-o"
+			},
+			"folder":{
+				icon: 'fa fa-folder-o'
 			}
 		},
 		core:{
@@ -37,6 +40,10 @@ $(function(){
 		}
 	});
 	
+	//data transfer through semi-global variables.... sorry
+	var currentlyEditedNode;
+	
+	
 	function buildContextItems($node){
 		var tree = $("#djpsych-explorer").jstree();
 		var default_menu =  {
@@ -47,19 +54,19 @@ $(function(){
                 "action": function (data) { 
                 	var inst = $.jstree.reference(data.reference);
                 	var obj = inst.get_node(data.reference);
-                	var parent;
+                	var parent; //set argument needed for server-side code
                 	if(obj.type=="#"){
                 		parent = "";
                 	}
                 	else{
                 		parent = obj.data;
                 	}
+                	//set a global variable so that code outside this scope can change the tree after server response
+                	currentlyEditedNode = data;
+                	
                 	$("#parentFolder").val(parent)
                 	$("#action").val("add")
                 	fileDialog.showModal();
-                	inst.create_node(obj, {}, "last", function (new_node) {
-						setTimeout(function () { inst.edit(new_node); },0);
-					});
                 }
             },
             "AddFolder":{
@@ -69,7 +76,8 @@ $(function(){
                 "action": function (data) { 
                 	var inst = $.jstree.reference(data.reference);
                 	var obj = inst.get_node(data.reference);
-                	inst.create_node(obj, {}, "last", function (new_node) {
+                	
+                	inst.create_node(obj, {type:'folder', text:"newFolder"}, "last", function (new_node) {
 						setTimeout(function () { inst.edit(new_node); },0);
 					});
                 }
@@ -78,8 +86,11 @@ $(function(){
                 "separator_before": false,
                 "separator_after": false,
                 "label": "Rename",
-                "action": function (obj) { 
-                    obj.reference.rename(obj)
+                "action": function (data) {
+					var inst = $.jstree.reference(data.reference),
+					obj = inst.get_node(data.reference);
+					currentlyEditedNode = data
+					inst.edit(obj);
                 }
             },                         
             "Remove": {
@@ -136,6 +147,24 @@ $(function(){
 		return final_menu
 	}
 	
+	fileExp.on("rename_node.jstree", function(e, data){
+		alert("hey!");
+		//do the renaming server-side!
+		/*
+		$.ajax({
+			method: 'post',
+			url: 'files',
+			dataType: 'json',
+			data:{
+				action: 'rename',
+				target: data.node.data,
+				name: data.text
+			}
+		});
+		*/
+	});
+	
+	
 	//code for  the file upload <dialog> element
 	var fileDialog = document.getElementById("djpsych-upload-dialog");
     if (! fileDialog.showModal) {
@@ -154,6 +183,14 @@ $(function(){
     		dataType: "json",
     		success: function(resp){
     			if(resp.success){
+    				
+    				var inst = $.jstree.reference(currentlyEditedNode.reference);
+                	var obj = inst.get_node(currentlyEditedNode.reference);
+                	resp.nodes.forEach(function(node){
+                		inst.create_node(obj, node, "last");
+                	});
+    				
+    				currentlyEditedNode = undefined;
     				fileDialog.close();
     			}
     			else{
