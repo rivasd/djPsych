@@ -24,6 +24,9 @@ $(function(){
 			},
 			"folder":{
 				icon: 'fa fa-folder-o'
+			},
+			"css":{
+				icon: 'fa fa-paint-brush'
 			}
 		},
 		core:{
