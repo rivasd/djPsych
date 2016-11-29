@@ -43,7 +43,7 @@ def sendSettings(request, exp_label):
     on_the_ice = participations.filter(complete=False)
     
     try:
-        if not hasattr(request.session, 'continue'):
+        if not 'continue' in request.session:
             to_be_continued = None
             # special checks for brand new participations
             if on_the_ice.count() > 0 and exp.enforce_finish:
@@ -77,7 +77,6 @@ def sendSettings(request, exp_label):
     # the primary key of the participation to continue if this is a request to continue a previous participation. False otherwise
     if to_be_continued:
         
-        final_settings['previous']= to_be_continued if to_be_continued is not None else False
         request.session['previous'] = to_be_continued.id
         final_settings['oldParams'] = to_be_continued.parameters
     # generate 8 character random sequence to identify this request for an experiment. Make the session remember it, too!
