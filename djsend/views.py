@@ -77,6 +77,7 @@ def sendSettings(request, exp_label):
     # the primary key of the participation to continue if this is a request to continue a previous participation. False otherwise
     if to_be_continued:
         
+        request.session.pop('continue')
         request.session['previous'] = to_be_continued.id
         final_settings['oldParams'] = to_be_continued.parameters
     # generate 8 character random sequence to identify this request for an experiment. Make the session remember it, too!
