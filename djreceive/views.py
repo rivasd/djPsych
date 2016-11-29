@@ -63,7 +63,7 @@ def save(request, exp_label):
         return JsonResponse({'error':_("The experimental data does not match your credentials. Refused.")})
         
     exp = Experiment.objects.get(label=exp_label)
-    if finished == False:
+    if finished:
 
         if 'globalparams' in meta:
             globalparams = meta['globalparams']
