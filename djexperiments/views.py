@@ -57,7 +57,11 @@ def launch(request, exp_label):
         completion = Participation.objects.get(pk=request.session['continue']).completion_status()
     else:
         latest = exp.get_latest_pending(request)
-        completion = latest.completion_status() if latest else {}
+        if latest:
+            request.session['continue'] = latest.pk
+            completion = latest.completion_status()
+        else:
+            completion = {}
     #send a brief description of the requested participation (if any), or the last one, or nothing if this is the very first time
     
     
@@ -86,7 +90,11 @@ def sandbox(request, exp_label):
     sandboxform = SandboxForm(versions=choices)
     
     latest = exp.get_latest_pending(request)
-    completion = latest.completion_status() if latest else {}
+    completion = {}
+    if latest:
+        request.session['continue'] = latest.pk
+        completion = latest.completion_status()
+    
     
     context= {
         'resources': resources,
