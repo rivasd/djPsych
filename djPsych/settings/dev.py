@@ -12,8 +12,8 @@ dev_only_apps = [
 IS_PRODUCTION = False
 ALLOWED_HOSTS =['www.cogcommtl.ca']
 DEBUG = True
-INSTALLED_APPS.extend(dev_only_apps)
-MIDDLEWARE_CLASSES.extend(['silk.middleware.SilkyMiddleware'])
+#INSTALLED_APPS.extend(dev_only_apps)
+#MIDDLEWARE_CLASSES.extend(['silk.middleware.SilkyMiddleware'])
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases

@@ -84,6 +84,10 @@ def sandbox(request, exp_label):
         choices.append((config.name, config.__str__()))
         
     sandboxform = SandboxForm(versions=choices)
+    
+    latest = exp.get_latest_pending(request)
+    completion = latest.completion_status() if latest else {}
+    
     context= {
         'resources': resources,
         'exp': exp,
@@ -92,7 +96,7 @@ def sandbox(request, exp_label):
         'sandboxform': sandboxform,
         'sandbox': True,
         'version': 'test',
-        'completion': json.dumps({})
+        'completion': json.dumps(completion)
     }
     
     return render(request, 'djexperiments/launch.html', context)

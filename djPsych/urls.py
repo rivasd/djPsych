@@ -34,7 +34,7 @@ urlpatterns = [
 
 if settings.IS_PRODUCTION is False:
     additional = [
-        url(r'^silk/', include('silk.urls', namespace='silk')),
+       # url(r'^silk/', include('silk.urls', namespace='silk')),
     ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns.extend(additional)
 
