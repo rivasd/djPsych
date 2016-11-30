@@ -18,6 +18,7 @@ class SimCatGlobalSetting(BaseGlobalSetting):
     number_of_pauses = models.PositiveSmallIntegerField(default=0, help_text=l_("how many pauses with questionnaire should we insert"))
     length = models.PositiveIntegerField(help_text=l_("How many stimuli pairs should be created"), default=40)
     practices = models.PositiveIntegerField(help_text=l_("How many practice trials should be run before starting the real task"), default=5)
+    difficulty = models.PositiveSmallIntegerField(default=0, blank=True, help_text=l_("If not zero, the fixed difficulty at which to run the experiment"))
     
     microcomponent_pairs = models.ManyToManyField('djstim.MicroComponentPair', related_name='settings')
     practice_pairs = models.ManyToManyField('djstim.MicroComponentPair', related_name='practice_settings')
@@ -26,7 +27,7 @@ class SimCatGlobalSetting(BaseGlobalSetting):
         super_dict = super(SimCatGlobalSetting, self).toDict()
         # we should add the categories and microcomponent pairs for our experiment
         microcomponents = {}
-        prefix = settings.MEDIA_URL+'/'+self.experiment.label+'/attributes/'
+        prefix = settings.MEDIA_URL+self.experiment.label+'/attributes/'
         for pair in self.microcomponent_pairs.all():
             microcomponents[pair.index] = {
                 '0': prefix+pair.first,
