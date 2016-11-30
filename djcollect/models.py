@@ -92,6 +92,19 @@ class Participation(models.Model):
                 runs[run.global_setting_obj.name] = 1
         
         return runs
+
+class DropOut(models.Model):
+    
+    """
+    Represents a single unfinished participation of a subject to an experiment   
+    
+    """
+    
+    experiment = models.ForeignKey(Experiment)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    started = models.DateTimeField()
+    finished = models.DateTimeField(null=True, blank=True)
+
     
     
 class Researcher(models.Model):

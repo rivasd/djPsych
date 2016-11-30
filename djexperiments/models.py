@@ -188,6 +188,9 @@ class BaseExperiment(models.Model):
         except ObjectDoesNotExist:
             return False
         return last
+    
+    def count_dropouts(self):
+        return self.dropout_set.count()
      
     
     

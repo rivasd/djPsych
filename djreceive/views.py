@@ -10,6 +10,7 @@ from djPsych.exceptions import InvalidData, PayoutException
 from djpay.models import Payment
 import json
 from djexperiments.models import Experiment
+from djcollect.models import DropOut
 from .utils import sort_trials
 import datetime
 from django.contrib.contenttypes.models import ContentType
@@ -122,6 +123,9 @@ def save(request, exp_label):
             message = _("You have earned a payment of {:.2f} {:s}. Go to your profile page to claim it!").format(round(payment.amount, 2), payment.currency)
         except PayoutException as e:
             message= _("However payment will not be issued because of the following reason: ")+str(e)
+            
+    #Deleting the dropout object, meaning by this that this run have been completed
+    Dropout.objects.filter(id = request.session.pop('dropout')).delete()
     
     # dont forget to save stuff
     if finished:

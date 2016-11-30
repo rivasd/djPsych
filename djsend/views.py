@@ -7,6 +7,7 @@ from django.http import HttpResponseBadRequest, JsonResponse
 from django.utils.translation import ugettext as _
 from djexperiments.models import Experiment
 from djPsych.exceptions import ParticipationRefused
+from djcollect.models import DropOut
 import random
 import string
 import datetime
@@ -95,6 +96,9 @@ def sendSettings(request, exp_label):
     request.session['data_mapping'] = json.dumps(save_dict)
     #adding static resources to settings
     final_settings['resources'] = exp.list_static_urls()
+    #creating a dropout object that will be removed in the data base if the partipation is finished and storing the id in the session
+    dropout = DropOut(experiment = exp, subject = request.user.subject, started = datetime.datetime.now())
+    request.session['dropout_id'] = dropout.pk
     # Good luck :)
     return JsonResponse(final_settings)
 
