@@ -36,7 +36,7 @@ def lobby(request, exp_label):
     else: 
         uploadForm = UploadForm()
         researcher_experiments = Experiment.objects.filter(research_group__in = request.user.groups.all())
-        return render(request, 'djexperiments/control_panel.html', {'exp': exp, 'researcher_experiments' : researcher_experiments, 'listdir': exp.list_static_resources(), 'uploadForm':uploadForm})  
+        return render(request, 'djexperiments/control_panel.html', {'exp': exp, 'researcher_experiments' : researcher_experiments, 'listdir': exp.list_static_resources(), 'uploadForm':uploadForm, 'dropouts_nb': exp.count_dropouts()})  
 
 @login_required
 def launch(request, exp_label):

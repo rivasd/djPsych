@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Participation
+from .models import Participation, DropOut
 # Register your models here.
 from django.apps import apps
 
@@ -21,3 +21,14 @@ class ParticipationAdmin(admin.ModelAdmin):
             return False
     
     list_display = ('experiment', 'subject_no', 'started', 'complete', 'paid')
+    
+@admin.register(DropOut)
+class DropOutAdmin(admin.ModelAdmin):
+    
+    def experiment(self, obj):
+        return obj.experiment.verbose_name
+    
+    def subject_no(self, obj):
+        return obj.subject.id
+    
+    list_display = ('experiment', 'subject_no', 'started', 'finished')

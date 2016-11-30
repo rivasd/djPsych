@@ -98,6 +98,7 @@ def sendSettings(request, exp_label):
     final_settings['resources'] = exp.list_static_urls()
     #creating a dropout object that will be removed in the data base if the partipation is finished and storing the id in the session
     dropout = DropOut(experiment = exp, subject = request.user.subject, started = datetime.datetime.now())
+    dropout.save()
     request.session['dropout_id'] = dropout.pk
     # Good luck :)
     return JsonResponse(final_settings)

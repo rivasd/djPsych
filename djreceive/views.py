@@ -125,7 +125,7 @@ def save(request, exp_label):
             message= _("However payment will not be issued because of the following reason: ")+str(e)
             
     #Deleting the dropout object, meaning by this that this run have been completed
-    Dropout.objects.filter(id = request.session.pop('dropout')).delete()
+    DropOut.objects.filter(id = request.session.pop('dropout_id')).delete()
     
     # dont forget to save stuff
     if finished:
