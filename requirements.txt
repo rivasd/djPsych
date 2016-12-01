@@ -5,7 +5,7 @@ django-grappelli
 django-allauth
 django-markdown
 django-debug-toolbar
-django-modeltranslation
+django-modeltranslation >= 0.12
 django-genericadmin
 jsonfield
 django-silk

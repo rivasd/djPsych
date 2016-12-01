@@ -13,7 +13,7 @@ from django.contrib.auth.models import Group
 from djexperiments.forms import SandboxForm, UploadForm
 from djcollect.models import Participation
 import os
-import io
+import io 
 import zipfile
 from argparse import Action
 from django.core.files import File
@@ -23,6 +23,9 @@ from djPsych.utils import fetch_files_of_type, get_type
 import json
 import pathlib
 import markdown
+from rest_framework import viewsets
+from djexperiments.serializers import ExperimentSerializer
+from rest_framework.response import Response
 
 # Create your views here.
 def lobby(request, exp_label):
@@ -305,3 +308,12 @@ def exp_filesystem(request, exp_label):
     else:
         return JsonResponse({'error': _("This API only available through POST request"+exp_label)})
     
+class ExperimentViewSet(viewsets.ModelViewSet):
+    
+    queryset = Experiment.objects.all()
+    
+    
+    def list(self, request, *args, **kwargs):
+        queryset = Experiment.objects.all()
+        serializer = ExperimentSerializer(queryset, many=True)
+        return Response(serializer.data)    
