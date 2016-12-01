@@ -13,3 +13,4 @@ class ExperimentSerializer(serializers.ModelSerializer):
         model=Experiment
         fields=('label', 'id', 'verbose_name', 'description', 'estimated_length', 'allow_repeats', 'max_repeats', 'enforce_finish', 'compensated', 
                 'max_payouts', 'allow_do_overs', 'funds_remaining', 'is_active')
+

@@ -15,7 +15,6 @@ router = routers.DefaultRouter()
 router.register(r'experiments', ExperimentViewSet, 'experiment')
 router.register(r'(?P<exp_label>\w+)', ConfigViewSet, 'configs')
 
-
 urlpatterns = [
     url(r'^$', home, name="home"),
     url(r'^api/', include(router.urls)),
@@ -23,4 +22,5 @@ urlpatterns = [
     url(r'^allExperiments/', allExperiments, name = "allExperiments"),
     url(r'(?P<exp_label>\w+)/', include('djexperiments.urls')),
 ]
+
 

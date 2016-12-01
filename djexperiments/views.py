@@ -303,8 +303,7 @@ def exp_filesystem(request, exp_label):
                 downloads.close()
                 response = HttpResponse(the_zip.getvalue(), content_type="application/zip, application/octet-stream")
                 response['Content-Disposition'] = 'attachment; filename='+exp_label+'-items.zip'
-                return response
-                
+                return response    
                 
                 
     else:
