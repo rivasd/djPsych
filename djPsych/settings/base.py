@@ -214,3 +214,4 @@ REST_FRAMEWORK = {
 FIXTURE_DIRS = [
     os.path.join(BASE_DIR, 'fixtures')
 ]
+
