@@ -29,6 +29,7 @@ urlpatterns = [
     url(r'^markdown/', include( 'django_markdown.urls')),
     url(r'^accounts/', include(allauth.urls)),
     url(r'^textures$', texture_generator, name="texturegenerator"),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^$', index, name='index'),
 ]
 

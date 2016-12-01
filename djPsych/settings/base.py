@@ -72,6 +72,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
     'django_markdown',
+    'rest_framework'
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -199,3 +200,13 @@ MARKDOWN_EDITOR_SKIN = 'simple'
 # Grappelli options
 
 GRAPPELLI_ADMIN_TITLE = l_("Web laboratory dashboard")
+
+# Options for Django REST Framework
+
+REST_FRAMEWORK = {
+    
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
+

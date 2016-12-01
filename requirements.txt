@@ -11,3 +11,4 @@ jsonfield
 django-silk
 matplotlib
 django-material
+djangorestframework > =3.5
