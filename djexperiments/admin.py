@@ -71,10 +71,25 @@ class ExperimentAdmin(TranslationAdmin):
             
             exp_content_type = ContentType.objects.get_for_model(Experiment)
             exp_perm = Permission.objects.get(content_type=exp_content_type, codename="change_experiment")
-            
             new_group.permissions.add(exp_perm)
+            
+            #add the creator of the experiment in the experiment group
             request.user.groups.add(new_group)
-            os.makedirs(os.path.join(settings.MEDIA_ROOT, obj.label))
+            
+            #create a new folder for this experiment
+            dir_path = os.path.join(settings.MEDIA_ROOT, obj.label)
+            
+            if not os.path.exists(dir_path):
+                os.makedirs(dir_path)
+            
+            template_path = os.path.join(settings.BASE_DIR, '..', 'djexperiments','static','djexperiments','template_experiments.js')
+            
+            with open(template_path, 'r') as content_file:
+                content = content_file.read()
+            
+                with open(os.path.join(dir_path + os.path.sep, 'exp.js'), 'wb') as temp_file:
+                    temp_file.write(content)
+           
         obj.save()
     
     filter_horizontal=['block_models']
