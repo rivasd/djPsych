@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.auth.models import Group, Permission
 from .models import Experiment
 from djmanager.utils import get_subclass_ct_pk, get_allowed_exp_for_user
 from djsend.models import BaseGlobalSetting, BaseSettingBlock
@@ -9,6 +10,8 @@ from modeltranslation.admin import TranslationAdmin,\
 from djexperiments.models import Debrief, Lobby
 from django_markdown.models import MarkdownField
 from django_markdown.widgets import AdminMarkdownWidget
+import os
+from django.conf import settings
 
 # Register your models here.
 
@@ -59,6 +62,20 @@ class ExperimentAdmin(TranslationAdmin):
         form.base_fields['block_models'].queryset = ContentType.objects.filter(pk__in=block_settings_pks)
         
         return form
+    
+    def save_model(self, request, obj, form, change):
+        if obj.pk is None:
+            new_group = Group(name=obj.label+"_researchers")
+            new_group.save()
+            obj.research_group = new_group
+            
+            exp_content_type = ContentType.objects.get_for_model(Experiment)
+            exp_perm = Permission.objects.get(content_type=exp_content_type, codename="change_experiment")
+            
+            new_group.permissions.add(exp_perm)
+            request.user.groups.add(new_group)
+            os.makedirs(os.path.join(settings.MEDIA_ROOT, obj.label))
+        obj.save()
     
     filter_horizontal=['block_models']
     

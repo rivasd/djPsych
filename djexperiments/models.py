@@ -94,6 +94,8 @@ class BaseExperiment(models.Model):
         """
         
         return self.settings_model.get_object_for_this_type(name=version, experiment=self)
+    
+    """
         
     def save(self, *args, **kwargs):
         
@@ -108,6 +110,7 @@ class BaseExperiment(models.Model):
             new_group.save()
             os.makedirs(os.path.join(settings.MEDIA_ROOT, self.label))
         super(BaseExperiment, self).save()
+    """
         
     def create_participation(self, subject, started, complete=False, parameters={}):
         
