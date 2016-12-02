@@ -82,12 +82,12 @@ class ExperimentAdmin(TranslationAdmin):
             if not os.path.exists(dir_path):
                 os.makedirs(dir_path)
             
-            template_path = os.path.join(settings.BASE_DIR, '..', 'djexperiments','static','djexperiments','template_experiments.js')
+            template_path = os.path.join(settings.BASE_DIR, '..', 'djexperiments','static','djexperiments','template_experiment.js')
             
             with open(template_path, 'r') as content_file:
                 content = content_file.read()
             
-                with open(os.path.join(dir_path + os.path.sep, 'exp.js'), 'wb') as temp_file:
+                with open(os.path.join(dir_path + os.path.sep, 'exp.js'), 'w') as temp_file:
                     temp_file.write(content)
            
         obj.save()
