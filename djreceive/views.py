@@ -66,7 +66,7 @@ def save(request, exp_label):
     
     #retrieve the JSON data to be added to participation object for things that need to be equal across sessions (only if needed/requested)
     if 'extraParams' in meta:
-        globalparams = meta['globalparams']
+        globalparams = meta['extraParams']
     else:
         globalparams = {}
     
