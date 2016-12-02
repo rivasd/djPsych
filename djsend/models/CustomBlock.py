@@ -114,6 +114,7 @@ class AudioCatBlock(BaseSettingBlock):
     def toDict(self):
         initial = super(AudioCatBlock,self).toDict()
         initial['choices'] = self.choices.split(',')
+        initial['prompt'] = "<p class=\"prompt\"> {} </p>".format(self.prompt)
         return initial
     
     
