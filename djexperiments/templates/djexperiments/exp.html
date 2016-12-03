@@ -1,0 +1,7 @@
+{% load rest_framework %}
+
+<form>
+{% csrf_token %}
+{% render_form serializer %}
+
+</form>

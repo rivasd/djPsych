@@ -170,7 +170,9 @@ class BaseExperiment(models.Model):
         
     def is_researcher(self, request):
         """
-        indicates whether the given request comes from a user that is in the research group of this experiment
+        indicates whether the given request comes from a user that is in the research group of this experiment.
+        
+        Used heavily for permissions and security
         """
         
         return self.research_group in request.user.groups.all()

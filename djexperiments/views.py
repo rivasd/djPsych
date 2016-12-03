@@ -26,6 +26,8 @@ import markdown
 from rest_framework import viewsets
 from djexperiments.serializers import ExperimentSerializer
 from rest_framework.response import Response
+from djexperiments.permissions import ExperimentPermissions
+from rest_framework.renderers import TemplateHTMLRenderer, JSONRenderer
 
 # Create your views here.
 def lobby(request, exp_label):
@@ -309,11 +311,24 @@ def exp_filesystem(request, exp_label):
         return JsonResponse({'error': _("This API only available through POST request"+exp_label)})
     
 class ExperimentViewSet(viewsets.ModelViewSet):
+    """
+    Django REST Framework ViewSet to get and modify all things for an experiment
     
-    queryset = Experiment.objects.all()
+    """
     
+    serializer_class = ExperimentSerializer
+    permission_classes = [ExperimentPermissions]
+    #renderer_classes = [JSONRenderer]
+    template_name = 'djexperiments/exp.html'
     
-    def list(self, request, *args, **kwargs):
-        queryset = Experiment.objects.all()
-        serializer = ExperimentSerializer(queryset, many=True)
-        return Response(serializer.data)    
+    def get_queryset(self):
+        if self.request.user.is_superuser:
+            return Experiment.objects.all()
+        else:
+            return Experiment.objects.filter(research_group__in = self.request.user.groups.all())
+        
+    def retrieve(self, request, *args, **kwargs):
+        experiment = self.get_object()
+        serializer = self.get_serializer(experiment)
+        return Response({'serializer': serializer})
+    

@@ -15,6 +15,7 @@ import json
 from django.shortcuts import render
 from django.contrib.contenttypes.models import ContentType
 from djreceive.models.CustomTrials import CogComHTMLTrial
+from rest_framework import viewsets
 
 
 # Create your views here.
@@ -107,3 +108,10 @@ def serve_snippet(request, exp_label, template):
     prefix = 'djexperiments/'+exp_label+'/'
     return render(request, prefix+template)
     
+    
+class ConfigViewSet(viewsets.GenericViewSet):
+    
+    def get_queryset(self):
+        label = self.kwargs['exp_label'] # first identify which experiment we're talking about
+        
+        

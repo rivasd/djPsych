@@ -11,7 +11,7 @@ from djexperiments.views import ExperimentViewSet
 
 
 router = routers.DefaultRouter()
-router.register(r'experiments', ExperimentViewSet)
+router.register(r'experiments', ExperimentViewSet, 'experiment')
 
 
 urlpatterns = [
