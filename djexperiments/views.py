@@ -22,12 +22,16 @@ from djmanager.utils import get_allowed_exp_for_user
 from djPsych.utils import fetch_files_of_type, get_type
 import json
 import pathlib
-import markdown
 from rest_framework import viewsets
 from djexperiments.serializers import ExperimentSerializer
 from rest_framework.response import Response
 from djexperiments.permissions import ExperimentPermissions
 from rest_framework.renderers import TemplateHTMLRenderer, JSONRenderer
+from rest_framework import viewsets
+from djexperiments.serializers import ExperimentSerializer
+from rest_framework.response import Response
+import markdown
+
 
 # Create your views here.
 def lobby(request, exp_label):

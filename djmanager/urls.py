@@ -22,5 +22,3 @@ urlpatterns = [
     url(r'^allExperiments/', allExperiments, name = "allExperiments"),
     url(r'(?P<exp_label>\w+)/', include('djexperiments.urls')),
 ]
-
-
