@@ -258,7 +258,7 @@ def exp_filesystem(request, exp_label):
         
         elif request.POST["action"] == "rename":
             
-            return JsonResponse()
+            return JsonResponse({})
         
         elif request.POST["action"] == "download":
             to_download = request.POST['args']

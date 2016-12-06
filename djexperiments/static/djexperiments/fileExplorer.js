@@ -233,7 +233,7 @@ $(function(){
 	fileExp.on("rename_node.jstree", function(e, data){
 		alert("hey!");
 		//do the renaming server-side!
-		/*
+		
 		$.ajax({
 			method: 'post',
 			url: 'files',
@@ -244,7 +244,6 @@ $(function(){
 				name: data.text
 			}
 		});
-		*/
 	});
 	
 	
