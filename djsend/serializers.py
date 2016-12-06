@@ -33,7 +33,7 @@ class ConfigSerializer(serializers.ModelSerializer):
     
     """
     
-    blocks = BlockSerializer(many=True, source='get_all_blocks')
+    blocks = serializers.SerializerMethodField('get_blocks')
     
     
     class Meta:
@@ -48,3 +48,7 @@ class ConfigSerializer(serializers.ModelSerializer):
         if kind == QuerySet or kind == list: # the first argument may be a list/queryset instead of a single object to serialize
             kind = type(instance[0])
         self.Meta.model = kind
+        
+    def get_blocks(self, obj):
+        serializer = BlockSerializer(obj.get_all_blocks(), many=True)
+        return serializer.data
