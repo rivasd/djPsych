@@ -105,6 +105,7 @@ class ConfigSerializer(serializers.ModelSerializer):
         Is simply the id of the ContentType of this object's model, needed when updating to query the right django Model that created that block
         """
         
+    
         return ContentType.objects.get_for_model(obj).id
     
     def update(self, instance, validated_data):
