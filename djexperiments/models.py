@@ -157,8 +157,8 @@ class BaseExperiment(models.Model):
                     folder = 'root1'
                     
                 subfiles = default_storage.listdir(os.path.join(exp_root, folder)) #guard against empty directories
-                if subfiles[1]:
-                    resource_dict[folder] = subfiles[1]
+                
+                resource_dict[folder] = subfiles[1]
             
             return resource_dict
         else:
