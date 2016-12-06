@@ -12,10 +12,14 @@ import random
 import string
 import datetime
 import json
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib.contenttypes.models import ContentType
 from djreceive.models.CustomTrials import CogComHTMLTrial
 from rest_framework import viewsets
+from rest_framework.mixins import ListModelMixin
+from djmanager.utils import get_subclass_ct_pk
+from djsend.models.BasicGeneral import BaseGlobalSetting
+from djsend.serializers import ConfigSerializer
 
 
 # Create your views here.
@@ -109,9 +113,16 @@ def serve_snippet(request, exp_label, template):
     return render(request, prefix+template)
     
     
-class ConfigViewSet(viewsets.GenericViewSet):
+class ConfigViewSet(viewsets.GenericViewSet, ListModelMixin):
+    
+    serializer_class = ConfigSerializer
+    
     
     def get_queryset(self):
         label = self.kwargs['exp_label'] # first identify which experiment we're talking about
+        exp = get_object_or_404(Experiment, label=label)
+        configs = exp.settings_model.model_class().objects.filter(experiment=exp)
+        return configs
+    
         
         
