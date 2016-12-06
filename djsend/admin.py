@@ -133,7 +133,8 @@ class SimilarityBlockAdmin(GenericBlockAdmin):
             'timing_post_trial',
             'timeout',
             'timeout_message',
-            'prompt'
+            'prompt',
+            'is_audio'
         )}),                               
     )
     

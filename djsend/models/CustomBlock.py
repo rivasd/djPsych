@@ -45,6 +45,7 @@ class SimilarityBlock(BaseSettingBlock):
     timing_second_stim = models.IntegerField(help_text=l_("How long to show the second stimulus for in milliseconds. -1 will show the stimulus until a response is made by the subject."))
     timing_image_gap = models.IntegerField(help_text=l_("How long to show a blank screen in between the two stimuli."))
     timing_post_trial = models.IntegerField(help_text=l_("Sets the time, in milliseconds, between the current trial and the next trial."))
+    is_audio = models.BooleanField(default = False, help_text=l_("If you use audio stimuli, check this box."))
 
     timeout = models.IntegerField(help_text=l_("time limit for the participant before the trial automatically advances"), default=-1)
     timeout_message = models.CharField(max_length=128, blank=True, null=True, help_text=l_('message to display if the participant takes too long to respond'))
