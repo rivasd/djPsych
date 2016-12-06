@@ -18,6 +18,7 @@ from django.contrib import messages
 from djmanager.utils import get_allowed_exp_for_user
 from djPsych.utils import fetch_files_of_type, get_type
 import json
+import pathlib
 
 # Create your views here.
 def lobby(request, exp_label):
@@ -183,7 +184,7 @@ def exp_filesystem(request, exp_label):
             response = contents
             
             if request.POST["mode"] == "jsTree":
-                response = [{"text": exp.label, "type":'#', "icon":"fa fa-folder", "data":exp.label, "state":{"opened":True}}]
+                response = [{"text": exp.label, "type":'#', "icon":"fa fa-folder", "data": settings.MEDIA_URL+exp.label, "state":{"opened":True}}]
                 root_nodes = []
                 
                 for folder, files in contents.items():
@@ -194,7 +195,7 @@ def exp_filesystem(request, exp_label):
                         folder_node = {
                             "text":folder, 
                             "type":"folder", 
-                            "data":exp.label+'/'+folder, 
+                            "data":settings.MEDIA_URL+exp.label+'/'+folder, 
                             "children":[]
                         }
                         root_nodes.append(folder_node)
@@ -203,7 +204,7 @@ def exp_filesystem(request, exp_label):
                     for file in files:
                         subfolder = (folder+'/') if folder != "root" else ""
                         file_node={
-                            "data":exp.label+'/'+subfolder+file,
+                            "data":settings.MEDIA_URL+ exp.label+'/'+subfolder+file,
                             "type": get_type(file),
                             "text": file
                         }
@@ -246,7 +247,7 @@ def exp_filesystem(request, exp_label):
                 fileObject = File(currentFile)
                 initialPath = fileObject.name
                 newPath = os.path.join(default_storage.location, exp.label, parentDir, initialPath)
-                relative_path = os.path.join(exp.label, parentDir, initialPath)
+                relative_path = os.path.join(settings.MEDIA_URL, exp.label, parentDir, initialPath)
                 default_storage.save(newPath, fileObject)
                 messages.add_message(request, messages.SUCCESS, _('Your file successfully uploaded: ')+initialPath)
                 
@@ -257,6 +258,15 @@ def exp_filesystem(request, exp_label):
         elif request.POST["action"] == "rename":
             
             return JsonResponse()
+        
+        elif request.POST["action"] == "download":
+            to_download = request.POST['args']
+            path = pathlib.Path(*pathlib.Path(to_download).parts[2:])
+            
+            file = default_storage.open(str(path))
+            response = HttpResponse(file)
+            response['Content-Disposition'] = 'attachment; filename='+path.name
+            return response
             
     else:
         return JsonResponse({'error': _("This API only available through POST request"+exp_label)})
