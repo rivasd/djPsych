@@ -218,14 +218,15 @@ def exp_filesystem(request, exp_label):
             to_delete = json.loads(request.POST["args"])
             #some checks across all paths to delete
             for filename in to_delete:
-                full_path = default_storage.path(os.path.join(filename))
+
+                full_path = default_storage.path(str(pathlib.Path(*pathlib.Path(filename).parts[2:])))
                 if not os.path.exists(full_path):
                     return JsonResponse({'error':_("requested file :"+filename+" does not exist")})
                 if os.path.isdir(full_path):
                     return JsonResponse({'error':_("cannot delete folders")})
             #if no errors, actually delete
             for filename in to_delete:   
-                default_storage.delete(filename)
+                default_storage.delete(str(pathlib.Path(*pathlib.Path(filename).parts[2:])))
 
             return JsonResponse({'success':True})
         
