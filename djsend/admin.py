@@ -17,7 +17,7 @@ from djstim.models import Category, MicroComponentPair
 from djreceive.models.CustomTrials import CogComSimilarityTrial
 from djstim.admin import LinkedStimulusInline
 from djsend.models.BasicBlock import SurveyMultiChoiceBlock,SurveyLikertBlock
-from djsend.models.CustomBlock import ForcedChoiceBlock, RatingBlock
+from djsend.models.CustomBlock import ForcedChoiceBlock, RatingBlock, AudioCatBlock
 from djsend.models.BaseStimuli import Question
 
 
@@ -133,7 +133,8 @@ class SimilarityBlockAdmin(GenericBlockAdmin):
             'timing_post_trial',
             'timeout',
             'timeout_message',
-            'prompt'
+            'prompt',
+            'is_audio'
         )}),                               
     )
     
@@ -225,4 +226,18 @@ class RatingAdmin(GenericBlockAdmin):
         form.base_fields['type'].initial = 'rating'
         form.base_fields['save_with'].initial = ContentType.objects.get_for_model(Rating)
         return form
+
+@admin.register(AudioCatBlock)    
+class AudioCatAdmin(GenericBlockAdmin):
+    fieldsets = GenericBlockAdmin.fieldsets + (
+    (l_("Audio Categorization task parameters"), {'fields':(
+        'choices',
+        'prompt',
+        'correct_feedback',
+        'incorrect_feedback',
+        'timing_feedback'
+        
+    )}),                               
+    )
+    
     
