@@ -141,8 +141,8 @@ class AudioCatTrial(BaseTrial):
     handles = 'audio-categorization'
     rt = models.PositiveIntegerField
     stimulus = models.CharField(max_length=128)
-    correct = models.BooleanField()
-    category = models.CharField(max_length=24, null=True)
+    key_press = models.SmallIntegerField(null = True)
+    result = models.CharField(max_length=128)
     
     
     
