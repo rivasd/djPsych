@@ -115,6 +115,9 @@ class AudioCatBlock(BaseSettingBlock):
         initial = super(AudioCatBlock,self).toDict()
         initial['choices'] = self.choices.split(',')
         initial['prompt'] = "<p class=\"prompt\"> {} </p>".format(self.prompt)
+        initial['correct_feedback'] = self.correct_feedback
+        initial['incorrect_feedback'] = self.incorrect_feedback
+        initial['timeout_feedback'] = self.timeout_feedback
         return initial
     
     

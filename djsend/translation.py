@@ -46,5 +46,5 @@ class SurveyMultiChoiceOptions(TranslationOptions):
 
 @register(AudioCatBlock)
 class AudioCatOptions(TranslationOptions):
-    fields=('prompt','correct_feedback','incorrect_feedback')
+    fields=('prompt','correct_feedback','incorrect_feedback', 'timeout_feedback')
     
