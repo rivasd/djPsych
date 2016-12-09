@@ -157,7 +157,7 @@ class SurveyTextBlock(BaseSettingBlock):
     
     def toDict(self):
         
-        initial = super(SurveyLikertBlock,self).toDict()
+        initial = super(SurveyTextBlock,self).toDict()
         
         questions_list = []
         option_labels_list = []
