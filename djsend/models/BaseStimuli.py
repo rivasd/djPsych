@@ -17,7 +17,7 @@ class BaseStimuli(models.Model):
     
 class Question(BaseStimuli):
     question_label = models.CharField( max_length = 1024, help_text=l_("Question:"))
-    answer_options = models.CharField( max_length = 1024, help_text=l_("Choose the labels for the possibles answers for each question. You have separate them with a coma and no spaces. ex: yes,no,maybe. Leaving a space using the likert survey will put a blank in the scale. Ex: 1,,,4"))
+    answer_options = models.CharField(null = True, blank = True, max_length = 1024, help_text=l_("Only for likert and multi-choices surveys!!! Choose the labels for the possibles answers for each question. You have separate them with a coma and no spaces. ex: yes,no,maybe. Leaving a space using the likert survey will put a blank in the scale. Ex: 1,,,4"))
     required = models.BooleanField(help_text=l_("If the question is required. If so, put true, else put false."), default=False)
     
     

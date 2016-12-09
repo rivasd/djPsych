@@ -6,7 +6,7 @@ Created on Feb 24, 2016
 
 from modeltranslation.translator import register, TranslationOptions
 from .models import Instruction, CategorizationBlock, GenericSettingBlock, \
-                    SimilarityBlock, Question, ForcedChoiceBlock, RatingBlock, SurveyLikertBlock, SurveyMultiChoiceBlock, AudioCatBlock
+                    SimilarityBlock, Question, ForcedChoiceBlock, RatingBlock, SurveyLikertBlock, SurveyMultiChoiceBlock, AudioCatBlock, SurveyTextBlock
 
 @register(Instruction)
 class InstructionTransOptions(TranslationOptions):
@@ -47,4 +47,8 @@ class SurveyMultiChoiceOptions(TranslationOptions):
 @register(AudioCatBlock)
 class AudioCatOptions(TranslationOptions):
     fields=('prompt','correct_feedback','incorrect_feedback', 'timeout_feedback')
+    
+@register(SurveyTextBlock)
+class SurveyTextOptions(TranslationOptions):
+    fields=('preamble',)
     

@@ -149,6 +149,31 @@ class SurveyLikertBlock(BaseSettingBlock):
         initial['required'] = question_requirement_list
         
         return initial
+    
+class SurveyTextBlock(BaseSettingBlock):
+    
+    questions = GenericRelation(Question)
+    preamble = models.TextField(blank = True, null = True, help_text = l_("A short paragraphe that will display at the top of your questions page"))
+    
+    def toDict(self):
+        
+        initial = super(SurveyLikertBlock,self).toDict()
+        
+        questions_list = []
+        option_labels_list = []
+        question_requirement_list = []
+        
+        for question in self.questions.all():
+            questions_list.append(question.question_label)
+            option_labels_list.append(question.answer_options.split(','))
+            question_requirement_list.append(question.required)           
+            
+        initial['questions'] = questions_list
+        initial['labels'] = option_labels_list
+        initial['required'] = question_requirement_list
+        initial['preamble'] = self.preamble
+        
+        return initial
         
         
         

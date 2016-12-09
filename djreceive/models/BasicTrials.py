@@ -144,5 +144,10 @@ class AudioCatTrial(BaseTrial):
     key_press = models.SmallIntegerField(null = True)
     result = models.CharField(max_length=128)
     
+class SurveyTextTrial(BaseTrial):
+    handles = 'survey-text'
+    rt = models.PositiveIntegerField
+    responses = JSONField(null=False, blank=True)
+    
     
     
