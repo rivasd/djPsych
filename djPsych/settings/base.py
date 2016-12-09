@@ -210,3 +210,7 @@ REST_FRAMEWORK = {
     ]
 }
 
+# settings for testing
+FIXTURE_DIRS = [
+    os.path.join(BASE_DIR, 'fixtures')
+]

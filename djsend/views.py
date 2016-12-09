@@ -16,7 +16,8 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.contenttypes.models import ContentType
 from djreceive.models.CustomTrials import CogComHTMLTrial
 from rest_framework import viewsets
-from rest_framework.mixins import ListModelMixin
+from rest_framework.mixins import ListModelMixin, CreateModelMixin,\
+    UpdateModelMixin, RetrieveModelMixin
 from djmanager.utils import get_subclass_ct_pk
 from djsend.models.BasicGeneral import BaseGlobalSetting
 from djsend.serializers import ConfigSerializer
@@ -113,7 +114,7 @@ def serve_snippet(request, exp_label, template):
     return render(request, prefix+template)
     
     
-class ConfigViewSet(viewsets.GenericViewSet, ListModelMixin):
+class ConfigViewSet(viewsets.GenericViewSet, ListModelMixin, CreateModelMixin, UpdateModelMixin, RetrieveModelMixin):
     
     serializer_class = ConfigSerializer
     
@@ -124,5 +125,7 @@ class ConfigViewSet(viewsets.GenericViewSet, ListModelMixin):
         configs = exp.settings_model.model_class().objects.filter(experiment=exp)
         return configs
     
+    def retrieve(self, request, *args, **kwargs):
+        return RetrieveModelMixin.retrieve(self, request, *args, **kwargs)
         
         
