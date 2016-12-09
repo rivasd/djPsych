@@ -6,8 +6,17 @@ Created on 6 déc. 2016
 
 from rest_framework import serializers
 from django.db.models.query import QuerySet
+from django.db import models
 
-
+class TimelineSerializer(serializers.ListSerializer):
+    
+    
+    def to_representation(self, data):
+        iterable = data.all() if isinstance(data, models.Manager) else data
+        return [
+            self.type(child)(item).data for item in iterable]
+        return serializers.ListSerializer.to_representation(self, data)
+    
 class BlockSerializer(serializers.ModelSerializer):
     """
     Another generic modelSerializers, meant for block models
@@ -16,6 +25,7 @@ class BlockSerializer(serializers.ModelSerializer):
     class Meta:
         model = None
         fields = '__all__'
+        list_serializer_class = TimelineSerializer
     
     def __init__(self, instance=None, *args, **kwargs):
         
@@ -24,7 +34,9 @@ class BlockSerializer(serializers.ModelSerializer):
         if kind == QuerySet or kind == list: # the first argument may be a list/queryset instead of a single object to serialize
             kind = type(instance[0])
         self.Meta.model = kind
-        
+
+
+
 
 class ConfigSerializer(serializers.ModelSerializer):
     """
