@@ -1,7 +1,7 @@
 /**
  * Defines namespace and initiate the expBuilder app
  */
-<<<<<<< Upstream, based on branch 'Backbone' of https://github.com/rivasd/djPsych.git
+
 
 
 	var expBuilder = {
@@ -21,5 +21,4 @@
 		}
 	}
 
-=======
->>>>>>> 8c812e9 starting to develop backbone models
+
