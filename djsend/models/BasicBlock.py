@@ -165,7 +165,8 @@ class SurveyTextBlock(BaseSettingBlock):
         
         for question in self.questions.all():
             questions_list.append(question.question_label)
-            option_labels_list.append(question.answer_options.split(','))
+            if question.answer_options is not None:
+                option_labels_list.append(question.answer_options.split(','))
             question_requirement_list.append(question.required)           
             
         initial['questions'] = questions_list
