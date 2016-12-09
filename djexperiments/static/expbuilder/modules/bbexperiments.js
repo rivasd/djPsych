@@ -1,12 +1,16 @@
 /**
- * Everything you need for the block models is here
+ * Everything you need for the block model is here
  */
-	
 
+(function(expBuilder, Block) {
+	
+	//Dependencies
+	//Shorthands
+	//The application container
 	
 	
 	//Define a basic block (with all the attributes all the blocks have in common)
-	var block = Backbone.Model.extends({
+	Block.Model = Backbone.Model.extends({
 		defaults: {
 			id: null,
 			content_type: null,
@@ -21,11 +25,6 @@
 		
 	});
 	
-	var audioCatBlock = Block.extends({
-		
-	});
 	
 	
-	
-	
-	
+})(expBuilder, expBuilder.module("block"))
