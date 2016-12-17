@@ -8,6 +8,8 @@ from rest_framework import serializers
 from django.db.models.query import QuerySet
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
+from djsend.models.BasicGeneral import GenericGlobalSetting
+from djsend.models.BasicBlock import GenericSettingBlock
 
 class TimelineSerializer(serializers.ListSerializer):
     
@@ -39,16 +41,24 @@ class BlockSerializer(serializers.ModelSerializer):
     content_type = serializers.SerializerMethodField(read_only = True)
     
     class Meta:
-        model = None
+        model = GenericSettingBlock
         exclude = ('save_with','global_settings_type', 'global_settings_id')
         list_serializer_class = TimelineSerializer
     
     def __init__(self, instance=None, *args, **kwargs):
         
+        model = kwargs.pop('model', None)
         super(BlockSerializer, self).__init__(instance, *args, **kwargs)
         kind = type(instance)
-        if kind == QuerySet or kind == list: # the first argument may be a list/queryset instead of a single object to serialize
+        if model is not None:
+            kind = model
+        elif kind == QuerySet or kind == list: # We have a queryset of model instances or a list of model instances
             kind = type(instance[0])
+        elif instance is None:
+            kind = self.Meta.model
+        
+            
+        
         self.Meta.model = kind
 
     def get_content_type(self, obj):
@@ -71,7 +81,7 @@ class ConfigSerializer(serializers.ModelSerializer):
     
     
     class Meta:
-        model = None # the model is left unspecified, you must specify it when instatiating the serializer, see: https://blog.hipwerk.com/django-rest-framework-general-model-serializer/
+        model = GenericGlobalSetting # the model is left unspecified, you must specify it when instatiating the serializer, see: https://blog.hipwerk.com/django-rest-framework-general-model-serializer/
         exclude = ('experiment',)
         
     
@@ -81,7 +91,9 @@ class ConfigSerializer(serializers.ModelSerializer):
         kind = type(instance)
         if kind == QuerySet or kind == list: # the first argument may be a list/queryset instead of a single object to serialize
             kind = type(instance[0])
-        self.Meta.model = kind
+            
+        if instance is not None:
+            self.Meta.model = kind
         
     def get_blocks(self, obj):
         serializer = BlockSerializer(obj.get_all_blocks(), many=True)
