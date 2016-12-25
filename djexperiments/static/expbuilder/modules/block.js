@@ -3,29 +3,21 @@
 /**
  * Everything you need for the block models is here
  */
-	
+	var module = (function(){
+		
+		var block = Backbone.Model.extends({
+			//TODO add usefull methods here
+		});
+		
+		var configuration = Backbone.Collection.extends({
+			model : block
+			//TODO adding api end point (sync function?)
+		});
+		
+		return module;
+		
+	})();
 
-	
-	
-	//Define a basic block (with all the attributes all the blocks have in common)
-	var block = Backbone.Model.extends({
-		defaults: {
-			id: null,
-			content_type: null,
-			name: null,
-			position_in_timeline: null,
-			length: null,
-			type: null,
-			has_practice: null,
-			extra_params: null			
-		}
-	
-		
-	});
-	
-	var audioCatBlock = Block.extends({
-		
-	});
 	
 	
 	
