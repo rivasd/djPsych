@@ -9,7 +9,7 @@ from .adminForms import GenericSettingBlockForm
 from django.contrib.contenttypes.models import ContentType
 import inspect
 from djmanager.utils import get_allowed_exp_for_user, get_subclass_ct_pk
-from djreceive.models.BasicTrials import BaseTrial, CategorizationTrial, Rating
+from djreceive.models.BasicTrials import BaseTrial, CategorizationTrial, Rating, AudioSimilarityTrial
 from django.contrib.contenttypes.admin import GenericTabularInline,\
     GenericStackedInline
 from modeltranslation.admin import TranslationAdmin, TranslationGenericStackedInline
@@ -17,7 +17,7 @@ from djstim.models import Category, MicroComponentPair
 from djreceive.models.CustomTrials import CogComSimilarityTrial
 from djstim.admin import LinkedStimulusInline
 from djsend.models.BasicBlock import SurveyMultiChoiceBlock,SurveyLikertBlock, SurveyTextBlock
-from djsend.models.CustomBlock import ForcedChoiceBlock, RatingBlock, AudioCatBlock
+from djsend.models.CustomBlock import ForcedChoiceBlock, RatingBlock, AudioCatBlock, AudioSimilarityBlock
 from djsend.models.BaseStimuli import Question
 
 
@@ -151,7 +151,6 @@ class AudioSimilarityBlockAdmin(GenericBlockAdmin):
         (l_("Audio Similarity task parameters"), {'fields':(
             'intervals',
             'show_ticks',
-            'show_response',
             'timing_first_stim',
             'timing_second_stim',
             'timing_post_trial',
