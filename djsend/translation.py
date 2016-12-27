@@ -24,6 +24,10 @@ class GenericSettingblockOptions(TranslationOptions):
 class SimilarityBlockOptions(TranslationOptions):
     fields=('prompt', 'labels', 'timeout_message')
     
+@register(AudioSimilarityBlock)
+class AudioSimilarityBlockOptions(TranslationOptions):
+    fields=('prompt', 'labels', 'timeout_message')
+    
 @register(Question)
 class QuestionOptions(TranslationOptions):
     fields=('question_label','answer_options')

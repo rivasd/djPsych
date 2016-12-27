@@ -60,6 +60,28 @@ class SimilarityBlock(BaseSettingBlock):
         initial['timeout_message'] = "<p class=\"feedback error\">{} </p>".format(self.timeout_message)
         return initial
     
+class AudioSimilarityBlock(BaseSettingBlock):
+    
+    
+    intervals = models.IntegerField(help_text=l_("How many different choices are available on the slider. For example, 5 will limit the options to 5 different places on the slider"))
+    show_ticks = models.BooleanField(help_text=l_("If true, then the slider will have tick marks indicating where the response options lie on the slider."))
+    timing_first_stim = models.IntegerField(help_text=l_("How long to play the first sound for in milliseconds."))
+    timing_second_stim = models.IntegerField(help_text=l_("How long to play the second sound for in milliseconds. -1 will show the stimulus until a response is made by the subject."))
+    timing_post_trial = models.IntegerField(help_text=l_("Sets the time, in milliseconds, between the current trial and the next trial."))
+
+    timeout = models.IntegerField(help_text=l_("time limit for the participant before the trial automatically advances"), default=-1)
+    timeout_message = models.CharField(max_length=128, blank=True, null=True, help_text=l_('message to display if the participant takes too long to respond'))
+
+    
+    prompt = models.CharField(max_length=32, blank=True, help_text=l_("Any content here will be displayed below the stimulus, as a reminder to the participant"))
+    labels = JSONCharField(max_length=64, help_text=l_('An array of tags to label the slider. must be eclosed in square brackets. Each label must be enclosed in double quotation marks. Labels must be separated by a single comma.'))
+    
+    def toDict(self):
+        initial = super(AudioSimilarityBlock, self).toDict()
+        initial['prompt'] = "<p class=\"prompt\"> {} </p>".format(self.prompt)
+        initial['timeout_message'] = "<p class=\"feedback error\">{} </p>".format(self.timeout_message)
+        return initial
+    
 class HTMLBlock(BaseSettingBlock):
     
     url = models.URLField()

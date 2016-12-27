@@ -144,6 +144,29 @@ class SimilarityBlockAdmin(GenericBlockAdmin):
         form.base_fields['save_with'].initial = ContentType.objects.get_for_model(CogComSimilarityTrial)
         return form
     
+@admin.register(AudioSimilarityBlock)
+class AudioSimilarityBlockAdmin(GenericBlockAdmin):
+    
+    fieldsets = GenericBlockAdmin.fieldsets + (
+        (l_("Audio Similarity task parameters"), {'fields':(
+            'intervals',
+            'show_ticks',
+            'show_response',
+            'timing_first_stim',
+            'timing_second_stim',
+            'timing_post_trial',
+            'timeout',
+            'timeout_message',
+            'prompt'
+        )}),                               
+    )
+    
+    def get_form(self, request, obj=None, **kwargs):
+        form = super(AudioSimilarityBlockAdmin, self).get_form(request, obj=obj, **kwargs)
+        form.base_fields['type'].initial = 'audio-similarity'
+        form.base_fields['save_with'].initial = ContentType.objects.get_for_model(AudioSimilarityTrial)
+        return form
+    
     
 class CategoryInline(admin.StackedInline):
     model = Category
