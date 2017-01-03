@@ -16,7 +16,7 @@ from modeltranslation.admin import TranslationAdmin, TranslationGenericStackedIn
 from djstim.models import Category, MicroComponentPair
 from djreceive.models.CustomTrials import CogComSimilarityTrial
 from djstim.admin import LinkedStimulusInline
-from djsend.models.BasicBlock import SurveyMultiChoiceBlock,SurveyLikertBlock, SurveyTextBlock
+from djsend.models.BasicBlock import SurveyMultiChoiceBlock,SurveyLikertBlock, SurveyTextBlock, AnimationBlock, ButtonResponseBlock, CategorizeAnimationBlock, FreeSortBlock
 from djsend.models.CustomBlock import ForcedChoiceBlock, RatingBlock, AudioCatBlock, AudioSimilarityBlock
 from djsend.models.BaseStimuli import Question
 
@@ -90,6 +90,71 @@ class GenericGlobalSettingAdmin(admin.ModelAdmin):
     
 # ModelAdmins for the more targeted config models
 
+@admin.register(AnimationBlock)    
+class AnimationBlockAdmin(GenericBlockAdmin):
+    fieldsets = GenericBlockAdmin.fieldsets + (
+        (l_("Animation task parameters"), {'fields':(
+            'choices',
+            'prompt',
+            'frame_time',
+            'frame_isi',
+            'sequence_reps'
+            
+        )}),                               
+    )      
+
+@admin.register(AudioCatBlock)    
+class AudioCatAdmin(GenericBlockAdmin):
+    fieldsets = GenericBlockAdmin.fieldsets + (
+        (l_("Audio Categorization task parameters"), {'fields':(
+            'choices',
+            'prompt',
+            'correct_feedback',
+            'incorrect_feedback',
+            'timing_feedback',
+            'timing_response',
+            'timeout_feedback'
+            
+        )}),                               
+    )
+
+    
+@admin.register(AudioSimilarityBlock)
+class AudioSimilarityBlockAdmin(GenericBlockAdmin):
+    
+    fieldsets = GenericBlockAdmin.fieldsets + (
+        (l_("Audio Similarity task parameters"), {'fields':(
+            'intervals',
+            'show_ticks',
+            'timing_first_stim',
+            'timing_second_stim',
+            'timing_post_trial',
+            'timeout',
+            'timeout_message',
+            'prompt'
+        )}),                               
+    )
+    
+    def get_form(self, request, obj=None, **kwargs):
+        form = super(AudioSimilarityBlockAdmin, self).get_form(request, obj=obj, **kwargs)
+        form.base_fields['type'].initial = 'audio-similarity'
+        form.base_fields['save_with'].initial = ContentType.objects.get_for_model(AudioSimilarityTrial)
+        return form
+    
+@admin.register(ButtonResponseBlock)
+class ButtonResponseBlockAdmin(GenericBlockAdmin):
+    
+    fieldsets = GenericBlockAdmin.fieldsets + (
+        (l_("Button Reponse task parameters"), {'fields':(
+            'is_html',
+            'choices',
+            'timing_stim',
+            'timing_response',
+            'response_ends_trial',
+            'prompt'
+        )}),                               
+    )
+
 @admin.register(CategorizationBlock)
 class CategorizationBlockAdmin(GenericBlockAdmin):
     
@@ -117,8 +182,102 @@ class CategorizationBlockAdmin(GenericBlockAdmin):
         form.base_fields['type'].initial = 'categorize'
         form.base_fields['save_with'].initial = ContentType.objects.get_for_model(CategorizationTrial)
         return form
-        
-        
+    
+@admin.register(CategorizeAnimationBlock)  
+class CategorizeAnimationBlockAdmin(GenericBlockAdmin):
+    fieldsets = GenericBlockAdmin.fieldsets + (
+        (l_("Categorize animation task parameters"), {'fields':(
+            'choices',
+            'correct_text',
+            'incorrect_text',
+            'frame_time',
+            'sequence_reps',
+            'allow_response_before_complete',
+            'prompt',
+            'timing_feedback_duration'
+        )}),                               
+    )
+      
+class CategoryInline(admin.StackedInline):
+    model = Category
+    extra=1
+
+@admin.register(ForcedChoiceBlock)    
+class ForcedChoiceAdmin(GenericBlockAdmin):
+    fieldsets = GenericBlockAdmin.fieldsets + (
+        (l_("Forced Choice task parameters"), {'fields':(
+            'is_html',
+            'timing_stim',
+            'timing_fixation',  
+            'prompt', 
+            'keyboard',
+            'key_choices'
+        )}),                               
+    )
+    
+@admin.register(FreeSortBlock)    
+class FreeSortBlockAdmin(GenericBlockAdmin):
+    fieldsets = GenericBlockAdmin.fieldsets + (
+        (l_("Free Sort task parameters"), {'fields':(
+            'stim_height',
+            'stim_width',
+            'sort_area_height',
+            'sort_area_width',
+            'prompt',
+            'prompt_location'
+        )}),                               
+    )
+    
+class MCPairInline(admin.StackedInline):
+    model=MicroComponentPair
+    extra=1
+    
+class QuestionAdminInline(TranslationGenericStackedInline):
+    model = Question
+
+@admin.register(RatingBlock)    
+class RatingAdmin(GenericBlockAdmin):
+    fieldsets = GenericBlockAdmin.fieldsets + (
+        (l_("Rating task parameters"), {'fields':(
+            'is_html',
+            'prompt',
+            'response',
+            'labels',
+            'intervals',
+            'show_ticks',
+            'choices',
+        )}),                            
+    )
+    
+    def get_form(self, request, obj=None, **kwargs):
+        form = super(RatingAdmin, self).get_form(request, obj=obj, **kwargs)
+        form.base_fields['type'].initial = 'rating'
+        form.base_fields['save_with'].initial = ContentType.objects.get_for_model(Rating)
+        return form
+
+
+@admin.register(SimCatGlobalSetting)
+class SimCatSettingAdmin(GenericGlobalSettingAdmin):
+    
+    fieldsets = GenericGlobalSettingAdmin.fieldsets + (
+        (l_("Categorical Perception Exp Settings"), {'fields':(
+            'sample_table_height',
+            'sample_table_width',
+            'levels',
+            'density',
+            'size',
+            'number_of_pauses',
+            'length',
+            'practices',
+            'microcomponent_pairs',
+            'practice_pairs',
+        )}),
+    )
+    
+    filter_horizontal = ['microcomponent_pairs', 'practice_pairs']
+    
+    inlines = [CategoryInline]
+
 @admin.register(SimilarityBlock)
 class SimilarityBlockAdmin(GenericBlockAdmin):
     
@@ -143,62 +302,11 @@ class SimilarityBlockAdmin(GenericBlockAdmin):
         form.base_fields['type'].initial = 'similarity'
         form.base_fields['save_with'].initial = ContentType.objects.get_for_model(CogComSimilarityTrial)
         return form
-    
-@admin.register(AudioSimilarityBlock)
-class AudioSimilarityBlockAdmin(GenericBlockAdmin):
-    
-    fieldsets = GenericBlockAdmin.fieldsets + (
-        (l_("Audio Similarity task parameters"), {'fields':(
-            'intervals',
-            'show_ticks',
-            'timing_first_stim',
-            'timing_second_stim',
-            'timing_post_trial',
-            'timeout',
-            'timeout_message',
-            'prompt'
-        )}),                               
-    )
-    
-    def get_form(self, request, obj=None, **kwargs):
-        form = super(AudioSimilarityBlockAdmin, self).get_form(request, obj=obj, **kwargs)
-        form.base_fields['type'].initial = 'audio-similarity'
-        form.base_fields['save_with'].initial = ContentType.objects.get_for_model(AudioSimilarityTrial)
-        return form
-    
-    
-class CategoryInline(admin.StackedInline):
-    model = Category
-    extra=1
-    
-class MCPairInline(admin.StackedInline):
-    model=MicroComponentPair
-    extra=1
 
-@admin.register(SimCatGlobalSetting)
-class SimCatSettingAdmin(GenericGlobalSettingAdmin):
     
-    fieldsets = GenericGlobalSettingAdmin.fieldsets + (
-        (l_("Categorical Perception Exp Settings"), {'fields':(
-            'sample_table_height',
-            'sample_table_width',
-            'levels',
-            'density',
-            'size',
-            'number_of_pauses',
-            'length',
-            'practices',
-            'microcomponent_pairs',
-            'practice_pairs',
-        )}),
-    )
-    
-    filter_horizontal = ['microcomponent_pairs', 'practice_pairs']
-    
-    inlines = [CategoryInline]
-    
-class QuestionAdminInline(TranslationGenericStackedInline):
-    model = Question
+@admin.register(SurveyLikertBlock)    
+class SurveyLikertAdmin(GenericBlockAdmin):
+    inlines = [QuestionAdminInline]
     
 @admin.register(SurveyMultiChoiceBlock)    
 class SurveyMultiChoiceAdmin(GenericBlockAdmin):
@@ -209,60 +317,7 @@ class SurveyMultiChoiceAdmin(GenericBlockAdmin):
             'horizontal'
         )}),                               
     )
-    
-   
 
-@admin.register(SurveyLikertBlock)    
-class SurveyLikertAdmin(GenericBlockAdmin):
-    inlines = [QuestionAdminInline]
-
-@admin.register(ForcedChoiceBlock)    
-class ForcedChoiceAdmin(GenericBlockAdmin):
-    fieldsets = GenericBlockAdmin.fieldsets + (
-        (l_("Forced Choice task parameters"), {'fields':(
-            'is_html',
-            'timing_stim',
-            'timing_fixation',  
-            'prompt', 
-            'keyboard',
-            'key_choices'
-        )}),                               
-    )
-
-@admin.register(RatingBlock)    
-class RatingAdmin(GenericBlockAdmin):
-    fieldsets = GenericBlockAdmin.fieldsets + (
-    (l_("Rating task parameters"), {'fields':(
-        'is_html',
-        'prompt',
-        'response',
-        'labels',
-        'intervals',
-        'show_ticks',
-        'choices',
-    )}),                               
-    )
-    
-    def get_form(self, request, obj=None, **kwargs):
-        form = super(RatingAdmin, self).get_form(request, obj=obj, **kwargs)
-        form.base_fields['type'].initial = 'rating'
-        form.base_fields['save_with'].initial = ContentType.objects.get_for_model(Rating)
-        return form
-
-@admin.register(AudioCatBlock)    
-class AudioCatAdmin(GenericBlockAdmin):
-    fieldsets = GenericBlockAdmin.fieldsets + (
-    (l_("Audio Categorization task parameters"), {'fields':(
-        'choices',
-        'prompt',
-        'correct_feedback',
-        'incorrect_feedback',
-        'timing_feedback',
-        'timing_response',
-        'timeout_feedback'
-        
-    )}),                               
-    )
 
 @admin.register(SurveyTextBlock)    
 class SurveyTextAdmin(GenericBlockAdmin):

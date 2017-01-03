@@ -100,6 +100,86 @@ class GenericSettingBlock(BaseSettingBlock):
         return l_('Exp. block "')+self.name+'"'
     pass
 
+class AnimationBlock(BaseSettingBlock):
+    
+    frame_time = models.IntegerField(default = 250, help_text=l_("How long to display each image (in milliseconds)"))
+    frame_isi = models.IntegerField(default = 0, help_text=l_("If greater than 0, then a gap will be shown between each image in the sequence. This parameter specifies the length of the gap."))
+    sequence_reps = models.IntegerField(default = 1, help_text=l_("How many times to show the entire sequence. There will be no gap (other than the gap specified by frame_isi) between repetitions"))
+    choices = models.CharField(blank=True, max_length = 1024, help_text=l_(" keys that the subject is allowed to press in order to respond to the stimulus. You have separate them with a coma. ex: k,l"))
+    prompt = models.CharField(max_length=256, blank=True, help_text=l_("Any content here will be displayed below the stimulus, as a reminder to the participant"))
+    
+    def toDict(self):
+        initial = super(AnimationBlock,self).toDict()
+        initial['choices'] = self.choices.split(',')
+        initial['prompt'] = "<p class=\"prompt\"> {} </p>".format(self.prompt)
+        return initial
+    
+class ButtonResponseBlock(BaseSettingBlock):
+    is_html = models.BooleanField(default = False, help_text=l_("If stimulus is an HTML-formatted string, this parameter needs to be set to true."))
+    choices = models.CharField(blank=True, max_length = 1024, help_text=l_(" keys that the subject is allowed to press in order to respond to the stimulus. You have separate them with a coma. ex: k,l"))
+    prompt = models.CharField(max_length=256, blank=True, help_text=l_("Any content here will be displayed below the stimulus, as a reminder to the participant"))
+    timing_stim = models.IntegerField(help_text=l_("How long to show the stimulus for in milliseconds. If the value is -1, then the stimulus will be shown until the subject makes a response."), default =-1)
+    timing_response = models.IntegerField(help_text=l_("time limit for the participant before the trial automatically advances"), default=-1)
+    response_ends_trial = models.BooleanField(help_text=l_("If true, then the trial will end whenever the subject makes a response (assuming they make their response before the cutoff specified by the  timing_response parameter). If false, then the trial will continue until the value for  timing_response is reached."), default=True)
+    
+    def toDict(self):
+        initial = super(ButtonResponseBlock,self).toDict()
+        initial['choices'] = self.choices.split(',')
+        initial['prompt'] = "<p class=\"prompt\"> {} </p>".format(self.prompt)
+        return initial
+    
+class CategorizeAnimationBlock(BaseSettingBlock):
+    choices = models.CharField(blank=True, max_length = 1024, help_text=l_(" keys that the subject is allowed to press in order to respond to the stimulus. You have separate them with a coma. ex: k,l"))
+    correct_text = models.CharField(max_length= 64, help_text=l_("String to show when the correct answer is given."), default = "Correct.")
+    incorrect_text = models.CharField(max_length= 64, help_text=l_("String to show when the wrong answer is given."), default = "Wrong.")
+    frame_time = models.IntegerField(default = 250, help_text=l_("How long to display each image (in milliseconds)."))
+    sequence_reps = models.IntegerField(default = 1, help_text=l_("How many times to show the entire sequence."))
+    allow_response_before_complete = models.BooleanField(default = False, help_text=l_("If true, the subject can respond before the animation sequence finishes."))
+    prompt = models.CharField(max_length=256, blank=True, help_text=l_("Any content here will be displayed below the stimulus, as a reminder to the participant"))
+    timing_feedback_duration = models.IntegerField(default = 2000, help_text=l_("How long to show the feedback (milliseconds)."))
+    
+    def toDict(self):
+        initial = super(ButtonResponseBlock,self).toDict()
+        initial['choices'] = self.choices.split(',')
+        initial['prompt'] = "<p class=\"prompt\"> {} </p>".format(self.prompt)
+        return initial
+    
+class FreeSortBlock(BaseSettingBlock):
+    stim_height = models.PositiveIntegerField(default = 100, help_text=l_("The height of the images in pixels."))
+    stim_width = models.PositiveIntegerField(default = 100, help_text=l_("The width of the images in pixels."))
+    sort_area_height = models.PositiveIntegerField(default = 800, help_text=l_("The height of the container that subjects can move the stimuli in. Stimuli will be constrained to this area."))
+    sort_area_width = models.PositiveIntegerField(default = 800, help_text=l_("The width of the container that subjects can move the stimuli in. Stimuli will be constrained to this area."))
+    prompt = models.CharField(max_length=256, blank=True, help_text=l_("The intention is that it can be used to provide a reminder about the action the subject is supposed to take (e.g. which key to press)."))
+    prompt_location = models.CharField(default = 'above', max_length=24, help_text=l_("Indicates whether to show the prompt 'above' or 'below' the sorting area."))
+    
+    def toDict(self):
+        initial = super(FreeSortBlock,self).toDict()
+        initial['prompt'] = "<p class=\"prompt\"> {} </p>".format(self.prompt)
+        return initial
+
+class SurveyLikertBlock(BaseSettingBlock):
+    
+    questions = GenericRelation(Question)
+    
+    def toDict(self):
+        
+        initial = super(SurveyLikertBlock,self).toDict()
+        
+        questions_list = []
+        option_labels_list = []
+        question_requirement_list = []
+        
+        for question in self.questions.all():
+            questions_list.append(question.question_label)
+            option_labels_list.append(question.answer_options.split(','))
+            question_requirement_list.append(question.required)           
+            
+        initial['questions'] = questions_list
+        initial['labels'] = option_labels_list
+        initial['required'] = question_requirement_list
+        
+        return initial
+    
 class SurveyMultiChoiceBlock(BaseSettingBlock):
     
     preamble = models.TextField(help_text = l_("A short paragraphe that will display at the top of your questions page"))
@@ -126,29 +206,6 @@ class SurveyMultiChoiceBlock(BaseSettingBlock):
         
         return initial
 
-
-class SurveyLikertBlock(BaseSettingBlock):
-    
-    questions = GenericRelation(Question)
-    
-    def toDict(self):
-        
-        initial = super(SurveyLikertBlock,self).toDict()
-        
-        questions_list = []
-        option_labels_list = []
-        question_requirement_list = []
-        
-        for question in self.questions.all():
-            questions_list.append(question.question_label)
-            option_labels_list.append(question.answer_options.split(','))
-            question_requirement_list.append(question.required)           
-            
-        initial['questions'] = questions_list
-        initial['labels'] = option_labels_list
-        initial['required'] = question_requirement_list
-        
-        return initial
     
 class SurveyTextBlock(BaseSettingBlock):
     

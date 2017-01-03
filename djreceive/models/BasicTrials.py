@@ -89,12 +89,51 @@ class BaseTrial(models.Model):
         del dictionary['id']
         return dictionary
     
+class AnimationTrial(BaseTrial):
+    handles = 'animation'
+    animation_sequence = JSONField(null=False, blank=True)
+    responses = JSONField(null=False, blank=True)
+        
+class AudioCatTrial(BaseTrial):
+    handles = 'audio-categorization'
+    rt = models.PositiveIntegerField
+    stimulus = models.CharField(max_length=128)
+    key_press = models.SmallIntegerField(null = True)
+    result = models.CharField(max_length=128)
+    
+class AudioSimilarityTrial(BaseTrial):
+    handles = 'audio-similarity'
+    sim_score = models.PositiveIntegerField()
+    rt = models.PositiveIntegerField()
+    firstStim = models.CharField(max_length=24)
+    secondStim = models.CharField(max_length=24)
+    
+    @classmethod
+    def tweak_input(cls, data_dict):
+        clean_dict = dict(data_dict)
+        if 'stimulus' in data_dict:
+            clean_dict['firstStim'] = data_dict['stimulus'][0]
+            clean_dict['secondStim'] = data_dict['stimulus'][1]
+            del clean_dict['stimulus']
+        return clean_dict
+    
+class ButtonResponseTrial(BaseTrial):
+    handles = 'button-response'
+    button_pressed = models.PositiveIntegerField()
+    rt = models.PositiveIntegerField()
+    
 class CategorizationTrial(BaseTrial):
     handles = 'categorize'
     key_press = models.PositiveSmallIntegerField()
     rt = models.PositiveIntegerField()
     correct = models.BooleanField()
     category = models.CharField(max_length=24, null=True)
+    
+class CategorizeAnimationTrial(BaseTrial):
+    handles = 'categorize-animation'
+    key_press = models.PositiveSmallIntegerField()
+    rt = models.PositiveIntegerField()
+    correct = models.BooleanField()
     
 class ForcedChoice(BaseTrial):
     handles = 'forcedchoice'
@@ -104,6 +143,13 @@ class ForcedChoice(BaseTrial):
     rightRating = models.IntegerField(null=True)
     first = models.CharField(max_length=1024, null=True)
     last = models.CharField(max_length=1024, null=True)
+    
+class FreeSortTrial(BaseTrial):
+    handles = 'free-sort'
+    init_locations = JSONField(null = False, blank = True)
+    moves = JSONField(null = False, blank = True)
+    final_locations = JSONField(null = False, blank = True)
+    rt = models.PositiveIntegerField()
     
 class Rating(BaseTrial):
     handles = 'rating'
@@ -126,23 +172,7 @@ class SimilarityTrial(BaseTrial):
             clean_dict['secondStim'] = data_dict['stimulus'][1]
             del clean_dict['stimulus']
         return clean_dict
-    
-class AudioSimilarityTrial(BaseTrial):
-    handles = 'audio-similarity'
-    sim_score = models.PositiveIntegerField()
-    rt = models.PositiveIntegerField()
-    firstStim = models.CharField(max_length=24)
-    secondStim = models.CharField(max_length=24)
-    
-    @classmethod
-    def tweak_input(cls, data_dict):
-        clean_dict = dict(data_dict)
-        if 'stimulus' in data_dict:
-            clean_dict['firstStim'] = data_dict['stimulus'][0]
-            clean_dict['secondStim'] = data_dict['stimulus'][1]
-            del clean_dict['stimulus']
-        return clean_dict
-    
+        
 class SurveyLikert(BaseTrial):
     handles = 'survey-likert'
     rt = models.PositiveIntegerField()
@@ -152,13 +182,6 @@ class SurveyMultiChoice(BaseTrial):
     handles = 'survey-multi-choice'
     rt = models.PositiveIntegerField
     responses = JSONField(null=False, blank=True)
-    
-class AudioCatTrial(BaseTrial):
-    handles = 'audio-categorization'
-    rt = models.PositiveIntegerField
-    stimulus = models.CharField(max_length=128)
-    key_press = models.SmallIntegerField(null = True)
-    result = models.CharField(max_length=128)
     
 class SurveyTextTrial(BaseTrial):
     handles = 'survey-text'
