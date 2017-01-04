@@ -14,7 +14,6 @@ from gfklookupwidget.fields import GfkLookupField
 from pip.cmdoptions import verbose
 from .BaseStimuli import BaseStimuli, Question
 
-
 class BaseSettingBlock(models.Model):
     
     class Meta:
@@ -156,6 +155,69 @@ class FreeSortBlock(BaseSettingBlock):
         initial = super(FreeSortBlock,self).toDict()
         initial['prompt'] = "<p class=\"prompt\"> {} </p>".format(self.prompt)
         return initial
+    
+class MultiStimMultiResponseBlock(BaseSettingBlock):
+    is_html = models.BooleanField(default = False, help_text=l_("If stimulus is an HTML-formatted string, this parameter needs to be set to true."))
+    choices = models.CharField(blank=True, max_length = 1024, help_text=l_(" keys that the subject is allowed to press in order to respond to the stimulus. You have separate each choice with a coma and the choices for different responses with a semi-colon. ex: k,l;f,g;g,h"))
+    prompt = models.CharField(max_length=256, blank=True, help_text=l_("The intention is that it can be used to provide a reminder about the action the subject is supposed to take (e.g. which key to press)."))
+    timing_stim = models.CharField(blank=True, max_length = 1024, help_text=l_(" length of time to display the corresponding stimulus for in milliseconds. Separe them with a coma and no space."))
+    timing_response = models.IntegerField(help_text=l_("How long to wait for the subject to make all responses before ending the trial in milliseconds. If the subject fails to make a response in a response group before this timer is reached, the the subject's response for that response group will be recorded as -1 for the trial and the trial will end. If the value of this parameter is -1, then the trial will wait for a response indefinitely."), default=-1)
+    response_ends_trial = models.BooleanField(help_text=l_("If true, then the trial will end whenever the subject makes a response (assuming they make their response before the cutoff specified by the  timing_response parameter). If false, then the trial will continue until the value for timing_response is reached."), default=True)
+    
+    
+    def toDict(self):
+        initial = super(MultiStimMultiResponseBlock,self).toDict()
+        initial['choices'] = [x.split(',') for x in choices.split(';')]
+        initial['timing_stim'] = self.timing_stim.split(',')
+        initial['prompt'] = "<p class=\"prompt\"> {} </p>".format(self.prompt)
+        return initial
+
+class ReconstructionBlock(BaseSettingBlock):
+    starting_value = models.FloatField(default = 0.5, help_text=l_("The starting value of the stimulus parameter."))
+    step_size = models.FloatField(default = 0.05, help_text=l_("The change in the stimulus parameter caused by pressing one of the modification keys."))
+    key_increase = models.CharField(max_length=2, default='h', help_text=l_("The key to press for increasing the parameter value."))
+    key_decrease = models.CharField(max_length=2, default='g', help_text=l_("The key to press for decreasing the parameter value."))
+    
+class SameDifferentBlock(BaseSettingBlock):
+    is_html = models.BooleanField(default = False, help_text=l_("If stimulus is an HTML-formatted string, this parameter needs to be set to true."))
+    same_key = models.CharField(max_length = 2, default = 'q', help_text=l_("The key that subjects should press to indicate that the two stimuli are the same."))
+    different_key = models.CharField(max_length = 2, default = 'p', help_text=l_("The key that subjects should press to indicate that the two stimuli are different."))
+    timing_first_stim = models.IntegerField(default = 1000, help_text=l_("How long to show the first stimulus for in milliseconds. If the value of this parameter is -1 then the stimulus will be shown until the subject presses any key."))
+    timing_gap = models.IntegerField(default = 500, help_text= l_("How long to show a blank screen in between the two stimuli."))
+    timing_second_stim = models.IntegerField(default = 1000, help_text= l_("How long to show the second stimulus for in milliseconds. If the value of this parameter is -1 then the stimulus will be shown until the subject responds."))
+    prompt = models.CharField(max_length=256, blank=True, help_text=l_("The intention is that it can be used to provide a reminder about the action the subject is supposed to take (e.g. which key to press)."))
+    
+    def toDict(self):
+        initial = super(SameDifferentBlock,self).toDict()
+        initial['prompt'] = "<p class=\"prompt\"> {} </p>".format(self.prompt)
+        return initial
+    
+class SingleAudioBlock(BaseSettingBlock):
+    choices = models.CharField(blank=True, max_length = 1024, help_text=l_(" keys that the subject is allowed to press in order to respond to the stimulus. You have separate them with a coma. ex: k,l"))
+    prompt = models.CharField(max_length=256, blank=True, help_text=l_("The intention is that it can be used to provide a reminder about the action the subject is supposed to take (e.g. which key to press)."))
+    timing_response = models.IntegerField(help_text=l_("time limit for the participant before the trial automatically advances"), default=-1)
+    response_ends_trial = models.BooleanField(help_text=l_("If true, then the trial will end whenever the subject makes a response (assuming they make their response before the cutoff specified by the  timing_response parameter). If false, then the trial will continue until the value for  timing_response is reached."), default=True)
+    
+    def toDict(self):
+        initial = super(SingleAudioBlock,self).toDict()
+        initial['choices'] = self.choices.split(',')
+        initial['prompt'] = "<p class=\"prompt\"> {} </p>".format(self.prompt)
+        return initial
+    
+class SingleStimBlock(BaseSettingBlock):
+    is_html = models.BooleanField(default = False, help_text=l_("If stimulus is an HTML-formatted string, this parameter needs to be set to true."))
+    choices = models.CharField(blank=True, max_length = 1024, help_text=l_(" keys that the subject is allowed to press in order to respond to the stimulus. You have separate them with a coma. ex: k,l"))
+    prompt = models.CharField(max_length=256, blank=True, help_text=l_("The intention is that it can be used to provide a reminder about the action the subject is supposed to take (e.g. which key to press)."))
+    timing_stim = models.IntegerField(default = -1, help_text=l_("How long to show the stimulus for in milliseconds. If the value is -1, then the stimulus will be shown until the subject makes a response."))
+    timing_response = models.IntegerField(help_text=l_("time limit for the participant before the trial automatically advances"), default=-1)
+    response_ends_trial = models.BooleanField(help_text=l_("If true, then the trial will end whenever the subject makes a response (assuming they make their response before the cutoff specified by the  timing_response parameter). If false, then the trial will continue until the value for  timing_response is reached."), default=True)
+    
+    def toDict(self):
+        initial = super(SingleStimBlock,self).toDict()
+        initial['choices'] = self.choices.split(',')
+        initial['prompt'] = "<p class=\"prompt\"> {} </p>".format(self.prompt)
+        return initial
+
 
 class SurveyLikertBlock(BaseSettingBlock):
     
@@ -232,9 +294,22 @@ class SurveyTextBlock(BaseSettingBlock):
         initial['preamble'] = self.preamble
         
         return initial
+    
+class XABBlock(BaseSettingBlock):
+    
+    is_html = models.BooleanField(default = False, help_text=l_("If stimulus is an HTML-formatted string, this parameter needs to be set to true."))
+    left_key = models.CharField(max_length = 2, default = 'q', help_text=l_("Which key the subject should press to indicate that the target is on the left side."))
+    right_key = models.CharField(max_length = 2, default = 'p', help_text=l_("Which key the subject should press to indicate that the target is on the right side."))
+    prompt = models.CharField(max_length=256, blank=True, help_text=l_("The intention is that it can be used to provide a reminder about the action the subject is supposed to take (e.g. which key to press)."))
+    timing_x = models.IntegerField(default = 1000, help_text=l_("How long to show the X stimulus for in milliseconds."))
+    timing_xab_gap = models.IntegerField(default = 1000, help_text=l_("How long to show a blank screen in between X and AB in milliseconds."))
+    timing_ab = models.IntegerField(default = -1, help_text=l_("How long to show A and B in milliseconds. If the value of this parameter is -1, then the stimuli will remain on the screen until a response is given."))
+    timing_response = models.IntegerField(default = -1, help_text=l_("The maximum duration to wait for a response, measured from the onset of the AB portion of the trial. If -1, then the trial will wait indefinitely for a response."))
         
-        
-        
+    def toDict(self):
+        initial = super(XABBlock,self).toDict()
+        initial['prompt'] = "<p class=\"prompt\"> {} </p>".format(self.prompt)
+        return initial    
         
         
         

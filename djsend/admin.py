@@ -16,7 +16,8 @@ from modeltranslation.admin import TranslationAdmin, TranslationGenericStackedIn
 from djstim.models import Category, MicroComponentPair
 from djreceive.models.CustomTrials import CogComSimilarityTrial
 from djstim.admin import LinkedStimulusInline
-from djsend.models.BasicBlock import SurveyMultiChoiceBlock,SurveyLikertBlock, SurveyTextBlock, AnimationBlock, ButtonResponseBlock, CategorizeAnimationBlock, FreeSortBlock
+from djsend.models.BasicBlock import SurveyMultiChoiceBlock,SurveyLikertBlock, SurveyTextBlock, AnimationBlock, ButtonResponseBlock, CategorizeAnimationBlock, \
+    FreeSortBlock, MultiStimMultiResponseBlock, ReconstructionBlock, SameDifferentBlock, SingleAudioBlock, SingleStimBlock, XABBlock
 from djsend.models.CustomBlock import ForcedChoiceBlock, RatingBlock, AudioCatBlock, AudioSimilarityBlock
 from djsend.models.BaseStimuli import Question
 
@@ -232,6 +233,19 @@ class MCPairInline(admin.StackedInline):
     model=MicroComponentPair
     extra=1
     
+@admin.register(MultiStimMultiResponseBlock)    
+class MultiStimMultiResponseBlockAdmin(GenericBlockAdmin):
+    fieldsets = GenericBlockAdmin.fieldsets + (
+        (l_("Multi Stim Multi Response task parameters"), {'fields':(
+            'is_html',
+            'prompt',
+            'choices',
+            'timing_stim',
+            'timing_response',
+            'response_ends_trial'           
+        )}),                               
+    )
+    
 class QuestionAdminInline(TranslationGenericStackedInline):
     model = Question
 
@@ -254,6 +268,31 @@ class RatingAdmin(GenericBlockAdmin):
         form.base_fields['type'].initial = 'rating'
         form.base_fields['save_with'].initial = ContentType.objects.get_for_model(Rating)
         return form
+    
+@admin.register(ReconstructionBlock)
+class ReconstructionBlockAdmin(GenericBlockAdmin):
+    fieldsets = GenericBlockAdmin.fieldsets + (
+        (l_("Reconstruction task parameters"), {'fields':(
+            'starting_value',
+            'step_size',
+            'key_increase',
+            'key_decrease'
+        )}),                            
+    )
+    
+@admin.register(SameDifferentBlock)
+class SameDifferentBlockAdmin(GenericBlockAdmin):
+    fieldsets = GenericBlockAdmin.fieldsets + (
+        (l_("Same Different task parameters"), {'fields':(
+            'is_html',
+            'same_key',
+            'different_key',
+            'timing_first_stim',
+            'timing_gap',
+            'timing_second_stim',
+            'prompt'
+        )}),                            
+    )
 
 
 @admin.register(SimCatGlobalSetting)
@@ -302,7 +341,33 @@ class SimilarityBlockAdmin(GenericBlockAdmin):
         form.base_fields['type'].initial = 'similarity'
         form.base_fields['save_with'].initial = ContentType.objects.get_for_model(CogComSimilarityTrial)
         return form
-
+    
+    
+@admin.register(SingleAudioBlock)
+class SingleAudioBlockAdmin(GenericBlockAdmin):
+    
+    fieldsets = GenericBlockAdmin.fieldsets + (
+        (l_("Single Audio task parameters"), {'fields':(
+            'prompt',
+            'choices',
+            'timing_response',
+            'response_ends_trial'
+        )}),                               
+    )
+    
+@admin.register(SingleStimBlock)
+class SingleStimBlockAdmin(GenericBlockAdmin):
+    
+    fieldsets = GenericBlockAdmin.fieldsets + (
+        (l_("Single Stim task parameters"), {'fields':(
+            'is_html',
+            'prompt',
+            'choices',
+            'timing_stim',
+            'timing_response',
+            'response_ends_trial'
+        )}),                               
+    )
     
 @admin.register(SurveyLikertBlock)    
 class SurveyLikertAdmin(GenericBlockAdmin):
@@ -327,5 +392,21 @@ class SurveyTextAdmin(GenericBlockAdmin):
             'preamble',
         )}),                               
     )
+    
+@admin.register(XABBlock)
+class XABBlockAdmin(GenericBlockAdmin):
+    fieldsets = GenericBlockAdmin.fieldsets + (
+        (l_("XAB task parameters"), {'fields':(
+            'is_html',
+            'left_key',
+            'right_key',
+            'timing_x',
+            'timing_xab_gap',
+            'timing_ab',
+            'timing_response',
+            'prompt'
+        )}),                            
+    )
+
     
     

@@ -151,11 +151,31 @@ class FreeSortTrial(BaseTrial):
     final_locations = JSONField(null = False, blank = True)
     rt = models.PositiveIntegerField()
     
+class MultiStimMultiResponseTrial(BaseTrial):
+    handles = 'multi-stim-multi-response'
+    stimulus = JSONField(null = False, blank = True)
+    key_press = JSONField(null = False, blank = True)
+    rt = JSONField(null = False, blank = True)
+    
 class Rating(BaseTrial):
     handles = 'rating'
     rt = models.PositiveIntegerField()
     rating = models.IntegerField()
     stimulus = models.CharField(max_length=128)
+    
+class ReconstructionTrial(BaseTrial):
+    handles = 'reconstruction'
+    start_value = models.FloatField()
+    final_value = models.FloatField()
+    rt = models.PositiveIntegerField()
+    
+class SameDifferentTrial(BaseTrial):
+    handles = 'same-different'
+    stimulus = JSONField(null = False, blank = True)
+    key_press = models.IntegerField()
+    rt = models.PositiveIntegerField()
+    correct = models.BooleanField()
+    answer = models.CharField(max_length=16)   
     
 class SimilarityTrial(BaseTrial):
     handles = 'similarity'
@@ -172,6 +192,18 @@ class SimilarityTrial(BaseTrial):
             clean_dict['secondStim'] = data_dict['stimulus'][1]
             del clean_dict['stimulus']
         return clean_dict
+    
+class SingleAudioTrial(BaseTrial):
+    handles = 'single-audio'
+    stimulus = models.CharField(max_length=128)
+    key_press = models.IntegerField()
+    rt = models.IntegerField()
+    
+class SingleStimTrial(BaseTrial):
+    handles = 'single-stim'
+    stimulus = models.CharField(max_length=128)
+    key_press = models.IntegerField()
+    rt = models.IntegerField()
         
 class SurveyLikert(BaseTrial):
     handles = 'survey-likert'
@@ -187,6 +219,13 @@ class SurveyTextTrial(BaseTrial):
     handles = 'survey-text'
     rt = models.PositiveIntegerField
     responses = JSONField(null=False, blank=True)
+
+class XABTrial(BaseTrial):
+    handles = 'xab'
+    key_press = models.IntegerField()
+    rt = models.IntegerField()
+    correct = models.BooleanField()
+    
     
     
     

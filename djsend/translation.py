@@ -7,7 +7,8 @@ Created on Feb 24, 2016
 from modeltranslation.translator import register, TranslationOptions
 from .models import Instruction, CategorizationBlock, GenericSettingBlock, \
                     SimilarityBlock, Question, ForcedChoiceBlock, RatingBlock, SurveyLikertBlock, SurveyMultiChoiceBlock, AudioCatBlock, SurveyTextBlock, AudioSimilarityBlock, \
-                    AnimationBlock, ButtonResponseBlock, CategorizeAnimationBlock, FreeSortBlock
+                    AnimationBlock, ButtonResponseBlock, CategorizeAnimationBlock, FreeSortBlock, MultiStimMultiResponseBlock, ReconstructionBlock, SameDifferentBlock, SingleAudioBlock, \
+                    SingleStimBlock, XABBlock
 
 @register(AnimationBlock)
 class AnimationBlockOptions(TranslationOptions):
@@ -49,6 +50,10 @@ class GenericSettingblockOptions(TranslationOptions):
 class InstructionTransOptions(TranslationOptions):
     fields = ('text',)
     
+@register(MultiStimMultiResponseBlock)
+class MultiStimMultiResponseBlockOptions(TranslationOptions):
+    fields = ('prompt',)
+    
 @register(Question)
 class QuestionOptions(TranslationOptions):
     fields=('question_label','answer_options')
@@ -56,10 +61,26 @@ class QuestionOptions(TranslationOptions):
 @register(RatingBlock)
 class RatingOptions(TranslationOptions):
     fields=('prompt','choices')
+    
+@register(ReconstructionBlock)
+class ReconstructionBlockOptions(TranslationOptions):
+    pass
+
+@register(SameDifferentBlock)
+class SameDifferentBlockOptions(TranslationOptions):
+    fields=('prompt',)
 
 @register(SimilarityBlock)
 class SimilarityBlockOptions(TranslationOptions):
     fields=('prompt', 'labels', 'timeout_message')
+    
+@register(SingleAudioBlock)
+class SingleAudioBlockOptions(TranslationOptions):
+    fields=('prompt',)
+    
+@register(SingleStimBlock)
+class SingleStimBlockOptions(TranslationOptions):
+    fields=('prompt',)
 
 @register(SurveyLikertBlock)
 class SurveyLikertOptions(TranslationOptions):
@@ -72,4 +93,8 @@ class SurveyMultiChoiceOptions(TranslationOptions):
 @register(SurveyTextBlock)
 class SurveyTextOptions(TranslationOptions):
     fields=('preamble',)
+    
+@register(XABBlock)
+class XABBlockOptions(TranslationOptions):
+    fields=('prompt',)
     
