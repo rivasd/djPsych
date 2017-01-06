@@ -107,6 +107,7 @@ class RatingBlock(BaseSettingBlock):
         initial['labels'] = self.labels.split(',')
         initial['intervals'] = self.intervals.split(',')
         initial['choices'] = self.choices.split(',')
+        initial['prompt'] = self.prompt
         return initial
         
     
