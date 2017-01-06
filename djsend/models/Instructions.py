@@ -31,6 +31,9 @@ class Instruction(models.Model):
     css_class = models.CharField(blank=True, null=True, default='', max_length=64, help_text=l_("All instructions are rendered inside an HTML 'p' element with a class attribute 'instructions'. You can add to the class attribute here."))
     # TODO: switched to Markdown for better editing, but still make sure to disallow HTML sine markdown is a superset of HTML
     
+    show_clickable_nav = models.BooleanField(default=False, help_text=l_("If true, then a Previous and Next button will be displayed beneath the instructions. Subjects can click the buttons to navigate."))
+    key_forward = models.CharField(max_length=1, blank=True, null=True, help_text=l_("This is the key that the subject can press in order to advance to the next page"))
+    
     def toDict(self):
         """
         Kinda serializes this object so that it is ready to be JSON'ed and sent. You could override, still call the parent method and set custom params like cont_key on the returned dict even though
