@@ -243,6 +243,9 @@ def exp_filesystem(request, exp_label):
         elif request.POST["action"] == "add":
             filesList = request.FILES.getlist('uploads')
             parentDir = request.POST["parent"]
+            parentDir = pathlib.Path(parentDir)
+            parentDir = pathlib.Path(*parentDir.parts[3:])
+            parentDir = str(parentDir)
             newNodes = []
             for currentFile in filesList:
                 fileObject = File(currentFile)
