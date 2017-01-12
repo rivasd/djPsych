@@ -172,9 +172,19 @@
 		
 		blockIdentifier.prototype.idAttribute = '_id';
 		
-		var Configuration = Backbone.Collection.extends({
-			model : blockIdentifier(model, options)
+		var Configuration = Backbone.Collection.extend({
+			model : blockIdentifier(model, options),
 			
+		});
+		
+		var Experiment = Backbone.Model.extend({
+			initialize: function(data){
+				this.Configuration
+			}
+		
+			urlRoot: function(){
+				return '/webexp/api/'+this.label;
+			}
 		});
 		
 		var ConfigView = Backbone.View.extend({
