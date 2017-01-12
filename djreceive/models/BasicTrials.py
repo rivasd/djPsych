@@ -105,8 +105,8 @@ class AudioSimilarityTrial(BaseTrial):
     handles = 'audio-similarity'
     sim_score = models.PositiveIntegerField()
     rt = models.PositiveIntegerField()
-    firstStim = models.CharField(max_length=24)
-    secondStim = models.CharField(max_length=24)
+    firstStim = models.CharField(max_length=1024)
+    secondStim = models.CharField(max_length=1024)
     
 class ButtonResponseTrial(BaseTrial):
     handles = 'button-response'
