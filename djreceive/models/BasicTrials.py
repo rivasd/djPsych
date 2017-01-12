@@ -108,15 +108,6 @@ class AudioSimilarityTrial(BaseTrial):
     firstStim = models.CharField(max_length=24)
     secondStim = models.CharField(max_length=24)
     
-    @classmethod
-    def tweak_input(cls, data_dict):
-        clean_dict = dict(data_dict)
-        if 'stimulus' in data_dict:
-            clean_dict['firstStim'] = data_dict['stimulus'][0]
-            clean_dict['secondStim'] = data_dict['stimulus'][1]
-            del clean_dict['stimulus']
-        return clean_dict
-    
 class ButtonResponseTrial(BaseTrial):
     handles = 'button-response'
     button_pressed = models.PositiveIntegerField()
