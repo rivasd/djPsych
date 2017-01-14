@@ -167,7 +167,7 @@ class MultiStimMultiResponseBlock(BaseSettingBlock):
     
     def toDict(self):
         initial = super(MultiStimMultiResponseBlock,self).toDict()
-        initial['choices'] = [x.split(',') for x in choices.split(';')]
+        initial['choices'] = [x.split(',') for x in self.choices.split(';')]
         initial['timing_stim'] = self.timing_stim.split(',')
         initial['prompt'] = "<p class=\"prompt\"> {} </p>".format(self.prompt)
         return initial
