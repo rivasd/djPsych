@@ -174,18 +174,11 @@
 		
 		var Configuration = Backbone.Collection.extend({
 			model : blockIdentifier(model, options),
+			url : '/webexp/'+label+'/'+id
 			
 		});
 		
-		var Experiment = Backbone.Model.extend({
-			initialize: function(data){
-				this.Configuration
-			}
-		
-			urlRoot: function(){
-				return '/webexp/api/'+this.label;
-			}
-		});
+
 		
 		var ConfigView = Backbone.View.extend({
 			
@@ -197,7 +190,8 @@
 			},
 			
 		    render: function(){
-		    	return this 
+		    	Configuration.save();
+		    	return this;
 		    },
 		    
 		    initialize: function() {
