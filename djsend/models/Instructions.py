@@ -46,5 +46,7 @@ class Instruction(models.Model):
         dictionary = {
             'type': 'instructions',
             'text': markdown(self.text),
+            'show_clickable_nav': self.show_clickable_nav,
+            'key_forward': self.key_forward
         }
         return dictionary
