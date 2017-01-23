@@ -310,6 +310,7 @@ class SimCatSettingAdmin(GenericGlobalSettingAdmin):
             'practices',
             'microcomponent_pairs',
             'practice_pairs',
+            'difficulty'
         )}),
     )
     
