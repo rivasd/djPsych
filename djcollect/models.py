@@ -86,7 +86,7 @@ class Participation(models.Model):
         """
         runs = {}
         for run in self.run_set.all():
-            if hasattr(runs, run.global_setting_obj.name):
+            if hasattr(runs, run.global_setting_obj.name): #TODO: this is not backwards compatible. FIX IT
                 runs[run.global_setting_obj.name] += 1
             else:
                 runs[run.global_setting_obj.name] = 1
