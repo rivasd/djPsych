@@ -18,3 +18,8 @@ class CogComHTMLTrial(BaseTrial):
     ruleFound = models.BooleanField(default=False)
     ruleDescription = models.TextField(null=True)
     stratDescription = models.TextField(null=True)
+    
+class AudioABXTrial(BaseTrial):
+    handles = 'audio-abx'
+    rt = models.IntegerField()
+    result = models.CharField(max_length=24)

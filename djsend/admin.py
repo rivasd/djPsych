@@ -18,7 +18,7 @@ from djreceive.models.CustomTrials import CogComSimilarityTrial
 from djstim.admin import LinkedStimulusInline
 from djsend.models.BasicBlock import SurveyMultiChoiceBlock,SurveyLikertBlock, SurveyTextBlock, AnimationBlock, ButtonResponseBlock, CategorizeAnimationBlock, \
     FreeSortBlock, MultiStimMultiResponseBlock, ReconstructionBlock, SameDifferentBlock, SingleAudioBlock, SingleStimBlock, XABBlock
-from djsend.models.CustomBlock import ForcedChoiceBlock, RatingBlock, AudioCatBlock, AudioSimilarityBlock
+from djsend.models.CustomBlock import ForcedChoiceBlock, RatingBlock, AudioCatBlock, AudioSimilarityBlock, AudioABXBlock
 from djsend.models.BaseStimuli import Question
 
 
@@ -102,7 +102,20 @@ class AnimationBlockAdmin(GenericBlockAdmin):
             'sequence_reps'
             
         )}),                               
-    )      
+    )
+
+@admin.register(AudioABXBlock)    
+class AudioABXBlock(GenericBlockAdmin):
+    fieldsets = GenericBlockAdmin.fieldsets + (
+        (l_("Audio Categorization task parameters"), {'fields':(
+            'choices',
+            'prompt',
+            'timeout',
+            'timeout_message_timing',
+            'timeout_feedback',
+            'timing_gap'       
+        )}),                               
+    )     
 
 @admin.register(AudioCatBlock)    
 class AudioCatAdmin(GenericBlockAdmin):
