@@ -67,7 +67,7 @@ class AudioSimilarityBlock(BaseSettingBlock):
     show_ticks = models.BooleanField(help_text=l_("If true, then the slider will have tick marks indicating where the response options lie on the slider."))
     timing_first_stim = models.IntegerField(help_text=l_("How long to play the first sound for in milliseconds."))
     timing_second_stim = models.IntegerField(help_text=l_("How long to play the second sound for in milliseconds. -1 will show the stimulus until a response is made by the subject."))
-    timing_post_trial = models.IntegerField(help_text=l_("Sets the time, in milliseconds, between the current trial and the next trial."))
+    timing_gap = models.IntegerField(help_text=l_("How long is the gap between the two sounds"), blank = True, null = True)
 
     timeout = models.IntegerField(help_text=l_("time limit for the participant before the trial automatically advances"), default=-1)
     timeout_message = models.CharField(max_length=128, blank=True, null=True, help_text=l_('message to display if the participant takes too long to respond'))

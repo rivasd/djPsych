@@ -143,10 +143,10 @@ class AudioSimilarityBlockAdmin(GenericBlockAdmin):
             'show_ticks',
             'timing_first_stim',
             'timing_second_stim',
-            'timing_post_trial',
             'timeout',
             'timeout_message',
-            'prompt'
+            'prompt',
+            'timing_gap'
         )}),                               
     )
     
