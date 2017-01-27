@@ -52,6 +52,8 @@ def launch(request, exp_label):
     elif exp.consent_form:
         
         consentfile = markdown.markdown(exp.consent_form)
+    else:
+        consentfile = None
     
     plugins = fetch_files_of_type('djPsych/jsPsych/plugins', 'js')
     
