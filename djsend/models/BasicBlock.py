@@ -71,11 +71,22 @@ class BaseSettingBlock(models.Model):
         if instructions_after:
             instructions['after']={'type': 'instructions', 'pages': []}
             for instruction in instructions_after:
+                if instruction.show_clickable_nav:
+                    instructions['after']["show_clickable_nav"] = True
+                if instruction.key_forward:
+                    instructions['before']["key_forward"] = instruction.key_forward    
                 instructions['after']['pages'].append(instruction.toDict()['text'])
                 
         if instructions_before:
             instructions['before']={'type': 'instructions', 'pages': []}
             for instruction in instructions_before:
+                
+                if instruction.show_clickable_nav:
+                    instructions['before']["show_clickable_nav"] = True
+                if instruction.key_forward:
+                    instructions['before']["key_forward"] = instruction.key_forward
+                
+                
                 instructions['before']['pages'].append(instruction.toDict()['text'])
         
         return instructions
