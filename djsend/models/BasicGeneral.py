@@ -41,7 +41,7 @@ class BaseGlobalSetting(models.Model):
         del dictionary['experiment_id']
         
         if self.extra_parameters is not None:
-            for key, value in json.loads(self.extra_parameters).iteritems():
+            for key, value in self.extra_parameters.iteritems():
                 dictionary[key] = value
         return dictionary
     
