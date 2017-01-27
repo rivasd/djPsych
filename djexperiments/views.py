@@ -12,6 +12,8 @@ from django.contrib.auth.models import Group
 from djexperiments.forms import SandboxForm, UploadForm
 from djcollect.models import Participation
 import os
+import io
+import zipfile
 from argparse import Action
 from django.core.files import File
 from django.contrib import messages
@@ -60,7 +62,7 @@ def launch(request, exp_label):
         latest = exp.get_latest_pending(request)
         if latest:
             request.session['continue'] = latest.pk
-            completion = latest.completion_status()
+            completion = latest.completion_status() if latest.completion_status() is not False else {}
         else:
             completion = {}
     #send a brief description of the requested participation (if any), or the last one, or nothing if this is the very first time
@@ -264,14 +266,36 @@ def exp_filesystem(request, exp_label):
             return JsonResponse({})
         
         elif request.POST["action"] == "download":
-            to_download = request.POST['args']
-            path = pathlib.Path(*pathlib.Path(to_download).parts[2:])
+            to_download = json.loads(request.POST['args'])
             
-            file = default_storage.open(str(path))
-            response = HttpResponse(file)
-            response['Content-Disposition'] = 'attachment; filename='+path.name
-            return response
+            if len(to_download) < 2 :
+                path = pathlib.Path(*pathlib.Path(to_download[0]).parts[2:])
+                if path.is_file():
+                    file = default_storage.open(str(path))
+                    response = HttpResponse(file)
+                    response['Content-Disposition'] = 'attachment; filename='+path.name
+                    return response
+                else:
+                    return HttpResponseBadRequest()
             
+            else:
+                the_zip = io.BytesIO()
+                downloads = zipfile.ZipFile(the_zip, mode='w', compression = zipfile.ZIP_DEFLATED)
+                downloads.debug = 3
+                for file in to_download:
+                    path = pathlib.Path(*pathlib.Path(file).parts[2:])
+                    if path.is_file():
+                        contents = default_storage.open(str(path))
+                        downloads.writestr(os.path.basename(str(path)), contents.read())
+                        contents.close()
+                
+                downloads.close()
+                response = HttpResponse(the_zip.getvalue(), content_type="application/zip, application/octet-stream")
+                response['Content-Disposition'] = 'attachment; filename='+exp_label+'-items.zip'
+                return response
+                
+                
+                
     else:
         return JsonResponse({'error': _("This API only available through POST request"+exp_label)})
     

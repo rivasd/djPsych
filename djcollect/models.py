@@ -83,14 +83,19 @@ class Participation(models.Model):
         Returns a dict that describes how many runs of each kind have been completed and linked to this part. 
         Runs are organized by the name of the GlobalSetting that was used when the subject generated the data
         
+        returns false for runs saved before implementation of  this feature
         """
         runs = {}
         for run in self.run_set.all():
-            if hasattr(runs, run.global_setting_obj.name): #TODO: this is not backwards compatible. FIX IT
-                runs[run.global_setting_obj.name] += 1
+            
+            if run.global_setting_obj is not None:
+                if hasattr(runs, run.global_setting_obj.name): #TODO: this is not backwards compatible. FIX IT
+                    runs[run.global_setting_obj.name] += 1
+                else:
+                    runs[run.global_setting_obj.name] = 1
+            
             else:
-                runs[run.global_setting_obj.name] = 1
-        
+                return False
         return runs
 
 class DropOut(models.Model):

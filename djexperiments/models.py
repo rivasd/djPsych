@@ -162,7 +162,7 @@ class BaseExperiment(models.Model):
             
             return resource_dict
         else:
-            return []
+            return {}
         
     def is_researcher(self, request):
         """

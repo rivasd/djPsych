@@ -157,7 +157,16 @@ $(function(){
                 "action": function(data){
                 	var inst = $.jstree.reference(data.reference),
 					obj = inst.get_node(data.reference);
-					var selection;
+					var selection = tree.get_selected(true);
+					
+					if(inst.is_selected(obj)) {
+						selection = inst.get_selected(true).map(function(node){return node.data});
+					}
+					else {
+						selection = [obj.data]
+					}
+					
+					
 					
 					var xhr = new XMLHttpRequest();
 					xhr.open('POST', "files", true);
@@ -203,7 +212,7 @@ $(function(){
 					};
 					xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 					xhr.setRequestHeader('X-CSRFToken', parse_cookies()['csrftoken']);
-					xhr.send($.param({"action":"download", "args":obj.data}));
+					xhr.send($.param({"action":"download", "args":JSON.stringify(selection)}));
 					
 					
                 }
@@ -223,9 +232,6 @@ $(function(){
 		else {
 			delete final_menu["AddFile"];
 			delete final_menu["AddFolder"];
-			if(selection.length > 1){
-				delete final_menu['Download']
-			}
 		}
 		return final_menu
 	}
