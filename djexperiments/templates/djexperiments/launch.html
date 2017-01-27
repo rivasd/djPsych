@@ -55,6 +55,11 @@ $(function(){
 		serverSideBegin(e);
 		return false;
 	})
+	
+	#("#end-block").click(function(e){
+		jsPsych.endCurrentTimeline();
+	})
+	
 })
 
 var loading = "{% trans "Please wait while we generate your textures..." %}";
