@@ -49,7 +49,7 @@ def launch(request, exp_label):
     resources = exp.list_static_urls()
     if os.path.exists(os.path.join(settings.BASE_DIR, "..", 'djexperiments', "templates", 'djexperiments', exp.label, 'consent.html')):
         consentfile = 'djexperiments/'+exp_label+'/consent.html'
-    else:
+    elif exp.consent_form:
         
         consentfile = markdown.markdown(exp.consent_form)
     
