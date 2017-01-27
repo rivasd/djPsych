@@ -98,6 +98,9 @@ class Participation(models.Model):
                 return False
         return runs
 
+    def __str__(self):
+        return self.subject.user.username+" - "+self.experiment.label
+
 class DropOut(models.Model):
     
     """
