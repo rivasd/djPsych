@@ -267,10 +267,11 @@ def exp_filesystem(request, exp_label):
         
         elif request.POST["action"] == "download":
             to_download = json.loads(request.POST['args'])
+            base = pathlib.Path(default_storage.location)
             
             if len(to_download) < 2 :
                 path = pathlib.Path(*pathlib.Path(to_download[0]).parts[2:])
-                if path.is_file():
+                if base.joinpath(path).is_file():
                     file = default_storage.open(str(path))
                     response = HttpResponse(file)
                     response['Content-Disposition'] = 'attachment; filename='+path.name
@@ -284,7 +285,7 @@ def exp_filesystem(request, exp_label):
                 downloads.debug = 3
                 for file in to_download:
                     path = pathlib.Path(*pathlib.Path(file).parts[2:])
-                    if path.is_file():
+                    if base.joinpath(path).is_file():
                         contents = default_storage.open(str(path))
                         downloads.writestr(os.path.basename(str(path)), contents.read())
                         contents.close()
