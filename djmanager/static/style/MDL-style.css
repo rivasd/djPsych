@@ -243,6 +243,8 @@ h6, h5{
 }
 /**************************** jsPsych-related styles ***********************************/
 
+
+
 .stim-table img{
 	width:185px;
 	margin: 5px;
@@ -250,10 +252,11 @@ h6, h5{
 
 
 div#jsPsychTarget{
-	width: 90%;
+	
+overflow-y: auto;width: 90%;
 	min-height: 100vh;
 	/* display: flex; */
-	margin: 0 auto;
+	margin: 20px auto;
 	/* padding: 5% 0%; */
 	position: relative;
 	/* text-align: center; */
