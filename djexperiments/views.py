@@ -21,6 +21,7 @@ from djmanager.utils import get_allowed_exp_for_user
 from djPsych.utils import fetch_files_of_type, get_type
 import json
 import pathlib
+import markdown
 
 # Create your views here.
 def lobby(request, exp_label):
@@ -49,7 +50,8 @@ def launch(request, exp_label):
     if os.path.exists(os.path.join(settings.BASE_DIR, "..", 'djexperiments', "templates", 'djexperiments', exp.label, 'consent.html')):
         consentfile = 'djexperiments/'+exp_label+'/consent.html'
     else:
-        consentfile = None
+        
+        consentfile = markdown.markdown(exp.consent_form)
     
     plugins = fetch_files_of_type('djPsych/jsPsych/plugins', 'js')
     
@@ -69,7 +71,7 @@ def launch(request, exp_label):
     
     
     
-    return render(request, 'djexperiments/launch.html', {'resources': resources, 'exp': exp, 'completion':json.dumps(completion), 'sandbox': False,
+    return render(request, 'djexperiments/launch.html', {'resources': resources, 'exp': exp, 'completion':json.dumps(completion), 'sandbox': False, 
                                                          'consent':consentfile, 'plugins':plugins, 'static_url': settings.STATIC_URL, 'header_type': 'mdl-layout__header--scroll'})
 
 def summary(request, exp_label):

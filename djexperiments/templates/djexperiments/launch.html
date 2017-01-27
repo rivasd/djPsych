@@ -68,7 +68,7 @@ var loading = "{% trans "Please wait while we generate your textures..." %}";
 <div id="jsPsychTarget">
 	
 	<div class="djpsych-consent">
-		{% markdown_safe exp.consent_form%}
+		{{ consent|safe }}
 	</div>
 	
 	<form name="consent" id="consent">
@@ -100,8 +100,11 @@ var loading = "{% trans "Please wait while we generate your textures..." %}";
 	        </div>
 	    </fieldset>
 	</form>
+	
+	<button href="#top" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" id="start" >{% trans "Start the experiment!" %}</a>
+	
 </div>
-<button href="#top" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" id="start" >{% trans "Start the experiment!" %}</a>
+
 {% else %}
 {# This is shown if the experiment is requested by a researcher #}
 <div id="sandbox" class="full-width">
