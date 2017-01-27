@@ -48,18 +48,19 @@ $(function(){
 		else{
 			alert("veuillez cocher la case J'accepte / Please check the box I Accept");
 		}
-	})
+	});
 	
 	$("#begin-test").click(function(e){
 		e.preventDefault();
 		serverSideBegin(e);
 		return false;
-	})
+	});
 	
-	#("#end-block").click(function(e){
+	$("#end-block").click(function(e){
 		e.preventDefault();
 		jsPsych.endCurrentTimeline();
-	})
+		return false;
+	});
 	
 })
 
