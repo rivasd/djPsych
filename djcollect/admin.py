@@ -14,13 +14,16 @@ class ParticipationAdmin(admin.ModelAdmin):
     def subject_no(self, obj):
         return obj.subject.id
     
+    def subject_name(self, obj):
+        return obj.subject.user.username
+    
     def paid(self, obj):
         if obj.payment is not None:
             return obj.payment.sent
         else:
             return False
     
-    list_display = ('experiment', 'subject_no', 'started', 'complete', 'paid')
+    list_display = ('experiment', 'subject_name', 'started', 'complete', 'paid')
     
 @admin.register(DropOut)
 class DropOutAdmin(admin.ModelAdmin):
