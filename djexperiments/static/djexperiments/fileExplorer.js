@@ -43,6 +43,9 @@ $(function(){
 			},
 			"css":{
 				icon: 'fa fa-paint-brush'
+			},
+			"audio":{
+				icon: 'fa fa-music'
 			}
 		},
 		core:{
