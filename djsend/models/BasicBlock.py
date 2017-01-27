@@ -27,7 +27,7 @@ class BaseSettingBlock(models.Model):
     part_of = GenericForeignKey('global_settings_type', 'global_settings_id')
     
     name = models.CharField(max_length=24, help_text=l_("A short name to describe this block"))
-    position_in_timeline = models.PositiveSmallIntegerField(null=True, blank=True, help_text=l_("This number is used by the global setting this object is part of to build its timeline. It represents the ordinal position in which this block should come."))
+    position_in_timeline = models.PositiveSmallIntegerField(default=0, help_text=l_("This number is used by the global setting this object is part of to build its timeline. It represents the ordinal position in which this block should come."))
     reprise = models.PositiveSmallIntegerField(null=True, blank=True, help_text=l_("If set, indicates that this block is a reprise of the n'th block, where n is the value of the field"))
     length= models.PositiveIntegerField(null=True, blank=True, help_text=l_("How many individual trials of this type should there be. You can leave blank if you don't need it"))
     type = models.CharField(max_length=26, help_text=l_("This will be passed as the 'type' parameter to jsPsych. It tells it which plugin to use to render these trials."))

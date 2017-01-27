@@ -53,7 +53,11 @@ class GenericBlockAdmin(TranslationAdmin):
         'generic' :[['global_settings_type', 'global_settings_id']]
     }
     
-    list_display = ('name', 'get_parent_name', 'position_in_timeline', 'type', 'has_practice')
+    def get_exp(self, obj):
+        return obj.part_of.experiment.verbose_name
+    
+    
+    list_display = ('name', 'get_parent_name', 'get_exp','position_in_timeline', 'type', 'has_practice')
     
     inlines = [ InstructionInline,]
     
