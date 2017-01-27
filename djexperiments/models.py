@@ -53,6 +53,10 @@ class BaseExperiment(models.Model):
     
     ParticipationRefused = ParticipationRefused
     
+    
+    consent_form = MarkdownField(blank=True, null=True, help_text=l_("Text to be displayed above the consent confirmation panel"))
+    
+    
     def __str__(self):
         return self.verbose_name
     
@@ -235,4 +239,4 @@ class Lobby(models.Model):
     def __str__(self):
         return l_("Welcome page for %s") % self.experiment.verbose_name
         
-        
+      

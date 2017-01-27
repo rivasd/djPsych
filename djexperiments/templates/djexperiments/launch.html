@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static from staticfiles %}
 {% load i18n %}
+{% load django_markdown %}
 
 {% block title %}{{ exp.verbose_name }}{% endblock %}
 {% block head %}
@@ -65,9 +66,11 @@ var loading = "{% trans "Please wait while we generate your textures..." %}";
 <a id='top'></a>
 {% if not sandbox %}
 <div id="jsPsychTarget">
-	{% if consent %}
-	{% include consent %}
-	{% endif %}
+	
+	<div class="djpsych-consent">
+		{% markdown_safe exp.consent_form%}
+	</div>
+	
 	<form name="consent" id="consent">
 	    <fieldset>
 	    <legend>{% trans "Consent" %}</legend>
