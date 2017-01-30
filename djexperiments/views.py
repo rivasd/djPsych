@@ -64,7 +64,7 @@ def launch(request, exp_label):
         completion = Participation.objects.get(pk=request.session['continue']).completion_status()
     else:
         latest = exp.get_latest_pending(request)
-        if latest:
+        if latest and exp.enforce_finish:
             request.session['continue'] = latest.pk
             completion = latest.completion_status() if latest.completion_status() is not False else {}
         else:

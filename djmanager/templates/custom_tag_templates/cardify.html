@@ -7,15 +7,20 @@
     {{ exp.description }}
   </div>
   <div class="mdl-card__actions mdl-card--border">
-    {% if not is_researcher %}
-    	<a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href={% url "webexp:lobby" exp.label%}>
-	      	{% trans "Participate"%}
-	    </a>
-    {% else %}
-    	<a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href={% url "webexp:lobby" exp.label%}>
+  	<a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href={% url "webexp:lobby" exp.label%}>
+    {% if is_researcher %}
 	      	{% trans "Configure"%}
-	    </a>
+	 
+    {% elif force_cont%}
+    	
+	      	{% trans "Continue"%}
+	    
+	{% else %}
+    	
+	      	{% trans "Participate"%}
+	    
   	{% endif %}
+  	</a>
   </div>
   <div class="mdl-card__menu">
     <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">

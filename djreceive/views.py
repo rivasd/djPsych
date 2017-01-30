@@ -73,7 +73,7 @@ def save(request, exp_label):
     
     # select the participation to append to OR create a new one if this was not a continuation
     exp = Experiment.objects.get(label=exp_label)
-    if not ('previous' in request.session and meta['previous']):
+    if not ('previous' in request.session):
         participation = exp.create_participation(subject=request.user.subject, started=request.session['start_time'], complete=finished, parameters=globalparams)
     else:
         #verify that the participation pk matches the one saved in the request 
