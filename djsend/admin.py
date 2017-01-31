@@ -132,7 +132,8 @@ class AudioCatAdmin(GenericBlockAdmin):
             'timing_feedback',
             'timing_response',
             'timeout_feedback',
-            'show_icon'
+            'show_icon',
+            'forced_listening'
             
         )}),                               
     )

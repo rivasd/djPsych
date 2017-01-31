@@ -135,6 +135,7 @@ class AudioCatBlock(BaseSettingBlock):
     incorrect_feedback = models.CharField(max_length=64, blank=True, help_text=l_("Any content here will be displayed as a feedback given to the participants when he doesn't hit the correct category"))
     timeout_feedback = models.CharField(max_length=64, blank=True, help_text=l_("Any content here will be displayed as a feedback given to the participants when he takes too long to answer the question if there is a timeout"))
     show_icon = models.BooleanField(default = False, help_text=l_('Check this box to have a speaker icon presented in the same time as the sound.'))
+    forced_listening = models.BooleanField(blank = True, help_text=l_('Check this box if you want to force the subject to listen to the whole sound before answering'))
     
     def toDict(self):
         initial = super(AudioCatBlock,self).toDict()
