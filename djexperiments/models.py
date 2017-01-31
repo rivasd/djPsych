@@ -190,6 +190,8 @@ class BaseExperiment(models.Model):
         return url_dict
             
     def get_latest_pending(self, request):
+        if request.user.is_anonymous():
+            return False
         try:
             last = self.participation_set.filter(subject__user=request.user, complete=False).latest(field_name="started")
         except ObjectDoesNotExist:

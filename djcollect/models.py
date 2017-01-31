@@ -6,6 +6,8 @@ from jsonfield import JSONField
 from django.contrib.auth.models import User
 from djPsych.exceptions import PayoutException
 from djreceive.models import Run
+from matplotlib import ticker, figure
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 
 # Create your models here.
 
@@ -100,6 +102,60 @@ class Participation(models.Model):
 
     def __str__(self):
         return self.subject.user.username+" - "+self.experiment.label
+
+    def learning_curve(self, granularity=1, range=20):
+        
+        cat_trials = [t.toDict() for t in self.get_all_trials() if (t.trial_type == 'categorize' or t.trial_type == 'audio-categorization')]
+        fig = figure.Figure()
+        
+        if granularity > len(cat_trials):
+            granularity = 1
+        # our axes
+        ord = []
+        abs = []
+        
+        cur = 0
+        while cur < len(cat_trials):
+            lower = cur - range if (cur - range) > 0 else 0
+            subset = cat_trials[lower:cur+1]
+            
+            average = 0.0
+            for t in subset:
+                if t['correct'] == True or t['correct'] == "correct":
+                    average = average+1
+                    
+            average = average/len(subset)
+            
+            
+            ord.append(cur)
+            abs.append(average)
+            cur = cur+granularity
+        
+        axe = fig.add_subplot(111)
+        
+        
+        
+        
+        loc = ticker.MultipleLocator(granularity)
+        axe.xaxis.set_major_locator(loc)
+        axe.plot(ord, abs)
+        
+        # prettification
+        if self.parameters is not None and 'difficulty' in self.parameters:
+            diff = str(self.parameters['difficulty'])
+        else:
+            diff = 'unknown'
+            
+        axe.set_title('Percent correct during categorization task for subject ' + str(self.subject.id) + ' difficulty ' + diff)
+        axe.set_ylabel('percentage correct')
+        axe.set_xlabel('trial number')
+        
+        vals = axe.get_yticks()
+        axe.set_yticklabels(["{:3.0f}%".format(x*100) for x in vals])
+        
+        canvas = FigureCanvas(fig)
+        
+        return canvas
 
 class DropOut(models.Model):
     

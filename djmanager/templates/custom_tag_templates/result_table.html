@@ -12,9 +12,11 @@
 			<th>
 				{% trans "Time finished" %}
 			</th>
+
 			<th>
 				{% trans "Visualize" %}
 			</th>
+
 		</tr>
 	
 	</thead>
@@ -34,9 +36,11 @@
 				-
 				{% endif %}
 			</td>
+
 			<td class="mdl-data-table__cell--non-numeric">
 				<a href="{% url "webexp:collect:plot" exp_label=participation.experiment.label participation=participation.id %}">{% trans "See results" %}</a>
 			</td>
+
 		</tr>
 	
 	{% endfor %}

@@ -25,5 +25,5 @@ def results(experiment, length):
     """
     
     parts = experiment.participation_set.all().order_by('-started')[:length]
-    return {'participations': parts}
+    return {'participations': parts, 'exp':experiment}
     

@@ -38,7 +38,7 @@ class MyParticipation():
         
     def learning_curve(self, granularity=1, range=20):
         
-        cat_trials = [t.toDict() for t in self.get_all_trials() if t.trial_type == 'categorize']
+        cat_trials = [t.toDict() for t in self.get_all_trials() if (t.trial_type == 'categorize' or t.trial_type == 'audio-categorization')]
         fig = matplotlib.figure.Figure()
         
         if granularity > len(cat_trials):
