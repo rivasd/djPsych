@@ -1,7 +1,7 @@
 {% extends 'homepage.html' %}
 {% load i18n %}
 {% load static %}
-
+{% load experiment_tags %}
 
 {% block title %}
 {{exp.verbose_name}}
@@ -55,6 +55,14 @@ var expLabel = "{{ exp.label }}";
 		</ul>
 		
 	</section>
+	
+	<section>
+		<h4>
+			{% trans "Last participations" %}
+		</h4>
+		{% results exp 10 %}
+	</section>
+	
 	<section id="explorer">
 		{% include "djexperiments/explorer.html" %}
 	</section>

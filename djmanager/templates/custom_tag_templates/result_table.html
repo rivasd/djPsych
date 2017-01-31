@@ -1,0 +1,47 @@
+{% load i18n %}
+
+<table class="mdl-data-table mdl-js-data-table">
+	<thead>
+		<tr>
+			<th class="mdl-data-table__cell--non-numeric">
+				{% trans "Subject Number"%}
+			</th>
+			<th>
+				{% trans "Time started" %}
+			</th>
+			<th>
+				{% trans "Time finished" %}
+			</th>
+			<th>
+				{% trans "Visualize" %}
+			</th>
+		</tr>
+	
+	</thead>
+	<tbody>
+	{% for participation in participations %}
+		<tr>
+			<td>
+				{{ participation.subject.user.id }}
+			</td>
+			<td class="mdl-data-table__cell--non-numeric">
+				{{ participation.started|date:"j b Y - H:i" }}
+			</td>
+			<td> 
+				{% if participation.complete %}
+				{{ participation.finished|date:"j b Y - H:i" }}
+				{% else %}
+				-
+				{% endif %}
+			</td>
+			<td class="mdl-data-table__cell--non-numeric">
+				<a href="{% url "webexp:collect:plot" exp_label=participation.experiment.label participation=participation.id %}">{% trans "See results" %}</a>
+			</td>
+		</tr>
+	
+	{% endfor %}
+	
+	</tbody>
+
+
+</table>
