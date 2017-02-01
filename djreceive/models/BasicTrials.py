@@ -99,7 +99,7 @@ class AudioCatTrial(BaseTrial):
     rt = models.PositiveIntegerField
     stimulus = models.CharField(max_length=128)
     key_press = models.SmallIntegerField(null = True)
-    correct = models.CharField(max_length=128)
+    correct = models.BooleanField(default=False)
     
 class AudioSimilarityTrial(BaseTrial):
     handles = 'audio-similarity'
