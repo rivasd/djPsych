@@ -55,9 +55,6 @@ def collect_all(request, exp_label):
 @login_required
 def learning_curve(request, exp_label, participation):
     
-    if exp_label != 'simcat':
-        raise Http404()
-    
     exp = Experiment.objects.prefetch_related('participation_set').get(label=exp_label)
     
     part = exp.participation_set.get(pk=participation)
