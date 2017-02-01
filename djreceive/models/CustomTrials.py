@@ -22,4 +22,8 @@ class CogComHTMLTrial(BaseTrial):
 class AudioABXTrial(BaseTrial):
     handles = 'audio-abx'
     rt = models.IntegerField()
-    result = models.CharField(max_length=24)
+    correct = models.BooleanField(default = False)
+    A = models.CharField(max_length=1024, null = True)
+    B = models.CharField(max_length=1024, null = True)
+    X = models.CharField(max_length=1024, null = True)
+    key_press = models.IntegerField(null = True)

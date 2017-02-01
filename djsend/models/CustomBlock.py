@@ -153,6 +153,8 @@ class AudioABXBlock(BaseSettingBlock):
     timeout_message_timing = models.IntegerField(help_text=l_("How long to show the feedback message for in milliseconds."))
     timing_gap = models.IntegerField(help_text=l_("How long to leave blank between the sounds."))
     prompt = models.CharField(max_length=256, blank=True, help_text=l_("Any content here will be displayed below the stimulus, as a reminder to the participant"))
+    key_first = models.CharField(max_length=3, blank=True, help_text=l_("The key that the person have to press if the first image is the same as the last"))
+    key_second = models.CharField(max_length=3, blank=True, help_text=l_("The key that the person have to press if it is the second image that is the same as the last"))
     
     def toDict(self):
         initial = super(AudioABXBlock,self).toDict()

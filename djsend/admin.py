@@ -117,7 +117,9 @@ class AudioABXBlock(GenericBlockAdmin):
             'timeout',
             'timeout_message_timing',
             'timeout_feedback',
-            'timing_gap'       
+            'timing_gap',
+            'key_first',
+            'key_second'       
         )}),                               
     )     
 
