@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http.response import HttpResponse, Http404, HttpResponseRedirect, JsonResponse,HttpResponseBadRequest
 from django.conf import settings
 from django.core.files.storage import default_storage
+from django.template import loader
 import glob
 import os.path
 from djexperiments.models import Experiment
@@ -48,7 +49,7 @@ def launch(request, exp_label):
     
     resources = exp.list_static_urls()
     if os.path.exists(os.path.join(settings.BASE_DIR, "..", 'djexperiments', "templates", 'djexperiments', exp.label, 'consent.html')):
-        consentfile = 'djexperiments/'+exp_label+'/consent.html'
+        consentfile = loader.get_template('djexperiments/'+exp_label+'/consent.html').render()
     elif exp.consent_form:
         
         consentfile = markdown.markdown(exp.consent_form)
