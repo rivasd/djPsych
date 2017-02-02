@@ -347,6 +347,7 @@ class SimilarityBlockAdmin(GenericBlockAdmin):
             'intervals',
             'show_ticks',
             'show_response',
+            'timing_fixation_cross',
             'timing_first_stim',
             'timing_second_stim',
             'timing_image_gap',
