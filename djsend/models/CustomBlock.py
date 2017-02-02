@@ -41,6 +41,7 @@ class SimilarityBlock(BaseSettingBlock):
     intervals = models.IntegerField(help_text=l_("How many different choices are available on the slider. For example, 5 will limit the options to 5 different places on the slider"))
     show_ticks = models.BooleanField(help_text=l_("If true, then the slider will have tick marks indicating where the response options lie on the slider."))
     show_response = models.CharField(max_length=16, choices=show_response_choices, help_text=l_("When should the response slider be shown?"))
+    timing_fixation_cross = models.IntegerField(default = 1500, help_text=l_("How long to show the fixation cross for in milliseconds."))
     timing_first_stim = models.IntegerField(help_text=l_("How long to show the first stimulus for in milliseconds."))
     timing_second_stim = models.IntegerField(help_text=l_("How long to show the second stimulus for in milliseconds. -1 will show the stimulus until a response is made by the subject."))
     timing_image_gap = models.IntegerField(help_text=l_("How long to show a blank screen in between the two stimuli."))
