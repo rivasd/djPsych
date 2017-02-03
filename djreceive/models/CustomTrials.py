@@ -19,6 +19,15 @@ class CogComHTMLTrial(BaseTrial):
     ruleDescription = models.TextField(null=True)
     stratDescription = models.TextField(null=True)
     
+class ABXTrial(BaseTrial):
+    handles = 'abx'
+    rt = models.IntegerField()
+    correct = models.BooleanField(default = False)
+    A = models.CharField(max_length=1024, null = True)
+    B = models.CharField(max_length=1024, null = True)
+    X = models.CharField(max_length=1024, null = True)
+    key_press = models.IntegerField(null = True)
+    
 class AudioABXTrial(BaseTrial):
     handles = 'audio-abx'
     rt = models.IntegerField()

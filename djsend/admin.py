@@ -18,7 +18,7 @@ from djreceive.models.CustomTrials import CogComSimilarityTrial
 from djstim.admin import LinkedStimulusInline
 from djsend.models.BasicBlock import SurveyMultiChoiceBlock,SurveyLikertBlock, SurveyTextBlock, AnimationBlock, ButtonResponseBlock, CategorizeAnimationBlock, \
     FreeSortBlock, MultiStimMultiResponseBlock, ReconstructionBlock, SameDifferentBlock, SingleAudioBlock, SingleStimBlock, XABBlock
-from djsend.models.CustomBlock import ForcedChoiceBlock, RatingBlock, AudioCatBlock, AudioSimilarityBlock, AudioABXBlock
+from djsend.models.CustomBlock import ForcedChoiceBlock, RatingBlock, AudioCatBlock, AudioSimilarityBlock, AudioABXBlock, ABXBlock
 from djsend.models.BaseStimuli import Question
 
 
@@ -95,6 +95,22 @@ class GenericGlobalSettingAdmin(admin.ModelAdmin):
     
 # ModelAdmins for the more targeted config models
 
+@admin.register(ABXBlock)    
+class ABXBlock(GenericBlockAdmin):
+    fieldsets = GenericBlockAdmin.fieldsets + (
+        (l_("ABX task parameters"), {'fields':(
+            'choices',
+            'prompt',
+            'timeout',
+            'timing_stims',
+            'timing_feedback',
+            'timeout_feedback',
+            'timing_gap',
+            'key_first',
+            'key_second'       
+        )}),                               
+    )  
+
 @admin.register(AnimationBlock)    
 class AnimationBlockAdmin(GenericBlockAdmin):
     fieldsets = GenericBlockAdmin.fieldsets + (
@@ -111,7 +127,7 @@ class AnimationBlockAdmin(GenericBlockAdmin):
 @admin.register(AudioABXBlock)    
 class AudioABXBlock(GenericBlockAdmin):
     fieldsets = GenericBlockAdmin.fieldsets + (
-        (l_("Audio Categorization task parameters"), {'fields':(
+        (l_("Audio ABX task parameters"), {'fields':(
             'choices',
             'prompt',
             'timeout',

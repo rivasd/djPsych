@@ -8,7 +8,10 @@ from modeltranslation.translator import register, TranslationOptions
 from .models import Instruction, CategorizationBlock, GenericSettingBlock, \
                     SimilarityBlock, Question, ForcedChoiceBlock, RatingBlock, SurveyLikertBlock, SurveyMultiChoiceBlock, AudioCatBlock, SurveyTextBlock, AudioSimilarityBlock, \
                     AnimationBlock, ButtonResponseBlock, CategorizeAnimationBlock, FreeSortBlock, MultiStimMultiResponseBlock, ReconstructionBlock, SameDifferentBlock, SingleAudioBlock, \
-                    SingleStimBlock, XABBlock, AudioABXBlock
+                    SingleStimBlock, XABBlock, AudioABXBlock, ABXBlock
+@register(ABXBlock)
+class ABXOptions(TranslationOptions):
+    fields=('prompt', 'timeout_feedback')
 
 @register(AnimationBlock)
 class AnimationBlockOptions(TranslationOptions):

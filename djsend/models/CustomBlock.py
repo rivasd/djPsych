@@ -151,11 +151,11 @@ class AudioABXBlock(BaseSettingBlock):
     choices = choices = models.CharField(blank=True, max_length = 1024, help_text=l_("Choose the keys associated for all categories. You have separate them with a coma and non spaces."))
     timeout = models.IntegerField(help_text=l_("time limit for the participant before the trial automatically advances"), default=-1)
     timeout_feedback = models.CharField(max_length=64, blank=True, help_text=l_("Any content here will be displayed as a feedback given to the participants when he takes too long to answer the question if there is a timeout"))
-    timeout_message_timing = models.IntegerField(help_text=l_("How long to show the feedback message for in milliseconds."))
+    timing_feedback = models.IntegerField(help_text=l_("How long to show the feedback message for in milliseconds."))
     timing_gap = models.IntegerField(help_text=l_("How long to leave blank between the sounds."))
     prompt = models.CharField(max_length=256, blank=True, help_text=l_("Any content here will be displayed below the stimulus, as a reminder to the participant"))
-    key_first = models.CharField(max_length=3, blank=True, help_text=l_("The key that the person have to press if the first image is the same as the last"))
-    key_second = models.CharField(max_length=3, blank=True, help_text=l_("The key that the person have to press if it is the second image that is the same as the last"))
+    key_first = models.CharField(max_length=3, blank=True, help_text=l_("The key that the person have to press if the first sound is the same as the last"))
+    key_second = models.CharField(max_length=3, blank=True, help_text=l_("The key that the person have to press if it is the second sound that is the same as the last"))
     
     def toDict(self):
         initial = super(AudioABXBlock,self).toDict()
@@ -164,5 +164,23 @@ class AudioABXBlock(BaseSettingBlock):
         initial['timeout_feedback'] = self.timeout_feedback
         return initial
     
+class ABXBlock(BaseSettingBlock):
+    choices = choices = models.CharField(blank=True, max_length = 1024, help_text=l_("Choose the keys associated for all categories. You have separate them with a coma and non spaces."))
+    timeout = models.IntegerField(help_text=l_("time limit for the participant before the trial automatically advances"), default=-1)
+    timeout_feedback = models.CharField(max_length=64, blank=True, help_text=l_("Any content here will be displayed as a feedback given to the participants when he takes too long to answer the question if there is a timeout"))
+    timing_feedback = models.IntegerField(help_text=l_("How long to show the feedback message for in milliseconds."))
+    timing_gap = models.IntegerField(help_text=l_("How long to leave blank between the stimuli."))
+    timing_stims = models.IntegerField(help_text=l_("How long to show the stimuli for."))
+    prompt = models.CharField(max_length=256, blank=True, help_text=l_("Any content here will be displayed below the stimulus, as a reminder to the participant"))
+    key_first = models.CharField(max_length=3, blank=True, help_text=l_("The key that the person have to press if the first image is the same as the last"))
+    key_second = models.CharField(max_length=3, blank=True, help_text=l_("The key that the person have to press if it is the second image that is the same as the last"))
+    
+    def toDict(self):
+        initial = super(ABXBlock,self).toDict()
+        initial['choices'] = self.choices.split(',')
+        initial['prompt'] = "<p class=\"prompt\"> {} </p>".format(self.prompt)
+        initial['timeout_feedback'] = self.timeout_feedback
+        return initial
+        
         
     
