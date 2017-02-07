@@ -111,3 +111,5 @@ class ConfigSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         return serializers.ModelSerializer.update(self, instance, validated_data)
     
+    
+    

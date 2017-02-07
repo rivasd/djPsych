@@ -128,4 +128,5 @@ class ConfigViewSet(viewsets.GenericViewSet, ListModelMixin, CreateModelMixin, U
     def retrieve(self, request, *args, **kwargs):
         return RetrieveModelMixin.retrieve(self, request, *args, **kwargs)
         
-        
+    def perform_update(self, serializer):
+        UpdateModelMixin.perform_update(self, serializer)
