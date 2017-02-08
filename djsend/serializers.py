@@ -69,6 +69,18 @@ class BlockSerializer(serializers.ModelSerializer):
         
         return ContentType.objects.get_for_model(obj).id
 
+
+class TimelineField(serializers.ListField):
+    
+    child = BlockSerializer
+    
+    def to_internal_value(self, data):
+        return serializers.ListField.to_internal_value(self, data)
+
+    
+    def to_representation(self, data):
+        return serializers.ListField.to_representation(self, data)
+
 class ConfigSerializer(serializers.ModelSerializer):
     """
     Generic serializer for experimental configuration.
@@ -78,7 +90,7 @@ class ConfigSerializer(serializers.ModelSerializer):
     
     blocks = serializers.SerializerMethodField()
     content_type = serializers.SerializerMethodField(read_only=True)
-    
+    timeline = serializers.ListField(source="build_timeline")
     
     class Meta:
         model = GenericGlobalSetting # the model is left unspecified, you must specify it when instatiating the serializer, see: https://blog.hipwerk.com/django-rest-framework-general-model-serializer/

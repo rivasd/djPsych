@@ -74,11 +74,16 @@ class BaseGlobalSetting(models.Model):
         This array MUST be json serializable (no objects).
         The default is to simply sort the blocks by their 'position_in_timeline' attribute, then call their .toDict() method
         """
+        
+        if blocks is None:
+            blocks =self.get_all_blocks()
+        
         blocks.sort(key=lambda x:x.position_in_timeline)
         timeline=[]
         for block in blocks:
             timeline.append(block.toDict())
         self.timeline = timeline
+        return self.timeline
         
     def number_of_blocks(self):
         return len(self.get_all_blocks())
