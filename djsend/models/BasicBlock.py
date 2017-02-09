@@ -35,8 +35,10 @@ class BaseSettingBlock(models.Model):
      If You have different block-setting objects (like this one) that have the same 'type' but different 'save_with', then there is no guarantee which data-model will be used. This is because I think there is no real reason why two different 'categorization' blocks should be saved with different data-models: even if they have wildly different stimuli or timing settings, they should return the same kind of data."))
     has_practice = models.BooleanField(help_text=l_("Check if you want to mark this block to need a practice block before, useful to guide client-side JS code."), default=False)
     instructions = GenericRelation(Instruction)
+    questions = GenericRelation(Question)
     # magic field for dynamically added settings. Be careful the keys of this JSON object do not clash with the name of a field on the model, or they will get replaced
     extra_params = JSONField(null=True, blank=True)
+    
     
     def toDict(self):
         if self.reprise is not None:
@@ -232,8 +234,6 @@ class SingleStimBlock(BaseSettingBlock):
 
 class SurveyLikertBlock(BaseSettingBlock):
     
-    questions = GenericRelation(Question)
-    
     def toDict(self):
         
         initial = super(SurveyLikertBlock,self).toDict()
@@ -258,8 +258,6 @@ class SurveyMultiChoiceBlock(BaseSettingBlock):
     preamble = models.TextField(help_text = l_("A short paragraphe that will display at the top of your questions page"))
     horizontal = models.BooleanField(help_text=l_("Do you want the answer choices to be displayed horizontally? If so, put true, else put false."), default=False)
     
-    questions = GenericRelation(Question)
-    
     def toDict(self):
         initial = super(SurveyMultiChoiceBlock,self).toDict()
         
@@ -281,8 +279,6 @@ class SurveyMultiChoiceBlock(BaseSettingBlock):
 
     
 class SurveyTextBlock(BaseSettingBlock):
-    
-    questions = GenericRelation(Question)
     preamble = models.TextField(blank = True, null = True, help_text = l_("A short paragraphe that will display at the top of your questions page"))
     
     def toDict(self):

@@ -10,6 +10,25 @@ from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from djsend.models.BasicGeneral import GenericGlobalSetting
 from djsend.models.BasicBlock import GenericSettingBlock
+from rest_framework.serializers import ValidationError
+from rest_framework.fields import empty
+from .models import Instruction, Question
+
+
+
+class InstructionSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Instruction
+        fields = "__all__"
+
+
+class QuestionSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Question
+        fields = "__all__"
+
 
 class TimelineSerializer(serializers.ListSerializer):
     
@@ -39,6 +58,8 @@ class BlockSerializer(serializers.ModelSerializer):
     """ 
     
     content_type = serializers.SerializerMethodField(read_only = True)
+    instructions = InstructionSerializer(many=True)
+    questions = QuestionSerializer(many = True)
     
     class Meta:
         model = GenericSettingBlock
@@ -69,10 +90,25 @@ class BlockSerializer(serializers.ModelSerializer):
         
         return ContentType.objects.get_for_model(obj).id
 
-
+    
+    def validate_content_type(self, data):
+        """
+        A hacky way to ensure all data dicts that try to represent blocks have the a 'content-type' key,
+        since django rest framework won't let me set a field as both 'required' and 'read-only' (go figure...)
+        """
+        if data is empty:
+            raise ValidationError("the type of the block must be specified")
+        return data
+    
+    def to_internal_value(self, data):
+        
+        # make sure 
+        return serializers.ModelSerializer.to_internal_value(self, data)
+    
+    
 class TimelineField(serializers.ListField):
     
-    child = BlockSerializer
+    child = BlockSerializer()
     
     def to_internal_value(self, data):
         return serializers.ListField.to_internal_value(self, data)
@@ -88,9 +124,8 @@ class ConfigSerializer(serializers.ModelSerializer):
     
     """
     
-    blocks = serializers.SerializerMethodField()
     content_type = serializers.SerializerMethodField(read_only=True)
-    timeline = serializers.ListField(source="build_timeline")
+    timeline = BlockSerializer(many=True, source="get_all_blocks")
     
     class Meta:
         model = GenericGlobalSetting # the model is left unspecified, you must specify it when instatiating the serializer, see: https://blog.hipwerk.com/django-rest-framework-general-model-serializer/
@@ -108,8 +143,7 @@ class ConfigSerializer(serializers.ModelSerializer):
             self.Meta.model = kind
         
     def get_blocks(self, obj):
-        serializer = BlockSerializer(obj.get_all_blocks(), many=True)
-        return serializer.data
+        return obj.get_all_blocks()
     
     def get_content_type(self, obj):
         """
@@ -123,5 +157,6 @@ class ConfigSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         return serializers.ModelSerializer.update(self, instance, validated_data)
     
-    
+    def to_internal_value(self, data):
+        return serializers.ModelSerializer.to_internal_value(self, data)
     
