@@ -14,6 +14,7 @@ from django.contrib.auth.models import Group, Permission
 from django_markdown.models import MarkdownField
 import markdown
 from djPsych.utils import get_type
+from django.contrib.contenttypes.fields import GenericRel, GenericRelation
 
 # Create your models here.
 

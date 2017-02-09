@@ -101,6 +101,7 @@ class ABXBlock(GenericBlockAdmin):
         (l_("ABX task parameters"), {'fields':(
             'choices',
             'prompt',
+            'prompt_position',
             'timeout',
             'timing_stims',
             'timing_feedback',
