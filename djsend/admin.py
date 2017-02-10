@@ -249,7 +249,10 @@ class ForcedChoiceAdmin(GenericBlockAdmin):
             'timing_fixation',  
             'prompt', 
             'keyboard',
-            'key_choices'
+            'key_choices',
+            'timeout',
+            'timeout_message',
+            'timeout_message_timing'
         )}),                               
     )
     
@@ -297,6 +300,9 @@ class RatingAdmin(GenericBlockAdmin):
             'intervals',
             'show_ticks',
             'choices',
+            'timeout',
+            'timeout_message',
+            'timeout_message_timing'
         )}),                            
     )
     

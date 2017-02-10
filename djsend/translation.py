@@ -43,7 +43,7 @@ class CategorizationBlockOptions(TranslationOptions):
     
 @register(ForcedChoiceBlock)
 class ForcedChoiceOptions(TranslationOptions):
-    fields=('prompt',)
+    fields=('prompt','timeout_message')
     
 @register(FreeSortBlock)
 class FreeSortBlockOptions(TranslationOptions):
@@ -67,7 +67,7 @@ class QuestionOptions(TranslationOptions):
     
 @register(RatingBlock)
 class RatingOptions(TranslationOptions):
-    fields=('prompt','choices')
+    fields=('prompt','choices', 'timeout_message')
     
 @register(ReconstructionBlock)
 class ReconstructionBlockOptions(TranslationOptions):
