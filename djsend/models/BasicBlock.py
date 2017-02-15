@@ -74,7 +74,7 @@ class BaseSettingBlock(models.Model):
                 if instruction.show_clickable_nav:
                     instructions['after']["show_clickable_nav"] = True
                 if instruction.key_forward:
-                    instructions['before']["key_forward"] = instruction.key_forward    
+                    instructions['after']["key_forward"] = instruction.key_forward    
                 instructions['after']['pages'].append(instruction.toDict()['text'])
                 
         if instructions_before:
