@@ -30,7 +30,6 @@ class BaseSettingBlock(models.Model):
     position_in_timeline = models.PositiveSmallIntegerField(default=0, help_text=l_("This number is used by the global setting this object is part of to build its timeline. It represents the ordinal position in which this block should come."))
     reprise = models.PositiveSmallIntegerField(null=True, blank=True, help_text=l_("If set, indicates that this block is a reprise of the n'th block, where n is the value of the field"))
     length= models.PositiveIntegerField(null=True, blank=True, help_text=l_("How many individual trials of this type should there be. You can leave blank if you don't need it"))
-    type = models.CharField(max_length=26, help_text=l_("This will be passed as the 'type' parameter to jsPsych. It tells it which plugin to use to render these trials."))
     save_with = models.ForeignKey(ContentType, related_name='created_%(class)ss', help_text=l_("Choose the data model that will be used to save all trials that have their 'type' parameter equal to what you wrote above.\
      If You have different block-setting objects (like this one) that have the same 'type' but different 'save_with', then there is no guarantee which data-model will be used. This is because I think there is no real reason why two different 'categorization' blocks should be saved with different data-models: even if they have wildly different stimuli or timing settings, they should return the same kind of data."))
     has_practice = models.BooleanField(help_text=l_("Check if you want to mark this block to need a practice block before, useful to guide client-side JS code."), default=False)
@@ -42,6 +41,7 @@ class BaseSettingBlock(models.Model):
         if self.reprise is not None:
             return {'reprise': self.reprise}
         dictionary = dict(self.__dict__)
+        dictionary['type'] = self.type
         del dictionary['_state']
         del dictionary['global_settings_id']
         del dictionary['global_settings_type_id']
@@ -112,6 +112,7 @@ class GenericSettingBlock(BaseSettingBlock):
 
 class AnimationBlock(BaseSettingBlock):
     
+    type = 'animation'
     frame_time = models.IntegerField(default = 250, help_text=l_("How long to display each image (in milliseconds)"))
     frame_isi = models.IntegerField(default = 0, help_text=l_("If greater than 0, then a gap will be shown between each image in the sequence. This parameter specifies the length of the gap."))
     sequence_reps = models.IntegerField(default = 1, help_text=l_("How many times to show the entire sequence. There will be no gap (other than the gap specified by frame_isi) between repetitions"))
@@ -125,6 +126,7 @@ class AnimationBlock(BaseSettingBlock):
         return initial
     
 class ButtonResponseBlock(BaseSettingBlock):
+    type = 'button-response'
     is_html = models.BooleanField(default = False, help_text=l_("If stimulus is an HTML-formatted string, this parameter needs to be set to true."))
     choices = models.CharField(blank=True, max_length = 1024, help_text=l_(" keys that the subject is allowed to press in order to respond to the stimulus. You have separate them with a coma. ex: k,l"))
     prompt = models.CharField(max_length=256, blank=True, help_text=l_("Any content here will be displayed below the stimulus, as a reminder to the participant"))
@@ -139,6 +141,7 @@ class ButtonResponseBlock(BaseSettingBlock):
         return initial
     
 class CategorizeAnimationBlock(BaseSettingBlock):
+    type = 'categorize-animation'
     choices = models.CharField(blank=True, max_length = 1024, help_text=l_(" keys that the subject is allowed to press in order to respond to the stimulus. You have separate them with a coma. ex: k,l"))
     correct_text = models.CharField(max_length= 64, help_text=l_("String to show when the correct answer is given."), default = "Correct.")
     incorrect_text = models.CharField(max_length= 64, help_text=l_("String to show when the wrong answer is given."), default = "Wrong.")
@@ -155,6 +158,7 @@ class CategorizeAnimationBlock(BaseSettingBlock):
         return initial
     
 class FreeSortBlock(BaseSettingBlock):
+    type = 'free-sort'
     stim_height = models.PositiveIntegerField(default = 100, help_text=l_("The height of the images in pixels."))
     stim_width = models.PositiveIntegerField(default = 100, help_text=l_("The width of the images in pixels."))
     sort_area_height = models.PositiveIntegerField(default = 800, help_text=l_("The height of the container that subjects can move the stimuli in. Stimuli will be constrained to this area."))
@@ -168,6 +172,7 @@ class FreeSortBlock(BaseSettingBlock):
         return initial
     
 class MultiStimMultiResponseBlock(BaseSettingBlock):
+    'multi-stim-multi-response'
     is_html = models.BooleanField(default = False, help_text=l_("If stimulus is an HTML-formatted string, this parameter needs to be set to true."))
     choices = models.CharField(blank=True, max_length = 1024, help_text=l_(" keys that the subject is allowed to press in order to respond to the stimulus. You have separate each choice with a coma and the choices for different responses with a semi-colon. ex: k,l;f,g;g,h"))
     prompt = models.CharField(max_length=256, blank=True, help_text=l_("The intention is that it can be used to provide a reminder about the action the subject is supposed to take (e.g. which key to press)."))
@@ -184,12 +189,14 @@ class MultiStimMultiResponseBlock(BaseSettingBlock):
         return initial
 
 class ReconstructionBlock(BaseSettingBlock):
+    type = 'reconstruction'
     starting_value = models.FloatField(default = 0.5, help_text=l_("The starting value of the stimulus parameter."))
     step_size = models.FloatField(default = 0.05, help_text=l_("The change in the stimulus parameter caused by pressing one of the modification keys."))
     key_increase = models.CharField(max_length=2, default='h', help_text=l_("The key to press for increasing the parameter value."))
     key_decrease = models.CharField(max_length=2, default='g', help_text=l_("The key to press for decreasing the parameter value."))
     
 class SameDifferentBlock(BaseSettingBlock):
+    type = 'same-different'
     is_html = models.BooleanField(default = False, help_text=l_("If stimulus is an HTML-formatted string, this parameter needs to be set to true."))
     same_key = models.CharField(max_length = 2, default = 'q', help_text=l_("The key that subjects should press to indicate that the two stimuli are the same."))
     different_key = models.CharField(max_length = 2, default = 'p', help_text=l_("The key that subjects should press to indicate that the two stimuli are different."))
@@ -204,6 +211,7 @@ class SameDifferentBlock(BaseSettingBlock):
         return initial
     
 class SingleAudioBlock(BaseSettingBlock):
+    type = 'single-audio'
     choices = models.CharField(blank=True, max_length = 1024, help_text=l_(" keys that the subject is allowed to press in order to respond to the stimulus. You have separate them with a coma. ex: k,l"))
     prompt = models.CharField(max_length=256, blank=True, help_text=l_("The intention is that it can be used to provide a reminder about the action the subject is supposed to take (e.g. which key to press)."))
     timing_response = models.IntegerField(help_text=l_("time limit for the participant before the trial automatically advances"), default=-1)
@@ -216,6 +224,7 @@ class SingleAudioBlock(BaseSettingBlock):
         return initial
     
 class SingleStimBlock(BaseSettingBlock):
+    type = 'single-stim'
     is_html = models.BooleanField(default = False, help_text=l_("If stimulus is an HTML-formatted string, this parameter needs to be set to true."))
     choices = models.CharField(blank=True, max_length = 1024, help_text=l_(" keys that the subject is allowed to press in order to respond to the stimulus. You have separate them with a coma. ex: k,l"))
     prompt = models.CharField(max_length=256, blank=True, help_text=l_("The intention is that it can be used to provide a reminder about the action the subject is supposed to take (e.g. which key to press)."))
@@ -231,6 +240,7 @@ class SingleStimBlock(BaseSettingBlock):
 
 
 class SurveyLikertBlock(BaseSettingBlock):
+    type = 'survey-likert'
     
     questions = GenericRelation(Question)
     
@@ -254,6 +264,7 @@ class SurveyLikertBlock(BaseSettingBlock):
         return initial
     
 class SurveyMultiChoiceBlock(BaseSettingBlock):
+    type = 'survey-multi-choice'
     
     preamble = models.TextField(help_text = l_("A short paragraphe that will display at the top of your questions page"))
     horizontal = models.BooleanField(help_text=l_("Do you want the answer choices to be displayed horizontally? If so, put true, else put false."), default=False)
@@ -281,6 +292,7 @@ class SurveyMultiChoiceBlock(BaseSettingBlock):
 
     
 class SurveyTextBlock(BaseSettingBlock):
+    type = 'survey-text'
     
     questions = GenericRelation(Question)
     preamble = models.TextField(blank = True, null = True, help_text = l_("A short paragraphe that will display at the top of your questions page"))
@@ -307,6 +319,7 @@ class SurveyTextBlock(BaseSettingBlock):
         return initial
     
 class XABBlock(BaseSettingBlock):
+    type = 'xab'
     
     is_html = models.BooleanField(default = False, help_text=l_("If stimulus is an HTML-formatted string, this parameter needs to be set to true."))
     left_key = models.CharField(max_length = 2, default = 'q', help_text=l_("Which key the subject should press to indicate that the target is on the left side."))

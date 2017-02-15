@@ -9,6 +9,7 @@ from django.db import models
 from jsonfield import JSONCharField
 
 class CategorizationBlock(BaseSettingBlock):
+    type = 'categorize'
     
     correct_text = models.CharField(max_length=64, help_text=l_("Text to show after a subject makes a correct categorization"))
     incorrect_text = models.CharField(max_length=64, help_text=l_("Text to show after a subject makes an incorrect categorization"))
@@ -31,6 +32,7 @@ class CategorizationBlock(BaseSettingBlock):
         return initial
         
 class SimilarityBlock(BaseSettingBlock):
+    type = 'similarity'
     
     show_response_choices = (
         ('FIRST_STIMULUS', l_('With the first stimulus')),
@@ -62,6 +64,7 @@ class SimilarityBlock(BaseSettingBlock):
         return initial
     
 class AudioSimilarityBlock(BaseSettingBlock):
+    type = 'audio-similarity'
     
     
     intervals = models.IntegerField(help_text=l_("How many different choices are available on the slider. For example, 5 will limit the options to 5 different places on the slider"))
@@ -84,11 +87,13 @@ class AudioSimilarityBlock(BaseSettingBlock):
         return initial
     
 class HTMLBlock(BaseSettingBlock):
+    type = 'html'
     
     url = models.URLField()
     
     
 class RatingBlock(BaseSettingBlock):
+    type = 'rating'
     
     
     is_html = models.BooleanField(help_text=l_("True if the stimulus is html instead of being a image url"))
@@ -116,7 +121,8 @@ class RatingBlock(BaseSettingBlock):
         return initial
         
     
-class ForcedChoiceBlock(BaseSettingBlock): 
+class ForcedChoiceBlock(BaseSettingBlock):
+    type = 'forcedchoice' 
     
     is_html = models.BooleanField(help_text=l_("True if the stimulus is html instead of being a image url"))
     timing_stim = models.IntegerField(help_text=l_("How long to show the stimuli for in milliseconds."))
@@ -135,6 +141,7 @@ class ForcedChoiceBlock(BaseSettingBlock):
         return initial
     
 class AudioCatBlock(BaseSettingBlock):
+    type = 'audio-categorization'
     choices = models.CharField(blank=True, max_length = 1024, help_text=l_("Choose the keys associated for all categories. You have separate them with a coma and non spaces."))
     timing_response = models.IntegerField(help_text=l_("time limit for the participant before the trial automatically advances"), default=-1)
     prompt = models.CharField(max_length=256, blank=True, help_text=l_("Any content here will be displayed below the stimulus, as a reminder to the participant"))
@@ -155,6 +162,7 @@ class AudioCatBlock(BaseSettingBlock):
         return initial
     
 class AudioABXBlock(BaseSettingBlock):
+    type = 'audio-abx'
     choices = choices = models.CharField(blank=True, max_length = 1024, help_text=l_("Choose the keys associated for all categories. You have separate them with a coma and non spaces."))
     timeout = models.IntegerField(help_text=l_("time limit for the participant before the trial automatically advances"), default=-1)
     timeout_feedback = models.CharField(max_length=64, blank=True, help_text=l_("Any content here will be displayed as a feedback given to the participants when he takes too long to answer the question if there is a timeout"))
@@ -172,6 +180,7 @@ class AudioABXBlock(BaseSettingBlock):
         return initial
     
 class ABXBlock(BaseSettingBlock):
+    type = 'abx'
     choices = choices = models.CharField(blank=True, max_length = 1024, help_text=l_("Choose the keys associated for all categories. You have separate them with a coma and non spaces."))
     timeout = models.IntegerField(help_text=l_("time limit for the participant before the trial automatically advances"), default=-1)
     timeout_feedback = models.CharField(max_length=64, blank=True, help_text=l_("Any content here will be displayed as a feedback given to the participants when he takes too long to answer the question if there is a timeout"))

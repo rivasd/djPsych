@@ -46,7 +46,7 @@ class GenericBlockAdmin(TranslationAdmin):
     fieldsets=(
         (l_("Experimental structure options"), {'fields': (('global_settings_type', 'global_settings_id'), 'position_in_timeline', 'reprise')}),
         (l_("General parameters"), {'fields':('name', 'length', 'has_practice', 'extra_params')}),
-        (l_("Saving & processing options"), {'fields':(('type', 'save_with'),)})
+        (l_("Saving & processing options"), {'fields':(('save_with',),)})
     )
     
     related_lookup_fields = {
@@ -57,7 +57,7 @@ class GenericBlockAdmin(TranslationAdmin):
         return obj.part_of.experiment.verbose_name
     
     
-    list_display = ('name', 'get_parent_name', 'get_exp','position_in_timeline', 'type', 'has_practice')
+    list_display = ('name', 'get_parent_name', 'get_exp','position_in_timeline', 'has_practice')
     
     inlines = [ InstructionInline,]
     
@@ -173,11 +173,7 @@ class AudioSimilarityBlockAdmin(GenericBlockAdmin):
         )}),                               
     )
     
-    def get_form(self, request, obj=None, **kwargs):
-        form = super(AudioSimilarityBlockAdmin, self).get_form(request, obj=obj, **kwargs)
-        form.base_fields['type'].initial = 'audio-similarity'
-        form.base_fields['save_with'].initial = ContentType.objects.get_for_model(AudioSimilarityTrial)
-        return form
+
     
 @admin.register(ButtonResponseBlock)
 class ButtonResponseBlockAdmin(GenericBlockAdmin):
@@ -215,11 +211,7 @@ class CategorizationBlockAdmin(GenericBlockAdmin):
         'generic' :[['global_settings_type', 'global_settings_id']]
     }
     
-    def get_form(self, request, obj=None, **kwargs):
-        form = super(CategorizationBlockAdmin, self).get_form(request, obj=obj, **kwargs)
-        form.base_fields['type'].initial = 'categorize'
-        form.base_fields['save_with'].initial = ContentType.objects.get_for_model(CategorizationTrial)
-        return form
+
     
 @admin.register(CategorizeAnimationBlock)  
 class CategorizeAnimationBlockAdmin(GenericBlockAdmin):
@@ -306,11 +298,7 @@ class RatingAdmin(GenericBlockAdmin):
         )}),                            
     )
     
-    def get_form(self, request, obj=None, **kwargs):
-        form = super(RatingAdmin, self).get_form(request, obj=obj, **kwargs)
-        form.base_fields['type'].initial = 'rating'
-        form.base_fields['save_with'].initial = ContentType.objects.get_for_model(Rating)
-        return form
+
     
 @admin.register(ReconstructionBlock)
 class ReconstructionBlockAdmin(GenericBlockAdmin):
@@ -381,12 +369,7 @@ class SimilarityBlockAdmin(GenericBlockAdmin):
         )}),                               
     )
     
-    def get_form(self, request, obj=None, **kwargs):
-        form = super(SimilarityBlockAdmin, self).get_form(request, obj=obj, **kwargs)
-        form.base_fields['type'].initial = 'similarity'
-        form.base_fields['save_with'].initial = ContentType.objects.get_for_model(CogComSimilarityTrial)
-        return form
-    
+
     
 @admin.register(SingleAudioBlock)
 class SingleAudioBlockAdmin(GenericBlockAdmin):
