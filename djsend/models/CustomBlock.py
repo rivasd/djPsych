@@ -184,6 +184,7 @@ class ABXBlock(BaseSettingBlock):
     choices = choices = models.CharField(blank=True, max_length = 1024, help_text=l_("Choose the keys associated for all categories. You have separate them with a coma and non spaces."))
     timeout = models.IntegerField(help_text=l_("time limit for the participant before the trial automatically advances"), default=-1)
     timeout_feedback = models.CharField(max_length=64, blank=True, help_text=l_("Any content here will be displayed as a feedback given to the participants when he takes too long to answer the question if there is a timeout"))
+    timing_fixation_cross = models.IntegerField(help_text=l_("How long to show the fixation cross for in milliseconds."))
     timing_feedback = models.IntegerField(help_text=l_("How long to show the feedback message for in milliseconds."))
     timing_gap = models.IntegerField(help_text=l_("How long to leave blank between the stimuli."))
     timing_stims = models.IntegerField(help_text=l_("How long to show the stimuli for."))
