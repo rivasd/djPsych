@@ -133,6 +133,7 @@ class AudioABXBlock(GenericBlockAdmin):
             'prompt',
             'timeout',
             'timeout_feedback',
+            'timing_feedback',
             'timing_gap',
             'key_first',
             'key_second'       
