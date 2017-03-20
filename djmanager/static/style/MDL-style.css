@@ -355,9 +355,11 @@ img.loader{
 	}	
 	
 #jsPsychTarget #sliderlabels{
+	/*
 	margin-left:auto !important;
 	margin-right:auto !important;
 	width:600px !important;
+	*/
 	}
 
 #sliderlabels li{
