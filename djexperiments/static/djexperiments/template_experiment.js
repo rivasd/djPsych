@@ -23,7 +23,7 @@ function runExperiment(){
 					data:data
 				})
 			},
-			display_element: $('#jsPsychTarget'),
+			display_element: 'jsPsychTarget',
 			on_trial_start:function(){
 				$("#jsPsychTarget")[0].scrollIntoView();
 			}
