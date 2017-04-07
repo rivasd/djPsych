@@ -39,6 +39,7 @@ def get_type(filepath):
     
     image_ext = ('.jpeg','.jpg', '.tiff', '.gif', '.bmp', '.png', '.svg')
     audio_ext = ('.mp3', '.wav', '.ogg', '.m4a')
+    video_ext = ('.mp4',)
     extension = os.path.splitext(filepath)[1]
     if extension.lower() == ".js":
         return 'js'
@@ -48,6 +49,8 @@ def get_type(filepath):
         return 'image'
     elif extension.lower() in audio_ext:
         return 'audio'
+    elif extension.lower() in video_ext:
+        return 'video'
     else :
         return 'other'
     
