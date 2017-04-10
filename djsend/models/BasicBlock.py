@@ -243,6 +243,7 @@ class SurveyLikertBlock(BaseSettingBlock):
     type = 'survey-likert'
     
     questions = GenericRelation(Question)
+    preamble = models.CharField(max_length=256, null=True, blank= True, help_text=l_("Small text to display above the likert scale"))
     
     def toDict(self):
         

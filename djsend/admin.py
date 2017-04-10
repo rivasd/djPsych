@@ -399,6 +399,11 @@ class SingleStimBlockAdmin(GenericBlockAdmin):
     
 @admin.register(SurveyLikertBlock)    
 class SurveyLikertAdmin(GenericBlockAdmin):
+    fieldsets = GenericBlockAdmin.fieldsets + (
+        (l_("Survey Likert parameters"), {'fields':(
+            'preamble',
+        )}),                               
+    )
     inlines = [QuestionAdminInline]
     
 @admin.register(SurveyMultiChoiceBlock)    

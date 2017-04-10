@@ -91,6 +91,7 @@ class SingleStimBlockOptions(TranslationOptions):
 
 @register(SurveyLikertBlock)
 class SurveyLikertOptions(TranslationOptions):
+    fields=('preamble',)
     pass
 
 @register(SurveyMultiChoiceBlock)
