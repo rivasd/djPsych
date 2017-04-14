@@ -101,6 +101,7 @@ def save(request, exp_label):
             trial_model = trial_content_type.model_class()
         except:
             trial_model = GenericTrial
+            trial_content_type = ContentType.objects.get_for_model(trial_model)
             #return JsonResponse({'error': _('We could not handle your trial of type: ')+trial_type})
         instances=[]
         for trial in trial_batch:
