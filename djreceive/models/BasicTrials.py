@@ -89,6 +89,10 @@ class BaseTrial(models.Model):
         del dictionary['id']
         return dictionary
     
+class GenericTrial(BaseTrial):
+    pass
+    
+    
 class AnimationTrial(BaseTrial):
     handles = 'animation'
     animation_sequence = JSONField(null=False, blank=True)

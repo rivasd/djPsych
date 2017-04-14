@@ -15,6 +15,7 @@ from .utils import sort_trials
 import datetime
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
+from djreceive.models.BasicTrials import GenericTrial
 # Create your views here.
 
 def save(request, exp_label):
@@ -99,7 +100,8 @@ def save(request, exp_label):
             trial_content_type = ContentType.objects.get(pk=mapping[trial_type])
             trial_model = trial_content_type.model_class()
         except:
-            return JsonResponse({'error': _('We could not handle your trial of type: ')+trial_type})
+            trial_model = GenericTrial
+            #return JsonResponse({'error': _('We could not handle your trial of type: ')+trial_type})
         instances=[]
         for trial in trial_batch:
             trial['run'] = new_run
