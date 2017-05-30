@@ -8,7 +8,7 @@ from .base import *
 
 IS_PRODUCTION = True
 DEBUG= True
-ALLOWED_HOSTS =['cogcommtl.ca', 'www.cogcommtl.ca', 'localhost:8000']
+ALLOWED_HOSTS =['cogcommtl.ca', 'www.cogcommtl.ca', 'localhost:8000', 'percept.uqam.ca']
 DEBUG= False
 
 prod_only_apps = [
