@@ -10,7 +10,7 @@ dev_only_apps = [
 ]
 
 IS_PRODUCTION = False
-ALLOWED_HOSTS =['www.cogcommtl.ca']
+ALLOWED_HOSTS =['www.cogcommtl.ca', 'localhost', 'localhost:8000']
 DEBUG = True
 #INSTALLED_APPS.extend(dev_only_apps)
 #MIDDLEWARE_CLASSES.extend(['silk.middleware.SilkyMiddleware'])
