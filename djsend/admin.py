@@ -312,7 +312,7 @@ class ReconstructionBlockAdmin(GenericBlockAdmin):
     )
     
 @admin.register(RelationCategorizationBlock)    
-class RelationCategorizationBlock(GenericBlockAdmin):
+class RelationCategorizationBlockAdmin(GenericBlockAdmin):
     fieldsets = GenericBlockAdmin.fieldsets + (
         (l_("Relation Categorization task parameters"), {'fields':(
             'prompt',
