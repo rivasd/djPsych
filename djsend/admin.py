@@ -311,7 +311,7 @@ class ReconstructionBlockAdmin(GenericBlockAdmin):
         )}),                            
     )
     
-@admin.register(ABXBlock)    
+@admin.register(RelationCategorizationBlock)    
 class RelationCategorizationBlock(GenericBlockAdmin):
     fieldsets = GenericBlockAdmin.fieldsets + (
         (l_("Relation Categorization task parameters"), {'fields':(
