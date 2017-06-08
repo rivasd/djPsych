@@ -311,6 +311,21 @@ class ReconstructionBlockAdmin(GenericBlockAdmin):
         )}),                            
     )
     
+@admin.register(ABXBlock)    
+class RelationCategorizationBlock(GenericBlockAdmin):
+    fieldsets = GenericBlockAdmin.fieldsets + (
+        (l_("Relation Categorization task parameters"), {'fields':(
+            'prompt',
+            'timeout',
+            'timing_stims',
+            'timing_feedback',
+            'timeout_feedback',
+            'timing_after',
+            'same_key',
+            'different_key'       
+        )}),                               
+    ) 
+    
 @admin.register(SameDifferentBlock)
 class SameDifferentBlockAdmin(GenericBlockAdmin):
     fieldsets = GenericBlockAdmin.fieldsets + (

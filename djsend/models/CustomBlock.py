@@ -200,5 +200,21 @@ class ABXBlock(BaseSettingBlock):
         initial['timeout_feedback'] = self.timeout_feedback
         return initial
         
-        
+class RelationCategorizationBlock(BaseSettingBlock):
+    type = 'relation-categorization'
+    timeout = models.IntegerField(help_text=l_("time limit for the participant before the trial automatically advances"), default=-1)
+    timeout_feedback = models.CharField(max_length=64, blank=True, help_text=l_("Any content here will be displayed as a feedback given to the participants when he takes too long to answer the question if there is a timeout"))
+    timing_fixation_cross = models.IntegerField(help_text=l_("How long to show the fixation cross for in milliseconds."))
+    timing_feedback = models.IntegerField(help_text=l_("How long to show the feedback message for in milliseconds."))
+    timing_stims = models.IntegerField(help_text=l_("How long to show the stimuli for."))
+    timing_after = models.IntegerField(help_text=l_("How long to leave a blank after the trial"))
+    prompt = models.CharField(max_length=256, blank=True, help_text=l_("Any content here will be displayed below the stimulus, as a reminder to the participant"))
+    same_key = models.CharField(max_length=3, blank=True, help_text=l_("The key that the person have to press if the first image is the same as the last"))
+    different_key = models.CharField(max_length=3, blank=True, help_text=l_("The key that the person have to press if it is the second image that is the same as the last"))
+    
+    def toDict(self):
+        initial = super(RelationCategorizationBlock,self).toDict()
+        initial['prompt'] = "<p class=\"prompt\"> {} </p>".format(self.prompt)
+        initial['timeout_feedback'] = self.timeout_feedback
+        return initial        
     

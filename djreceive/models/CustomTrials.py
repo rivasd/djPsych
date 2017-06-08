@@ -36,3 +36,11 @@ class AudioABXTrial(BaseTrial):
     B = models.CharField(max_length=1024, null = True)
     X = models.CharField(max_length=1024, null = True)
     key_press = models.IntegerField(null = True)
+    
+class relationCategorizationTrial(BaseTrial):
+    handles = 'relation-categorization'
+    rt = models.IntegerField()
+    correct = models.BooleanField(default = False)
+    A = models.CharField(max_length=1024, null = True)
+    B = models.CharField(max_length=1024, null = True)
+    key_press = models.IntegerField(null = True)
