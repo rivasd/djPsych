@@ -320,6 +320,7 @@ class RelationCategorizationBlockAdmin(GenericBlockAdmin):
             'timing_stims',
             'timing_feedback',
             'timeout_feedback',
+            'timing_fixation_cross',
             'timing_after',
             'same_key',
             'different_key'       
