@@ -214,6 +214,7 @@ class RelationCategorizationBlock(BaseSettingBlock):
     is_there_feedback = models.BooleanField(default = False, help_text=l_("If a correct/incorrect feedback will show after categorization or not"))
     correct = models.CharField(max_length=256, blank = True, help_text=l_('what to give as a correct feedback'))
     incorrect = models.CharField(max_length=256, blank = True, help_text=l_('what to give as an incorrect feedback'))
+    response_wait = models.BooleanField(default = False, help_text=l_("If the subject have to wait that the stimuli are gone before answering"))
     
     def toDict(self):
         initial = super(RelationCategorizationBlock,self).toDict()

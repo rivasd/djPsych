@@ -326,7 +326,8 @@ class RelationCategorizationBlockAdmin(GenericBlockAdmin):
             'different_key',
             'correct',
             'incorrect',
-            'is_there_feedback'       
+            'is_there_feedback',
+            'response_wait'       
         )}),                               
     ) 
     
