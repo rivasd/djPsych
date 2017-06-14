@@ -211,10 +211,15 @@ class RelationCategorizationBlock(BaseSettingBlock):
     prompt = models.CharField(max_length=256, blank=True, help_text=l_("Any content here will be displayed below the stimulus, as a reminder to the participant"))
     same_key = models.CharField(max_length=3, blank=True, help_text=l_("The key that the person have to press if the first image is the same as the last"))
     different_key = models.CharField(max_length=3, blank=True, help_text=l_("The key that the person have to press if it is the second image that is the same as the last"))
+    is_there_feedback = models.BooleanField(default = False, help_text=l_("If a correct/incorrect feedback will show after categorization or not"))
+    correct = models.CharField(max_length=256, blank = True, help_text=l_('what to give as a correct feedback'))
+    incorrect = models.CharField(max_length=256, blank = True, help_text=l_('what to give as an incorrect feedback'))
     
     def toDict(self):
         initial = super(RelationCategorizationBlock,self).toDict()
         initial['prompt'] = "<p class=\"prompt\"> {} </p>".format(self.prompt)
         initial['timeout_feedback'] = self.timeout_feedback
+        initial['correct'] = self.correct
+        initial['incorrect'] = self.incorrect
         return initial        
     

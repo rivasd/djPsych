@@ -323,7 +323,10 @@ class RelationCategorizationBlockAdmin(GenericBlockAdmin):
             'timing_fixation_cross',
             'timing_after',
             'same_key',
-            'different_key'       
+            'different_key',
+            'correct',
+            'incorrect',
+            'is_there_feedback'       
         )}),                               
     ) 
     

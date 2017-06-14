@@ -75,7 +75,7 @@ class ReconstructionBlockOptions(TranslationOptions):
 
 @register(RelationCategorizationBlock)
 class RelationCategorizationOptions(TranslationOptions):
-    fields=('prompt', 'timeout_feedback')
+    fields=('prompt', 'timeout_feedback', 'correct', 'incorrect')
 
 @register(SameDifferentBlock)
 class SameDifferentBlockOptions(TranslationOptions):
