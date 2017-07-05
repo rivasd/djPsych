@@ -71,7 +71,12 @@ class GenericBlockAdmin(TranslationAdmin):
         qs = super(GenericBlockAdmin, self).get_queryset(request)
         exps = get_allowed_exp_for_user(request)
         exps_ids = [exp.pk for exp in exps]
-        allowed_ids = [block.pk for block in qs if block.part_of.experiment.pk in exps_ids]
+        allowed_ids = []
+        # we need to deal with potentially invalid part_of generic relations, since they are not updated on related object deletion
+        for block in qs:
+            if block.part_of and block.part_of.experiment.pk in exps_ids:
+                allowed_ids.append(block.pk)
+        
         return qs.filter(pk__in=allowed_ids)
 
 
