@@ -22,3 +22,6 @@
 [submodule "djPsych/jsTreeGrid/jstree-grid"]
 	path = djPsych/jsTreeGrid/jstree-grid
 	url = https://github.com/deitch/jstree-grid
+[submodule "djPsych/jsPsych"]
+	path = djPsych/jsPsych
+	url = https://github.com/rivasd/jsPsych
