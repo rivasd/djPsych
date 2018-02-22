@@ -111,6 +111,7 @@ class ABXBlock(GenericBlockAdmin):
             'timing_stims',
             'timing_feedback',
             'timeout_feedback',
+            'timing_fixation_cross',
             'timing_gap',
             'key_first',
             'key_second'       

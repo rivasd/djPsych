@@ -24,6 +24,8 @@ class ParticipationAdmin(admin.ModelAdmin):
             return False
     
     list_display = ('experiment', 'subject_name', 'started', 'complete', 'paid')
+
+    search_fields = ['subject__user__username', 'experiment__label']
     
 @admin.register(DropOut)
 class DropOutAdmin(admin.ModelAdmin):
