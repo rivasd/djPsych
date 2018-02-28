@@ -105,5 +105,7 @@ def sendSettings(request, exp_label):
 
 def serve_snippet(request, exp_label, template):
     prefix = 'djexperiments/'+exp_label+'/'
-    return render(request, prefix+template)
+    response = render(request, prefix+template)
+    response['Access-Control-Allow-Origin'] = "*"
+    return response
     

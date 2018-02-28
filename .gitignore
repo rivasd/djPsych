@@ -71,3 +71,4 @@ target/
 djPsych/secrets.py
 /static/
 /.tern-project
+.vscode/settings.json
