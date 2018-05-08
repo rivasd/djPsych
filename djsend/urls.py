@@ -6,6 +6,8 @@ Created on Mar 2, 2016
 from django.conf.urls import url
 from .views import sendSettings, serve_snippet
 
+app_name = "send"
+
 urlpatterns = [
     url(r'^$', sendSettings, name='fullconfig'),
     url(r'^snippet/(?P<template>\w+[.]html)$', serve_snippet, name="snippet")

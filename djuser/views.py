@@ -7,7 +7,7 @@ from django.utils.translation import ugettext_lazy as l_
 from djcollect.models import Participation
 from djuser.utils import get_my_exps
 from djuser.forms import SubjectForm, PublicUserForm
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 # Create your views here.
 
 @login_required

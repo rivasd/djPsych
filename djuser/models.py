@@ -13,7 +13,7 @@ class BaseSubject(models.Model):
     'User' already has basic contact info and date joined info, so put here fields that are "experimental subject" things like demographics and other
     """
     
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     student_participant_id = models.CharField(max_length=12, help_text=l_("If you wish to link your account with a student id so that your institution can track your participations, enter it here"), null=True, blank=True)
     
     class Meta:

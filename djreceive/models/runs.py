@@ -13,7 +13,7 @@ class Run(models.Model):
     Represents a single run of an experiment for a given subject. This is because one subject may split his Participation to
     an Experiment over multiple Runs
     """
-    participation = models.ForeignKey('djcollect.Participation')
+    participation = models.ForeignKey('djcollect.Participation', on_delete=models.CASCADE)
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     browser = models.CharField(max_length=16, null=True)

@@ -7,6 +7,7 @@ Created on Feb 22, 2016
 from django.conf.urls import url, include
 from .views import home, allExperiments
 
+app_name = "manager"
 
 urlpatterns = [
     url(r'^$', home, name="home"),

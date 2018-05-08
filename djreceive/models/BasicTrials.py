@@ -24,7 +24,7 @@ class BaseTrial(models.Model):
     trial_type = models.CharField(max_length=32)
     time_elapsed = models.IntegerField()
     timeout = models.BooleanField(blank=True, default=False)
-    run = models.ForeignKey(Run)
+    run = models.ForeignKey(Run, on_delete=models.CASCADE)
     
     extra_data = JSONField(null=True, blank=True)
     

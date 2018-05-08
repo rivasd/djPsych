@@ -22,7 +22,7 @@ class BaseSettingBlock(models.Model):
         
         
     
-    global_settings_type = models.ForeignKey(ContentType, help_text=l_("What kind of global configuration is this object part of?"))
+    global_settings_type = models.ForeignKey(ContentType, help_text=l_("What kind of global configuration is this object part of?"), on_delete=models.CASCADE)
     global_settings_id = models.PositiveIntegerField(help_text=l_("Which configuration object among your configs of the above type is this block attached to?"))
     part_of = GenericForeignKey('global_settings_type', 'global_settings_id')
     
@@ -30,7 +30,7 @@ class BaseSettingBlock(models.Model):
     position_in_timeline = models.PositiveSmallIntegerField(default=0, help_text=l_("This number is used by the global setting this object is part of to build its timeline. It represents the ordinal position in which this block should come."))
     reprise = models.PositiveSmallIntegerField(null=True, blank=True, help_text=l_("If set, indicates that this block is a reprise of the n'th block, where n is the value of the field"))
     length= models.PositiveIntegerField(null=True, blank=True, help_text=l_("How many individual trials of this type should there be. You can leave blank if you don't need it"))
-    save_with = models.ForeignKey(ContentType, related_name='created_%(class)ss', help_text=l_("Choose the data model that will be used to save all trials that have their 'type' parameter equal to what you wrote above.\
+    save_with = models.ForeignKey(ContentType, related_name='created_%(class)ss', on_delete=models.CASCADE, help_text=l_("Choose the data model that will be used to save all trials that have their 'type' parameter equal to what you wrote above.\
      If You have different block-setting objects (like this one) that have the same 'type' but different 'save_with', then there is no guarantee which data-model will be used. This is because I think there is no real reason why two different 'categorization' blocks should be saved with different data-models: even if they have wildly different stimuli or timing settings, they should return the same kind of data."))
     has_practice = models.BooleanField(help_text=l_("Check if you want to mark this block to need a practice block before, useful to guide client-side JS code."), default=False)
     instructions = GenericRelation(Instruction)

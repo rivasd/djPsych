@@ -19,7 +19,7 @@ class Payment(models.Model):
     SHOULD NEVER BE CREATED IN BULK. Anyway it does not really make sense to do this.
     """
     
-    participation = models.OneToOneField(Participation)
+    participation = models.OneToOneField(Participation, on_delete=models.CASCADE)
     amount= models.FloatField()
     currency = models.CharField(max_length=3, default='CAD')
     time_created = models.DateTimeField(auto_now_add=True)

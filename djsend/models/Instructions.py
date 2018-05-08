@@ -22,7 +22,7 @@ class Instruction(models.Model):
     This does not set the jsPsych cont_key param, until I find a solution to find some kind of ListField that doesnt need the hassle of a ManyToMany rel to keycodes
     """
     
-    content_type = models.ForeignKey(ContentType)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     task = GenericForeignKey('content_type', 'object_id') # See: https://docs.djangoproject.com/en/1.9/ref/contrib/contenttypes/#generic-relations
     text = MarkdownField(help_text=l_('Write your instruction page here using Markdown syntax! see: https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet'))

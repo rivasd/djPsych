@@ -19,7 +19,7 @@ class Participation(models.Model):
     I recommend to always get a Participation instance with select_related()
     """
     
-    experiment = models.ForeignKey(Experiment)
+    experiment = models.ForeignKey(Experiment, on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     complete = models.BooleanField()
     started = models.DateTimeField()
@@ -164,7 +164,7 @@ class DropOut(models.Model):
     
     """
     
-    experiment = models.ForeignKey(Experiment)
+    experiment = models.ForeignKey(Experiment, on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     started = models.DateTimeField()
     finished = models.DateTimeField(null=True, blank=True)
@@ -178,6 +178,6 @@ class Researcher(models.Model):
     It does look like a Django permission, but first, I have no idea how to use them, and also, it's nice to store Researcher data like institution, degree, field, etc.
     """
     
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     institution = models.CharField(max_length=32, blank=True, null=True)
     researchs = models.ManyToManyField(Experiment, blank=True)

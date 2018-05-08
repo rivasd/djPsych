@@ -25,7 +25,7 @@ class BaseGlobalSetting(models.Model):
     class Meta:
         abstract=True
     
-    experiment = models.ForeignKey(Experiment)
+    experiment = models.ForeignKey(Experiment, on_delete=models.CASCADE)
     name = models.CharField(max_length=64, help_text="An identifier for this set of settings, for example 'production' or 'test settings' ")
     max_consecutive_timeouts = models.IntegerField(blank=True, null=True, help_text="The experiment will automatically abort if this number if the subject does not respond fast enough to this many consecutive trials")
     max_total_timeouts = models.IntegerField(blank=True, null=True, help_text="The experiment will automatically abort if this many trials are allowed to timeout in total")

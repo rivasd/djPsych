@@ -5,6 +5,8 @@ Created on Feb 25, 2016
 '''
 from django.conf.urls import url
 
+app_name = "administration"
+
 urlpatterns= [
     
 ]

@@ -19,12 +19,12 @@ class LinkedStimulus(models.Model):
     Both librairies adressing generic m2m relationships that I found are poor and, critically, offer no admin integration.
     """
     # First the link to the setting object
-    setting_type = models.ForeignKey(ContentType, related_name="stimlinks")
+    setting_type = models.ForeignKey(ContentType, related_name="stimlinks", on_delete=models.CASCADE)
     setting_id = models.PositiveIntegerField()
     setting = GenericForeignKey('setting_type', 'setting_id')
     
     # now the link to the simuli object
-    stim_type = models.ForeignKey(ContentType, related_name='blocklinks')
+    stim_type = models.ForeignKey(ContentType, related_name='blocklinks', on_delete=models.CASCADE)
     stim_id = models.PositiveIntegerField()
     stimulus = GenericForeignKey('stim_type', 'stim_id')
     #TODO: maybe use grappelli's inline ordering feature instead of asking users to directly enter an index number... someone (not me!) should look into that

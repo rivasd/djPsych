@@ -8,6 +8,7 @@ from djexperiments.views import lobby, launch, summary, sandbox, debrief, upload
 from djreceive.views import save
 from djpay.views import claim
 
+app_name = "experiments"
 
 urlpatterns =[
     url(r'^$', lobby, name='lobby'),

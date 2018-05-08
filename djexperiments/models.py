@@ -41,10 +41,10 @@ class BaseExperiment(models.Model):
     is_active = models.BooleanField(l_('Active'), help_text="Uncheck to remove this experiment from being displayed and served on the site.")
     total_funds_added = models.FloatField(blank=True, null=True, help_text="How much money have been added to this experiment since its creation")
     
-    settings_model = models.ForeignKey(ContentType)
+    settings_model = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     #TODO: auto-update this (hide it from the user)
     block_models = models.ManyToManyField(ContentType, related_name="experiments")
-    research_group = models.OneToOneField(Group, null=True, blank=True)
+    research_group = models.OneToOneField(Group, on_delete=models.CASCADE, null=True, blank=True)
     
     PayPal_API_Username = models.CharField(max_length=64, blank=True, null=True, help_text=l_("API username for your app to access the NVP/SOAP Paypal API"))
     PayPal_API_Password = models.CharField(max_length=64, blank=True, null=True, help_text=l_("API Password for NVP/SOAP calls to Paypal"))
@@ -216,7 +216,7 @@ class Experiment(BaseExperiment):
         
 class Debrief(models.Model):
     
-    experiment = models.OneToOneField(Experiment)
+    experiment = models.OneToOneField(Experiment, on_delete=models.CASCADE)
     content = MarkdownField(help_text=l_("write the debrief content you'd like to show to subjects after the experiment."))
     
     def render(self):
@@ -230,7 +230,7 @@ class Debrief(models.Model):
 
 class Lobby(models.Model):
     
-    experiment=models.OneToOneField(Experiment)
+    experiment=models.OneToOneField(Experiment, on_delete=models.CASCADE)
     content = MarkdownField(help_text=l_("Write here the content that people will see on the homepage of the experiment, before choosing to do it or not"))
     
     def render(self):
