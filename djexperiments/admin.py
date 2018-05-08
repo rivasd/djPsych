@@ -49,6 +49,8 @@ class ExperimentAdmin(TranslationAdmin):
     
     def get_queryset(self, request):
         qs = super(ExperimentAdmin, self).get_queryset(request)
+        if request.user.is_superuser:
+            return qs
         exp_groups = request.user.groups.filter(name__endswith="researchers")
         return qs.filter(research_group__in=exp_groups)
     

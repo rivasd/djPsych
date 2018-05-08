@@ -15,6 +15,7 @@ from django_markdown.models import MarkdownField
 import markdown
 from djPsych.utils import get_type
 from django.contrib.contenttypes.fields import GenericRel, GenericRelation
+from .utils import validate_exp_label
 
 # Create your models here.
 
@@ -26,7 +27,7 @@ class BaseExperiment(models.Model):
     class Meta:
         abstract = True
     
-    label = models.CharField(max_length=32, unique=True)
+    label = models.CharField(max_length=32, unique=True, validators=[validate_exp_label])
     verbose_name = models.CharField(max_length=128)
     description = models.TextField(blank=True, null=True)
     estimated_length = models.CharField(max_length=16, blank=True, null=True)
