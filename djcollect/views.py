@@ -40,7 +40,7 @@ def collect_all(request, exp_label):
         if participation.parameters is not None:
             if hasattr(participation.parameters, 'difficulty'):
                 name = name + str(participation.parameters["difficulty"])
-        
+        name += participation.id
         data_as_string_io = get_csv_iostring_from_participation(participation)
         main_zipfile.writestr(name+'.csv', data_as_string_io.getvalue())
         data_as_string_io.close() # Better close it, you never know
